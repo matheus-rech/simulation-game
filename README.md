@@ -27,3 +27,15 @@ This project is **educational only** and is **not intended for clinical decision
 - **AI attending surgeon panel** (stubbed, no API keys required)
 - **Multi-level progression** from basic navigation to crisis management
 - **Fully client-side** (no backend required)
+
+---
+
+## ⚙️ Fidelity Toggle Behavior
+
+The in-app **High Fidelity** toggle controls rendering quality. By default, the
+experience starts in **balanced** mode for unknown devices. Devices that
+advertise higher hardware capabilities may start in high fidelity, but the
+simulation will always respect the operating system’s **prefers-reduced-motion**
+setting and fall back to balanced mode for reduced motion users. The endoscope
+view uses this toggle to enable post-processing (Bloom/DOF/Noise) and scale
+particle counts accordingly.
