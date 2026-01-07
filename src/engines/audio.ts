@@ -55,7 +55,7 @@ export class AudioEngine {
     const t = this.ctx.currentTime;
     this.osc.frequency.setTargetAtTime(400 + intensity * 1200, t, 0.1);
     const pulse = 0.6 + 0.4 * Math.sin(t * 2 * Math.PI * (70 / 60));
-    this.gain!.gain.setTargetAtTime(intensity * pulse * 0.5, t, 0.1);
+    this.gain?.gain.setTargetAtTime(intensity * pulse * 0.5, t, 0.1);
   }
 
   private silence() {
