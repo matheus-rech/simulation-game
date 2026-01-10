@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 
@@ -64,11 +64,21 @@ const styles = {
     transition: 'all 0.2s ease',
     whiteSpace: 'nowrap' as const,
     outline: 'none', // Focus handled by visible focus ring if possible, but for inline styles we rely on browser default or explicit focus style
+  },
+  shortcutKey: {
+    marginLeft: 8,
+    fontSize: '0.75em',
+    opacity: 0.7,
+    border: '1px solid currentColor',
+    borderRadius: 4,
+    padding: '0 4px',
+    display: 'inline-block',
+    verticalAlign: 'text-bottom',
   }
 };
 
 // Reusable button component to handle hover state cleanly
-function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function HUDButton({ onClick, children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -87,6 +97,7 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       type="button"
+      {...props}
     >
       {children}
     </button>
@@ -109,6 +120,35 @@ export default function App() {
     setScore((prev) => Math.max(prev - 2, 0));
   }, []);
 
+  const advanceLevel = useCallback(() => {
+    setLevel((prev) => (prev >= 3 ? 1 : prev + 1));
+  }, []);
+
+  const resetScope = useCallback(() => {
+    setScopeAngle({ pitch: 0.05, yaw: 0 });
+    setTipPosition(initialTipPosition);
+    setLastCollision(null);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      switch (e.key.toLowerCase()) {
+        case 'l':
+          advanceLevel();
+          break;
+        case 'r':
+          resetScope();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [advanceLevel, resetScope]);
+
   return (
     <div style={{ height: "100vh", width: "100vw", background: "#0f0a0a" }}>
       <section aria-label="Simulation Status" style={styles.overlay}>
@@ -128,17 +168,13 @@ export default function App() {
         </dl>
 
         <nav aria-label="Controls" style={styles.controls}>
-          <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
+          <HUDButton onClick={advanceLevel} aria-keyshortcuts="l">
             Advance Level
+            <span style={styles.shortcutKey} aria-hidden="true">L</span>
           </HUDButton>
-          <HUDButton
-            onClick={() => {
-              setScopeAngle({ pitch: 0.05, yaw: 0 });
-              setTipPosition(initialTipPosition);
-              setLastCollision(null);
-            }}
-          >
+          <HUDButton onClick={resetScope} aria-keyshortcuts="r">
             Reset Scope
+            <span style={styles.shortcutKey} aria-hidden="true">R</span>
           </HUDButton>
         </nav>
       </section>
