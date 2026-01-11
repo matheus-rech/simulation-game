@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 
@@ -64,6 +64,15 @@ const styles = {
     transition: 'all 0.2s ease',
     whiteSpace: 'nowrap' as const,
     outline: 'none', // Focus handled by visible focus ring if possible, but for inline styles we rely on browser default or explicit focus style
+  },
+  helpText: {
+    fontSize: '0.75rem',
+    opacity: 0.7,
+    marginTop: 16,
+    paddingTop: 12,
+    borderTop: '1px solid rgba(247, 229, 218, 0.15)',
+    display: 'grid',
+    gap: 4,
   }
 };
 
@@ -109,6 +118,58 @@ export default function App() {
     setScore((prev) => Math.max(prev - 2, 0));
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const moveSpeed = 0.1;
+      const rotSpeed = 0.05;
+
+      switch (e.key) {
+        // Movement (Tip Position)
+        case 'w':
+        case 'W':
+          setTipPosition(prev => ({ ...prev, z: prev.z - moveSpeed }));
+          break;
+        case 's':
+        case 'S':
+          setTipPosition(prev => ({ ...prev, z: prev.z + moveSpeed }));
+          break;
+        case 'a':
+        case 'A':
+          setTipPosition(prev => ({ ...prev, x: prev.x - moveSpeed }));
+          break;
+        case 'd':
+        case 'D':
+          setTipPosition(prev => ({ ...prev, x: prev.x + moveSpeed }));
+          break;
+        case 'q':
+        case 'Q':
+          setTipPosition(prev => ({ ...prev, y: prev.y + moveSpeed }));
+          break;
+        case 'e':
+        case 'E':
+          setTipPosition(prev => ({ ...prev, y: prev.y - moveSpeed }));
+          break;
+
+        // Rotation (Scope Angle)
+        case 'ArrowUp':
+          setScopeAngle(prev => ({ ...prev, pitch: prev.pitch + rotSpeed }));
+          break;
+        case 'ArrowDown':
+          setScopeAngle(prev => ({ ...prev, pitch: prev.pitch - rotSpeed }));
+          break;
+        case 'ArrowLeft':
+          setScopeAngle(prev => ({ ...prev, yaw: prev.yaw + rotSpeed }));
+          break;
+        case 'ArrowRight':
+          setScopeAngle(prev => ({ ...prev, yaw: prev.yaw - rotSpeed }));
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div style={{ height: "100vh", width: "100vw", background: "#0f0a0a" }}>
       <section aria-label="Simulation Status" style={styles.overlay}>
@@ -141,6 +202,11 @@ export default function App() {
             Reset Scope
           </HUDButton>
         </nav>
+
+        <div style={styles.helpText} aria-label="Keyboard Controls">
+          <div><strong>WASD</strong> + <strong>Q/E</strong> to Move</div>
+          <div><strong>Arrows</strong> to Look</div>
+        </div>
       </section>
 
       <EndoscopeView
