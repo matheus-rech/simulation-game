@@ -68,7 +68,14 @@ const styles = {
 };
 
 // Reusable button component to handle hover state cleanly
-function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+interface HUDButtonProps {
+  onClick: () => void;
+  children: React.ReactNode;
+  title?: string;
+  ariaLabel?: string;
+}
+
+function HUDButton({ onClick, children, title, ariaLabel }: HUDButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -87,6 +94,8 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       type="button"
+      title={title}
+      aria-label={ariaLabel}
     >
       {children}
     </button>
@@ -107,6 +116,22 @@ export default function App() {
     setLastCollision(point);
     setCollisionCount((count) => count + 1);
     setScore((prev) => Math.max(prev - 2, 0));
+  }, []);
+
+  // Keyboard shortcuts
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      if (e.key.toLowerCase() === 'r') {
+        setScopeAngle({ pitch: 0.05, yaw: 0 });
+        setTipPosition(initialTipPosition);
+        setLastCollision(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   return (
@@ -137,8 +162,10 @@ export default function App() {
               setTipPosition(initialTipPosition);
               setLastCollision(null);
             }}
+            title="Reset camera position (Press R)"
+            ariaLabel="Reset Scope"
           >
-            Reset Scope
+            Reset Scope <span style={{ opacity: 0.6, fontSize: '0.85em', marginLeft: 4 }}>(R)</span>
           </HUDButton>
         </nav>
       </section>
