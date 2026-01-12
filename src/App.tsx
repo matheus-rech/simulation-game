@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 
@@ -64,7 +64,15 @@ const styles = {
     transition: 'all 0.2s ease',
     whiteSpace: 'nowrap' as const,
     outline: 'none', // Focus handled by visible focus ring if possible, but for inline styles we rely on browser default or explicit focus style
-  }
+  },
+  controlsText: {
+    marginTop: 16,
+    fontSize: '0.8rem',
+    opacity: 0.7,
+    textAlign: 'center' as const,
+    borderTop: '1px solid rgba(247, 229, 218, 0.15)',
+    paddingTop: 12,
+  },
 };
 
 // Reusable button component to handle hover state cleanly
@@ -109,6 +117,25 @@ export default function App() {
     setScore((prev) => Math.max(prev - 2, 0));
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const step = 0.1;
+      const rotStep = 0.05;
+      switch (e.key) {
+        case 'w': case 'W': setTipPosition(p => ({ ...p, z: p.z - step })); break;
+        case 's': case 'S': setTipPosition(p => ({ ...p, z: p.z + step })); break;
+        case 'a': case 'A': setTipPosition(p => ({ ...p, x: p.x - step })); break;
+        case 'd': case 'D': setTipPosition(p => ({ ...p, x: p.x + step })); break;
+        case 'ArrowUp': setScopeAngle(a => ({ ...a, pitch: a.pitch + rotStep })); break;
+        case 'ArrowDown': setScopeAngle(a => ({ ...a, pitch: a.pitch - rotStep })); break;
+        case 'ArrowLeft': setScopeAngle(a => ({ ...a, yaw: a.yaw + rotStep })); break;
+        case 'ArrowRight': setScopeAngle(a => ({ ...a, yaw: a.yaw - rotStep })); break;
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div style={{ height: "100vh", width: "100vw", background: "#0f0a0a" }}>
       <section aria-label="Simulation Status" style={styles.overlay}>
@@ -141,6 +168,10 @@ export default function App() {
             Reset Scope
           </HUDButton>
         </nav>
+
+        <p style={styles.controlsText} role="status" aria-label="Keyboard Controls: Use W, A, S, D to move and Arrow keys to look">
+          WASD Move • Arrows Look
+        </p>
       </section>
 
       <EndoscopeView
