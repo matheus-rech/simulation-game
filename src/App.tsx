@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 
@@ -71,6 +71,7 @@ const styles = {
 function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const isClicking = useRef(false);
 
   const currentStyle = {
     ...styles.button,
@@ -84,8 +85,15 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
       style={currentStyle}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
+      onMouseDown={() => { isClicking.current = true; }}
+      onFocus={() => {
+        if (!isClicking.current) setIsFocused(true);
+        isClicking.current = false;
+      }}
+      onBlur={() => {
+        setIsFocused(false);
+        isClicking.current = false;
+      }}
       type="button"
     >
       {children}
@@ -129,7 +137,7 @@ export default function App() {
 
         <nav aria-label="Controls" style={styles.controls}>
           <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
-            Advance Level
+            {level >= 3 ? "Restart Level 1" : `Start Level ${level + 1}`}
           </HUDButton>
           <HUDButton
             onClick={() => {
