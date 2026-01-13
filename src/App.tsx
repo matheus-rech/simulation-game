@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 
@@ -68,7 +68,17 @@ const styles = {
 };
 
 // Reusable button component to handle hover state cleanly
-function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function HUDButton({
+  onClick,
+  children,
+  title,
+  "aria-keyshortcuts": ariaKeyShortcuts
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+  title?: string;
+  "aria-keyshortcuts"?: string;
+}) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -87,6 +97,8 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       type="button"
+      title={title}
+      aria-keyshortcuts={ariaKeyShortcuts}
     >
       {children}
     </button>
@@ -108,6 +120,26 @@ export default function App() {
     setCollisionCount((count) => count + 1);
     setScore((prev) => Math.max(prev - 2, 0));
   }, []);
+
+  const handleReset = useCallback(() => {
+    setScopeAngle({ pitch: 0.05, yaw: 0 });
+    setTipPosition(initialTipPosition);
+    setLastCollision(null);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable) {
+        return;
+      }
+      if (e.key.toLowerCase() === 'r') {
+        handleReset();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleReset]);
 
   return (
     <div style={{ height: "100vh", width: "100vw", background: "#0f0a0a" }}>
@@ -132,13 +164,11 @@ export default function App() {
             Advance Level
           </HUDButton>
           <HUDButton
-            onClick={() => {
-              setScopeAngle({ pitch: 0.05, yaw: 0 });
-              setTipPosition(initialTipPosition);
-              setLastCollision(null);
-            }}
+            onClick={handleReset}
+            title="Press 'R' to reset scope position"
+            aria-keyshortcuts="r"
           >
-            Reset Scope
+            Reset Scope (R)
           </HUDButton>
         </nav>
       </section>
