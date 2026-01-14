@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 
@@ -67,8 +67,15 @@ const styles = {
   }
 };
 
+interface HUDButtonProps {
+  onClick: () => void;
+  children: React.ReactNode;
+  title?: string;
+  'aria-keyshortcuts'?: string;
+}
+
 // Reusable button component to handle hover state cleanly
-function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function HUDButton({ onClick, children, title, ...props }: HUDButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -87,6 +94,8 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       type="button"
+      title={title}
+      aria-keyshortcuts={props['aria-keyshortcuts']}
     >
       {children}
     </button>
@@ -109,6 +118,26 @@ export default function App() {
     setScore((prev) => Math.max(prev - 2, 0));
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore inputs
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      switch(e.key.toLowerCase()) {
+        case 'l':
+          setLevel((prev) => (prev >= 3 ? 1 : prev + 1));
+          break;
+        case 'r':
+          setScopeAngle({ pitch: 0.05, yaw: 0 });
+          setTipPosition(initialTipPosition);
+          setLastCollision(null);
+          break;
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div style={{ height: "100vh", width: "100vw", background: "#0f0a0a" }}>
       <section aria-label="Simulation Status" style={styles.overlay}>
@@ -128,7 +157,11 @@ export default function App() {
         </dl>
 
         <nav aria-label="Controls" style={styles.controls}>
-          <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
+          <HUDButton
+            onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}
+            title="Advance Level (L)"
+            aria-keyshortcuts="L"
+          >
             Advance Level
           </HUDButton>
           <HUDButton
@@ -137,6 +170,8 @@ export default function App() {
               setTipPosition(initialTipPosition);
               setLastCollision(null);
             }}
+            title="Reset Scope (R)"
+            aria-keyshortcuts="R"
           >
             Reset Scope
           </HUDButton>
