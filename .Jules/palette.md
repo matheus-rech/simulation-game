@@ -1,0 +1,3 @@
+## 2024-05-22 - Keyboard Shortcuts for Power Users
+**Learning:** In 3D simulation interfaces where users frequently reset state or toggle modes (like level progression), keyboard shortcuts are not just a power user feature but a significant accessibility and usability win. Users often switch between mouse (for 3D navigation) and keyboard, and having single-key shortcuts for common HUD actions reduces friction.
+**Action:** When designing HUDs for similar simulations, always map primary actions to single-key shortcuts and expose them via tooltips or distinct visual cues (like `title` attributes) from the start.
