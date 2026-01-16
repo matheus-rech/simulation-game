@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 
@@ -64,11 +64,26 @@ const styles = {
     transition: 'all 0.2s ease',
     whiteSpace: 'nowrap' as const,
     outline: 'none', // Focus handled by visible focus ring if possible, but for inline styles we rely on browser default or explicit focus style
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  kbd: {
+    background: 'rgba(247, 229, 218, 0.1)',
+    border: '1px solid rgba(247, 229, 218, 0.2)',
+    borderRadius: 4,
+    padding: '2px 6px',
+    fontSize: '0.75em',
+    fontFamily: 'monospace',
+    lineHeight: 1,
+    minWidth: '1.2em',
+    textAlign: 'center' as const,
   }
 };
 
 // Reusable button component to handle hover state cleanly
-function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function HUDButton({ onClick, children, shortcut }: { onClick: () => void; children: React.ReactNode; shortcut?: string }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -87,8 +102,11 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       type="button"
+      aria-keyshortcuts={shortcut}
+      title={shortcut && typeof children === 'string' ? `${children} (${shortcut})` : undefined}
     >
       {children}
+      {shortcut && <kbd style={styles.kbd}>{shortcut}</kbd>}
     </button>
   );
 }
@@ -107,6 +125,33 @@ export default function App() {
     setLastCollision(point);
     setCollisionCount((count) => count + 1);
     setScore((prev) => Math.max(prev - 2, 0));
+  }, []);
+
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input
+      const target = e.target as HTMLElement;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable) {
+        return;
+      }
+      // Ignore repeats (holding down key) and modifiers
+      if (e.repeat || e.ctrlKey || e.altKey || e.metaKey) return;
+
+      switch (e.key.toUpperCase()) {
+        case 'L':
+          setLevel((prev) => (prev >= 3 ? 1 : prev + 1));
+          break;
+        case 'R':
+          setScopeAngle({ pitch: 0.05, yaw: 0 });
+          setTipPosition(initialTipPosition);
+          setLastCollision(null);
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   return (
@@ -128,10 +173,11 @@ export default function App() {
         </dl>
 
         <nav aria-label="Controls" style={styles.controls}>
-          <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
+          <HUDButton shortcut="L" onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
             Advance Level
           </HUDButton>
           <HUDButton
+            shortcut="R"
             onClick={() => {
               setScopeAngle({ pitch: 0.05, yaw: 0 });
               setTipPosition(initialTipPosition);
