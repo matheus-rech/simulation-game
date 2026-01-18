@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 
@@ -64,11 +64,19 @@ const styles = {
     transition: 'all 0.2s ease',
     whiteSpace: 'nowrap' as const,
     outline: 'none', // Focus handled by visible focus ring if possible, but for inline styles we rely on browser default or explicit focus style
-  }
+  },
+  kbd: {
+    fontFamily: 'monospace',
+    fontSize: '0.75rem',
+    background: 'rgba(247, 229, 218, 0.15)',
+    padding: '2px 6px',
+    borderRadius: '4px',
+    border: '1px solid rgba(247, 229, 218, 0.2)',
+  },
 };
 
 // Reusable button component to handle hover state cleanly
-function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function HUDButton({ onClick, children, shortcut }: { onClick: () => void; children: React.ReactNode; shortcut?: string }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -76,7 +84,15 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
     ...styles.button,
     background: isHovered || isFocused ? 'rgba(247, 229, 218, 0.15)' : 'rgba(247, 229, 218, 0.08)',
     boxShadow: isFocused ? '0 0 0 2px rgba(247, 229, 218, 0.5)' : 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
   };
+
+  const titleText = typeof children === 'string' && shortcut
+    ? `${children} (${shortcut})`
+    : undefined;
 
   return (
     <button
@@ -87,8 +103,11 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       type="button"
+      aria-keyshortcuts={shortcut}
+      title={titleText}
     >
       {children}
+      {shortcut && <kbd style={styles.kbd}>{shortcut}</kbd>}
     </button>
   );
 }
@@ -100,6 +119,45 @@ export default function App() {
   const [lastCollision, setLastCollision] = useState<Vector3D | null>(null);
   const [collisionCount, setCollisionCount] = useState(0);
   const [score, setScore] = useState(100);
+
+  const handleAdvanceLevel = useCallback(() => {
+    setLevel((prev) => (prev >= 3 ? 1 : prev + 1));
+  }, []);
+
+  const handleResetScope = useCallback(() => {
+    setScopeAngle({ pitch: 0.05, yaw: 0 });
+    setTipPosition(initialTipPosition);
+    setLastCollision(null);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.repeat ||
+        e.ctrlKey ||
+        e.altKey ||
+        e.metaKey ||
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target instanceof HTMLSelectElement ||
+        (e.target as HTMLElement).isContentEditable
+      ) {
+        return;
+      }
+
+      switch (e.key.toLowerCase()) {
+        case 'l':
+          handleAdvanceLevel();
+          break;
+        case 'r':
+          handleResetScope();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleAdvanceLevel, handleResetScope]);
 
   const rotationZ = useMemo(() => scopeAngle.yaw * 0.2, [scopeAngle.yaw]);
 
@@ -128,16 +186,10 @@ export default function App() {
         </dl>
 
         <nav aria-label="Controls" style={styles.controls}>
-          <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
+          <HUDButton onClick={handleAdvanceLevel} shortcut="L">
             Advance Level
           </HUDButton>
-          <HUDButton
-            onClick={() => {
-              setScopeAngle({ pitch: 0.05, yaw: 0 });
-              setTipPosition(initialTipPosition);
-              setLastCollision(null);
-            }}
-          >
+          <HUDButton onClick={handleResetScope} shortcut="R">
             Reset Scope
           </HUDButton>
         </nav>
