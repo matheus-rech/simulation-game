@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 
@@ -64,11 +64,31 @@ const styles = {
     transition: 'all 0.2s ease',
     whiteSpace: 'nowrap' as const,
     outline: 'none', // Focus handled by visible focus ring if possible, but for inline styles we rely on browser default or explicit focus style
-  }
+  },
+  kbd: {
+    display: 'inline-block',
+    padding: '2px 6px',
+    fontSize: '0.7em',
+    lineHeight: 1,
+    color: 'rgba(247, 229, 218, 0.9)',
+    verticalAlign: 'middle',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 3,
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 1px 0 rgba(0,0,0,0.2)',
+    marginLeft: 8,
+    fontFamily: 'inherit',
+  },
 };
 
+interface HUDButtonProps {
+  onClick: () => void;
+  children: React.ReactNode;
+  shortcut?: string;
+}
+
 // Reusable button component to handle hover state cleanly
-function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function HUDButton({ onClick, children, shortcut }: HUDButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -77,6 +97,10 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
     background: isHovered || isFocused ? 'rgba(247, 229, 218, 0.15)' : 'rgba(247, 229, 218, 0.08)',
     boxShadow: isFocused ? '0 0 0 2px rgba(247, 229, 218, 0.5)' : 'none',
   };
+
+  const title = shortcut && typeof children === 'string'
+    ? `${children} (${shortcut})`
+    : undefined;
 
   return (
     <button
@@ -87,8 +111,11 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       type="button"
+      title={title}
+      aria-keyshortcuts={shortcut}
     >
       {children}
+      {shortcut && <kbd style={styles.kbd}>{shortcut}</kbd>}
     </button>
   );
 }
@@ -109,6 +136,49 @@ export default function App() {
     setScore((prev) => Math.max(prev - 2, 0));
   }, []);
 
+  const handleAdvanceLevel = useCallback(() => {
+    setLevel((prev) => (prev >= 3 ? 1 : prev + 1));
+  }, []);
+
+  const handleResetScope = useCallback(() => {
+    setScopeAngle({ pitch: 0.05, yaw: 0 });
+    setTipPosition(initialTipPosition);
+    setLastCollision(null);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore inputs if user is typing in a form field (even though we don't have many yet)
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target instanceof HTMLSelectElement ||
+        (e.target as HTMLElement).isContentEditable
+      ) {
+        return;
+      }
+
+      if (e.repeat) return; // Optional: prevent holding key to cycle rapidly
+
+      // Check against shortcuts. We use key names but since we use 'L' and 'R' as shortcuts,
+      // we check e.key or e.code. e.key is localized, e.code is physical.
+      // Usually shortcuts like 'L' mean the letter L.
+      if (e.metaKey || e.ctrlKey || e.altKey) return; // Avoid clashing with system shortcuts
+
+      switch (e.key.toLowerCase()) {
+        case 'l':
+          handleAdvanceLevel();
+          break;
+        case 'r':
+          handleResetScope();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleAdvanceLevel, handleResetScope]);
+
   return (
     <div style={{ height: "100vh", width: "100vw", background: "#0f0a0a" }}>
       <section aria-label="Simulation Status" style={styles.overlay}>
@@ -128,16 +198,10 @@ export default function App() {
         </dl>
 
         <nav aria-label="Controls" style={styles.controls}>
-          <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
+          <HUDButton onClick={handleAdvanceLevel} shortcut="L">
             Advance Level
           </HUDButton>
-          <HUDButton
-            onClick={() => {
-              setScopeAngle({ pitch: 0.05, yaw: 0 });
-              setTipPosition(initialTipPosition);
-              setLastCollision(null);
-            }}
-          >
+          <HUDButton onClick={handleResetScope} shortcut="R">
             Reset Scope
           </HUDButton>
         </nav>
