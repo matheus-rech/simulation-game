@@ -1,6 +1,6 @@
-import { useMemo, Suspense, useState } from "react";
+import { useMemo, Suspense, useState, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Vector3 } from "three";
+import { Vector3, Object3D } from "three";
 import { EffectComposer, Bloom, Vignette, Noise, ChromaticAberration, DepthOfField } from "@react-three/postprocessing";
 import { Physics } from "@react-three/rapier";
 import { AnatomyManager } from "./3d/anatomy/AnatomyManager";
@@ -44,6 +44,14 @@ export function EndoscopeView({
     showHelp: false,
   });
 
+  // State to hold collidable meshes for optimized raycasting
+  const [collidableMeshes, setCollidableMeshes] = useState<Object3D[]>([]);
+
+  // Callback to receive collidable meshes from AnatomyManager
+  const handleCollidableMeshesReady = useCallback((meshes: Object3D[]) => {
+    setCollidableMeshes(meshes);
+  }, []);
+
   const tipVector = useMemo(
     () => new Vector3(tipPosition.x, tipPosition.y, tipPosition.z),
     [tipPosition.x, tipPosition.y, tipPosition.z]
@@ -68,9 +76,11 @@ export function EndoscopeView({
           <Physics gravity={[0, 0, 0]} timeStep={1 / 60} interpolate debug={debugState.physicsDebug}>
             {/* Physics debug visualization enabled via debug prop */}
 
-            <AnatomyManager level={level} />
+            {/* OPTIMIZATION: Pass callback to collect collidable meshes */}
+            <AnatomyManager level={level} onCollidableMeshesReady={handleCollidableMeshesReady} />
             <DustParticles />
             <BleedingVFX collision={collision} />
+            {/* OPTIMIZATION: Pass targeted collidable meshes for optimized raycasting */}
             <EndoscopeRig
               tipPosition={tipVector}
               scopeAngle={scopeAngle}
@@ -78,6 +88,7 @@ export function EndoscopeView({
               onRaycastCollision={(point) =>
                 onRaycastCollision?.({ x: point.x, y: point.y, z: point.z })
               }
+              collidableMeshes={collidableMeshes}
             />
           </Physics>
         </Suspense>

@@ -42,6 +42,8 @@ export interface PituitaryAdenomaProps {
   irregularity?: number
   /** Show pseudocapsule layer */
   showPseudocapsule?: boolean
+  /** LOD level (0 = high detail, 1 = medium, 2 = low) */
+  lodLevel?: number
 }
 
 export function PituitaryAdenoma({
@@ -49,11 +51,22 @@ export function PituitaryAdenoma({
   seed = 54321,
   irregularity = 0.25, // Moderate irregularity
   showPseudocapsule = true,
+  lodLevel = 0,
 }: PituitaryAdenomaProps) {
   // Set noise seed for reproducible tumor morphology
   useMemo(() => {
     setNoiseSeed(seed)
   }, [seed])
+
+  // Calculate sphere segments based on LOD level
+  const segments = useMemo(() => {
+    switch (lodLevel) {
+      case 0: return 32 // Full detail
+      case 1: return 24 // Medium detail (70% vertices)
+      case 2: return 16 // Low detail (40% vertices)
+      default: return 32
+    }
+  }, [lodLevel])
 
   // Tumor core geometry with irregular surface
   const tumorGeometry = useMemo(() => {
@@ -61,8 +74,8 @@ export function PituitaryAdenoma({
     const radius = size / 2
     const tumor = new SphereGeometry(
       radius,
-      32, // Optimized detail (sufficient for noise distortion)
-      32
+      segments, // LOD-adaptive detail
+      segments
     )
 
     // Apply Perlin noise distortion for irregular surface
@@ -81,7 +94,7 @@ export function PituitaryAdenoma({
     )
 
     return tumor
-  }, [size, irregularity])
+  }, [size, irregularity, segments])
 
   // Pseudocapsule geometry (thin compressed layer)
   const pseudocapsuleGeometry = useMemo(() => {

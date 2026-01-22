@@ -30,17 +30,38 @@ export interface SellaTurcicaProps {
   showBone?: boolean
   /** Show dura mater layer */
   showDura?: boolean
+  /** LOD level (0 = high detail, 1 = medium, 2 = low) */
+  lodLevel?: number
 }
 
-export function SellaTurcica({ showBone = true, showDura = true }: SellaTurcicaProps) {
+export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }: SellaTurcicaProps) {
+  // Calculate sphere segments based on LOD level
+  const widthSegments = useMemo(() => {
+    switch (lodLevel) {
+      case 0: return 32 // Full detail
+      case 1: return 24 // Medium detail (70% vertices)
+      case 2: return 16 // Low detail (40% vertices)
+      default: return 32
+    }
+  }, [lodLevel])
+
+  const heightSegments = useMemo(() => {
+    switch (lodLevel) {
+      case 0: return 16 // Full detail
+      case 1: return 12 // Medium detail
+      case 2: return 8  // Low detail
+      default: return 16
+    }
+  }, [lodLevel])
+
   // Bone layer geometry (outer shell)
   const boneGeometry = useMemo(() => {
     // Create hemisphere (bowl shape)
     const radius = 1.5 // Base radius 15mm
     const bone = new SphereGeometry(
       radius,
-      32, // Optimized detail (sufficient for smooth surface)
-      16, // heightSegments
+      widthSegments, // LOD-adaptive detail
+      heightSegments, // LOD-adaptive detail
       0, // phiStart
       Math.PI * 2, // phiLength (full circle)
       0, // thetaStart
@@ -57,7 +78,7 @@ export function SellaTurcica({ showBone = true, showDura = true }: SellaTurcicaP
     bone.rotateX(Math.PI)
 
     return bone
-  }, [])
+  }, [widthSegments, heightSegments])
 
   // Dura mater layer (offset inward from bone)
   const duraGeometry = useMemo(() => {

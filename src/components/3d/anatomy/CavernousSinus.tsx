@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { BufferGeometry, Vector3, BufferAttribute } from 'three'
 import { createLeftMWCScurve, createRightMWCScurve, sampleCurvePoints } from './geometry/AnatomicalCurves'
+import { TissueType } from '../materials/TissueMaterials'
 
 /**
  * CavernousSinus - Medial wall of cavernous sinus (MWCS)
@@ -101,7 +102,12 @@ export function CavernousSinus({ side, width = 0.3 }: CavernousSinusProps) {
   return (
     <group name={`mwcs-${side}`}>
       {/* MWCS membrane */}
-      <mesh geometry={membraneGeometry} castShadow receiveShadow>
+      <mesh
+        geometry={membraneGeometry}
+        castShadow
+        receiveShadow
+        userData={{ tissueType: TissueType.MWCS }}
+      >
         <meshStandardMaterial
           color="#d4c8d8" // Dural membrane color (purple-gray)
           roughness={0.4}

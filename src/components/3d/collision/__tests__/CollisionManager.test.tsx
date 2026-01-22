@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useCollisionManager } from '../CollisionManager'
 import { TissueType } from '../../materials/TissueMaterials'
-import { CrisisType, CollisionEvent, CrisisEvent } from '../types'
+import { CrisisType } from '../types'
 
 describe('CollisionManager - Hook Integration Tests', () => {
   // Mock callbacks

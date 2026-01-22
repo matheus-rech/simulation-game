@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { BoxGeometry, PlaneGeometry } from 'three'
 import { subtract, union } from './geometry/CSGOperations'
+import { TissueType } from '../materials/TissueMaterials'
 
 /**
  * SphenoidSinus - Anatomically accurate sphenoid sinus with septations
@@ -124,7 +125,12 @@ export function SphenoidSinus({
   return (
     <group name="sphenoid-sinus">
       {/* Main sinus cavity with septations */}
-      <mesh geometry={sinusGeometry} castShadow receiveShadow>
+      <mesh
+        geometry={sinusGeometry}
+        castShadow
+        receiveShadow
+        userData={{ tissueType: TissueType.BONE }}
+      >
         <meshStandardMaterial
           color="#f3eee4" // Bone color
           roughness={0.75}
@@ -134,7 +140,12 @@ export function SphenoidSinus({
 
       {/* Sellar floor (superior wall) - thinner bone */}
       {showSellarFloor && (
-        <mesh geometry={sellarFloorGeometry} castShadow receiveShadow>
+        <mesh
+          geometry={sellarFloorGeometry}
+          castShadow
+          receiveShadow
+          userData={{ tissueType: TissueType.BONE }}
+        >
           <meshStandardMaterial
             color="#f3eee4"
             roughness={0.75}

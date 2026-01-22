@@ -2,6 +2,7 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Mesh, TubeGeometry } from 'three'
 import { createLeftICAcurve, createRightICAcurve } from './geometry/AnatomicalCurves'
+import { TissueType } from '../materials/TissueMaterials'
 
 /**
  * InternalCarotidArtery - Anatomically accurate ICA with pulsation
@@ -77,7 +78,13 @@ export function InternalCarotidArtery({
   return (
     <group name={`ica-${side}`}>
       {/* ICA vessel */}
-      <mesh ref={meshRef} geometry={geometry} castShadow receiveShadow>
+      <mesh
+        ref={meshRef}
+        geometry={geometry}
+        castShadow
+        receiveShadow
+        userData={{ tissueType: TissueType.ICA }}
+      >
         <meshStandardMaterial
           color="#b71c2b" // Arterial blood color (bright red)
           roughness={0.3} // Slightly glossy (blood vessel wall)
