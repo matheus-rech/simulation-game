@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useThree } from '@react-three/fiber'
+import { Html } from '@react-three/drei'
 import { Mesh } from 'three'
 
 /**
@@ -136,66 +137,72 @@ export function DebugControls({ initialState, onStateChange }: DebugControlsProp
   // Help overlay (if enabled)
   if (debugState.showHelp) {
     return (
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          background: 'rgba(15, 10, 10, 0.95)',
-          borderRadius: 12,
-          padding: 24,
-          color: '#f7e5da',
-          fontFamily: "'Courier New', monospace",
-          zIndex: 100,
-          border: '1px solid rgba(247, 229, 218, 0.3)',
-          minWidth: 320,
-        }}
-      >
-        <h3 style={{ margin: '0 0 16px 0', fontSize: '1.2rem', textAlign: 'center' }}>
-          🔧 Debug Controls
-        </h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <DebugHelpItem shortcut="W" description="Toggle Wireframe" />
-          <DebugHelpItem shortcut="P" description="Toggle Physics Debug" />
-          <DebugHelpItem shortcut="S" description="Toggle Stats Overlay" />
-          <DebugHelpItem shortcut="C" description="Toggle Collision Spheres" />
-          <DebugHelpItem shortcut="H" description="Hide This Help" />
-        </div>
-        <p
+      <Html fullscreen style={{ pointerEvents: 'none' }}>
+        <div
           style={{
-            margin: '16px 0 0 0',
-            fontSize: '0.85rem',
-            opacity: 0.7,
-            textAlign: 'center',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            background: 'rgba(15, 10, 10, 0.95)',
+            borderRadius: 12,
+            padding: 24,
+            color: '#f7e5da',
+            fontFamily: "'Courier New', monospace",
+            zIndex: 100,
+            border: '1px solid rgba(247, 229, 218, 0.3)',
+            minWidth: 320,
+            pointerEvents: 'auto',
           }}
         >
-          Press H to close
-        </p>
-      </div>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '1.2rem', textAlign: 'center' }}>
+            🔧 Debug Controls
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <DebugHelpItem shortcut="W" description="Toggle Wireframe" />
+            <DebugHelpItem shortcut="P" description="Toggle Physics Debug" />
+            <DebugHelpItem shortcut="S" description="Toggle Stats Overlay" />
+            <DebugHelpItem shortcut="C" description="Toggle Collision Spheres" />
+            <DebugHelpItem shortcut="H" description="Hide This Help" />
+          </div>
+          <p
+            style={{
+              margin: '16px 0 0 0',
+              fontSize: '0.85rem',
+              opacity: 0.7,
+              textAlign: 'center',
+            }}
+          >
+            Press H to close
+          </p>
+        </div>
+      </Html>
     )
   }
 
   // Minimal UI indicator when help is hidden
   return (
-    <div
-      style={{
-        position: 'absolute',
-        bottom: 16,
-        right: 16,
-        background: 'rgba(15, 10, 10, 0.7)',
-        borderRadius: 8,
-        padding: '8px 12px',
-        color: '#f7e5da',
-        fontFamily: "'Courier New', monospace",
-        fontSize: '0.75rem',
-        zIndex: 10,
-        border: '1px solid rgba(247, 229, 218, 0.2)',
-        opacity: 0.6,
-      }}
-    >
-      Press H for debug controls
-    </div>
+    <Html fullscreen style={{ pointerEvents: 'none' }}>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 16,
+          right: 16,
+          background: 'rgba(15, 10, 10, 0.7)',
+          borderRadius: 8,
+          padding: '8px 12px',
+          color: '#f7e5da',
+          fontFamily: "'Courier New', monospace",
+          fontSize: '0.75rem',
+          zIndex: 10,
+          border: '1px solid rgba(247, 229, 218, 0.2)',
+          opacity: 0.6,
+          pointerEvents: 'auto',
+        }}
+      >
+        Press H for debug controls
+      </div>
+    </Html>
   )
 }
 
