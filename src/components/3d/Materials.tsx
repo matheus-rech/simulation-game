@@ -1,8 +1,7 @@
-import React from "react";
 import { MeshDistortMaterial } from "@react-three/drei";
-import { MeshStandardMaterialProps } from "@react-three/fiber";
+import { MeshDistortMaterialProps } from "@react-three/drei";
 
-export function MucosaMaterial(props: MeshStandardMaterialProps) {
+export function MucosaMaterial(props: Partial<MeshDistortMaterialProps>) {
   return (
     <MeshDistortMaterial
       color="#c56c72"
@@ -15,7 +14,8 @@ export function MucosaMaterial(props: MeshStandardMaterialProps) {
   );
 }
 
-export function BoneMaterial(props: MeshStandardMaterialProps) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function BoneMaterial(props: any) {
   return (
     <meshStandardMaterial
       color="#f3eee4"

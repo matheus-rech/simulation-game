@@ -1,7 +1,8 @@
-import React, { useMemo } from "react";
+import { useMemo, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { EffectComposer, Bloom, Vignette, Noise, ChromaticAberration, DepthOfField } from "@react-three/postprocessing";
+import { Physics } from "@react-three/rapier";
 import { NasalCavity } from "./3d/NasalCavity";
 import { EndoscopeRig } from "./3d/EndoscopeRig";
 import { BleedingVFX, DustParticles, Vector3D } from "./3d/VFX";
@@ -39,17 +40,21 @@ export function EndoscopeView({
     <Canvas camera={{ position: [0, 0, 1.5], fov: 55 }} shadows>
       <color attach="background" args={["#1a1111"]} />
       <ambientLight intensity={0.4} color={ambientColor} />
-      <NasalCavity level={level} />
-      <DustParticles />
-      <BleedingVFX collision={collision} />
-      <EndoscopeRig
-        tipPosition={tipVector}
-        scopeAngle={scopeAngle}
-        rotationZ={rotationZ}
-        onRaycastCollision={(point) =>
-          onRaycastCollision?.({ x: point.x, y: point.y, z: point.z })
-        }
-      />
+      <Suspense fallback={null}>
+        <Physics gravity={[0, 0, 0]} timeStep={1 / 60} interpolate>
+          <NasalCavity level={level} />
+          <DustParticles />
+          <BleedingVFX collision={collision} />
+          <EndoscopeRig
+            tipPosition={tipVector}
+            scopeAngle={scopeAngle}
+            rotationZ={rotationZ}
+            onRaycastCollision={(point) =>
+              onRaycastCollision?.({ x: point.x, y: point.y, z: point.z })
+            }
+          />
+        </Physics>
+      </Suspense>
       <EffectComposer>
         <DepthOfField focusDistance={0.02} focalLength={0.04} bokehScale={3.2} />
         <Bloom intensity={0.45} luminanceThreshold={0.2} luminanceSmoothing={0.8} />

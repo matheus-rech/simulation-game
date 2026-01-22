@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { BufferAttribute, InstancedMesh, Matrix4, Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
 import { v4 as uuidv4 } from "uuid";
@@ -39,9 +39,7 @@ export function DustParticles() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          array={particles}
-          count={particles.length / 3}
-          itemSize={3}
+          args={[particles, 3]}
           ref={positionsRef}
         />
       </bufferGeometry>

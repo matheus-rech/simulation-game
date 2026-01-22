@@ -1,5 +1,5 @@
-import React, { useMemo, useRef } from "react";
-import { Group, Mesh, Vector3, CatmullRomCurve3 } from "three";
+import { useMemo, useRef } from "react";
+import { Mesh, Vector3, CatmullRomCurve3 } from "three";
 import { useFrame } from "@react-three/fiber";
 import { BoneMaterial, MucosaMaterial } from "./Materials";
 
