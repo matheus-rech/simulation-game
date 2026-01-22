@@ -1,5 +1,8 @@
 import { useMemo } from 'react'
 import { Vector3 } from 'three'
+import { SphenoidSinus } from './SphenoidSinus'
+import { SellaTurcica } from './SellaTurcica'
+import { PituitaryAdenoma } from './PituitaryAdenoma'
 
 /**
  * AnatomyManager - Orchestrator for all anatomical structures
@@ -50,18 +53,17 @@ export function AnatomyManager({ level }: AnatomyManagerProps) {
     <group name="anatomy-manager">
       {/* Phase 1: Foundation Complete ✅ */}
 
-      {/* Phase 2: Core Structures (To be implemented) */}
+      {/* Phase 2: Core Structures ✅ */}
       {visibleStructures.sphenoidSinus && (
         <group
           name="sphenoid-sinus-group"
           position={ANATOMY_POSITIONS.sphenoidSinus}
         >
-          {/* SphenoidSinus component will go here */}
-          {/* TODO: CSG cavity with septations and sellar floor */}
-          <mesh>
-            <boxGeometry args={[2.0, 1.5, 1.5]} />
-            <meshStandardMaterial color="#f3eee4" roughness={0.75} opacity={0.3} transparent />
-          </mesh>
+          <SphenoidSinus
+            septationCount={2}
+            seed={level * 1000}
+            showSellarFloor={visibleStructures.sellaTurcica}
+          />
         </group>
       )}
 
@@ -70,12 +72,10 @@ export function AnatomyManager({ level }: AnatomyManagerProps) {
           name="sella-turcica-group"
           position={ANATOMY_POSITIONS.sellaTurcica}
         >
-          {/* SellaTurcica component will go here */}
-          {/* TODO: Bone layer + dura layer + intradural cavity */}
-          <mesh>
-            <sphereGeometry args={[1.5, 32, 32]} />
-            <meshStandardMaterial color="#f3eee4" roughness={0.75} opacity={0.3} transparent />
-          </mesh>
+          <SellaTurcica
+            showBone={level >= 3}
+            showDura={visibleStructures.dura}
+          />
         </group>
       )}
 
@@ -84,12 +84,12 @@ export function AnatomyManager({ level }: AnatomyManagerProps) {
           name="pituitary-adenoma-group"
           position={ANATOMY_POSITIONS.pituitary}
         >
-          {/* PituitaryAdenoma component will go here */}
-          {/* TODO: Perlin-distorted sphere with pseudocapsule */}
-          <mesh>
-            <sphereGeometry args={[0.8, 64, 64]} />
-            <meshStandardMaterial color="#d4a5a5" roughness={0.6} opacity={0.3} transparent />
-          </mesh>
+          <PituitaryAdenoma
+            size={1.2}
+            seed={level * 2000 + 12345}
+            irregularity={0.25}
+            showPseudocapsule={true}
+          />
         </group>
       )}
 

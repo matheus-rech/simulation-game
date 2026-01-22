@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { EffectComposer, Bloom, Vignette, Noise, ChromaticAberration, DepthOfField } from "@react-three/postprocessing";
 import { Physics } from "@react-three/rapier";
-import { NasalCavity } from "./3d/NasalCavity";
+import { AnatomyManager } from "./3d/anatomy/AnatomyManager";
 import { EndoscopeRig } from "./3d/EndoscopeRig";
 import { BleedingVFX, DustParticles, Vector3D } from "./3d/VFX";
 
@@ -42,7 +42,7 @@ export function EndoscopeView({
       <ambientLight intensity={0.4} color={ambientColor} />
       <Suspense fallback={null}>
         <Physics gravity={[0, 0, 0]} timeStep={1 / 60} interpolate>
-          <NasalCavity level={level} />
+          <AnatomyManager level={level} />
           <DustParticles />
           <BleedingVFX collision={collision} />
           <EndoscopeRig

@@ -1,4 +1,4 @@
-import { BufferGeometry, Mesh, Material, Vector3 } from 'three'
+import { BufferGeometry, Material, Vector3 } from 'three'
 import { Brush, Evaluator, SUBTRACTION, ADDITION, INTERSECTION } from 'three-bvh-csg'
 
 /**
@@ -166,7 +166,7 @@ export function createHollowGeometry(
  * @param targetReduction Target reduction ratio (0-1)
  * @returns Simplified geometry
  */
-export function simplifyGeometry(geometry: BufferGeometry, targetReduction: number = 0.5): BufferGeometry {
+export function simplifyGeometry(geometry: BufferGeometry, _targetReduction: number = 0.5): BufferGeometry {
   // For now, just return the geometry
   // In the future, we could integrate a simplification library
   // like three-simplify-modifier or implement decimation

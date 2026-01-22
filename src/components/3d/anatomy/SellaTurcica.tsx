@@ -1,0 +1,107 @@
+import { useMemo } from 'react'
+import { SphereGeometry } from 'three'
+import { createOffsetGeometry } from './geometry/ProceduralGeometry'
+
+/**
+ * SellaTurcica - Anatomically accurate sella turcica with bone and dura layers
+ *
+ * The sella turcica ("Turkish saddle") is a saddle-shaped depression in the
+ * sphenoid bone that houses the pituitary gland. It consists of:
+ * - Bone shell (outer layer)
+ * - Dura mater (thick meningeal lining)
+ * - Intradural cavity (contains pituitary gland)
+ *
+ * Surgical relevance:
+ * - After opening the sphenoid sinus, the sellar floor must be drilled away
+ * - The dura mater is then incised to access the pituitary
+ * - Proper dural opening is critical to prevent CSF leak
+ *
+ * Anatomical dimensions (typical adult):
+ * - Anteroposterior diameter: 10-16mm (using 12mm)
+ * - Transverse diameter: 12-20mm (using 15mm)
+ * - Vertical depth: 8-12mm (using 10mm)
+ * - Bone thickness: 0.5-1mm (using 0.8mm)
+ * - Dura thickness: 0.3-0.5mm (using 0.4mm)
+ */
+
+export interface SellaTurcicaProps {
+  /** Show bone layer */
+  showBone?: boolean
+  /** Show dura mater layer */
+  showDura?: boolean
+}
+
+export function SellaTurcica({ showBone = true, showDura = true }: SellaTurcicaProps) {
+  // Bone layer geometry (outer shell)
+  const boneGeometry = useMemo(() => {
+    // Create hemisphere (bowl shape)
+    const radius = 1.5 // Base radius 15mm
+    const bone = new SphereGeometry(
+      radius,
+      64, // widthSegments for smooth surface
+      32, // heightSegments
+      0, // phiStart
+      Math.PI * 2, // phiLength (full circle)
+      0, // thetaStart
+      Math.PI / 2 // thetaLength (hemisphere only)
+    )
+
+    // Scale to anatomical proportions
+    // Width (x): 15mm
+    // Depth (z): 12mm
+    // Height (y): 10mm
+    bone.scale(1.0, 0.67, 0.8)
+
+    // Rotate to open upward (pituitary sits inside)
+    bone.rotateX(Math.PI)
+
+    return bone
+  }, [])
+
+  // Dura mater layer (offset inward from bone)
+  const duraGeometry = useMemo(() => {
+    // Create dura by offsetting bone geometry inward
+    const boneClone = boneGeometry.clone()
+    const duraThickness = -0.04 // -0.4mm (negative = inward)
+    const dura = createOffsetGeometry(boneClone, duraThickness)
+
+    return dura
+  }, [boneGeometry])
+
+  return (
+    <group name="sella-turcica">
+      {/* Bone shell */}
+      {showBone && (
+        <mesh geometry={boneGeometry} castShadow receiveShadow>
+          <meshStandardMaterial
+            color="#f3eee4" // Bone color (cream)
+            roughness={0.75}
+            metalness={0.0}
+          />
+        </mesh>
+      )}
+
+      {/* Dura mater lining */}
+      {showDura && (
+        <mesh geometry={duraGeometry} castShadow receiveShadow>
+          <meshStandardMaterial
+            color="#e8dcc8" // Dura color (pearl-gray)
+            roughness={0.4}
+            metalness={0.0}
+            opacity={0.85}
+            transparent
+          />
+        </mesh>
+      )}
+
+      {/* Subtle rim lighting to highlight depth */}
+      <pointLight
+        position={[0, -0.3, 0]}
+        intensity={0.2}
+        distance={1.5}
+        color="#f7d9cd"
+        castShadow={false}
+      />
+    </group>
+  )
+}
