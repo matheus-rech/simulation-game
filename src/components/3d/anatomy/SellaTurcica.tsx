@@ -1,6 +1,7 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { SphereGeometry } from 'three'
 import { createOffsetGeometry } from './geometry/ProceduralGeometry'
+import { TissueType } from '../materials/TissueMaterials'
 
 /**
  * SellaTurcica - Anatomically accurate sella turcica with bone and dura layers
@@ -38,8 +39,8 @@ export function SellaTurcica({ showBone = true, showDura = true }: SellaTurcicaP
     const radius = 1.5 // Base radius 15mm
     const bone = new SphereGeometry(
       radius,
-      64, // widthSegments for smooth surface
-      32, // heightSegments
+      32, // Optimized detail (sufficient for smooth surface)
+      16, // heightSegments
       0, // phiStart
       Math.PI * 2, // phiLength (full circle)
       0, // thetaStart
@@ -68,11 +69,24 @@ export function SellaTurcica({ showBone = true, showDura = true }: SellaTurcicaP
     return dura
   }, [boneGeometry])
 
+  // Cleanup: Dispose geometries on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      boneGeometry.dispose()
+      duraGeometry.dispose()
+    }
+  }, [boneGeometry, duraGeometry])
+
   return (
     <group name="sella-turcica">
       {/* Bone shell */}
       {showBone && (
-        <mesh geometry={boneGeometry} castShadow receiveShadow>
+        <mesh
+          geometry={boneGeometry}
+          castShadow
+          receiveShadow
+          userData={{ tissueType: TissueType.BONE }}
+        >
           <meshStandardMaterial
             color="#f3eee4" // Bone color (cream)
             roughness={0.75}
@@ -83,7 +97,12 @@ export function SellaTurcica({ showBone = true, showDura = true }: SellaTurcicaP
 
       {/* Dura mater lining */}
       {showDura && (
-        <mesh geometry={duraGeometry} castShadow receiveShadow>
+        <mesh
+          geometry={duraGeometry}
+          castShadow
+          receiveShadow
+          userData={{ tissueType: TissueType.DURA }}
+        >
           <meshStandardMaterial
             color="#e8dcc8" // Dura color (pearl-gray)
             roughness={0.4}

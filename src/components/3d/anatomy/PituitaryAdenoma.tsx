@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { SphereGeometry } from 'three'
 import {
   applyNoiseDistortion,
@@ -6,6 +6,7 @@ import {
   createOffsetGeometry,
   setNoiseSeed,
 } from './geometry/ProceduralGeometry'
+import { TissueType } from '../materials/TissueMaterials'
 
 /**
  * PituitaryAdenoma - Anatomically accurate pituitary tumor with pseudocapsule
@@ -60,8 +61,8 @@ export function PituitaryAdenoma({
     const radius = size / 2
     const tumor = new SphereGeometry(
       radius,
-      128, // High detail for noise distortion
-      128
+      32, // Optimized detail (sufficient for noise distortion)
+      32
     )
 
     // Apply Perlin noise distortion for irregular surface
@@ -92,11 +93,24 @@ export function PituitaryAdenoma({
     return capsule
   }, [tumorGeometry])
 
+  // Cleanup: Dispose geometries on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      tumorGeometry.dispose()
+      pseudocapsuleGeometry.dispose()
+    }
+  }, [tumorGeometry, pseudocapsuleGeometry])
+
   return (
     <group name="pituitary-adenoma">
       {/* Pseudocapsule (outer compressed layer) */}
       {showPseudocapsule && (
-        <mesh geometry={pseudocapsuleGeometry} castShadow receiveShadow>
+        <mesh
+          geometry={pseudocapsuleGeometry}
+          castShadow
+          receiveShadow
+          userData={{ tissueType: TissueType.PSEUDOCAPSULE }}
+        >
           <meshStandardMaterial
             color="#c89090" // Pseudocapsule color (compressed tissue)
             roughness={0.45}
@@ -108,7 +122,12 @@ export function PituitaryAdenoma({
       )}
 
       {/* Tumor core with heterogeneous coloring */}
-      <mesh geometry={tumorGeometry} castShadow receiveShadow>
+      <mesh
+        geometry={tumorGeometry}
+        castShadow
+        receiveShadow
+        userData={{ tissueType: TissueType.TUMOR }}
+      >
         <meshStandardMaterial
           color="#d4a5a5" // Tumor color (pinkish-brown)
           roughness={0.6}

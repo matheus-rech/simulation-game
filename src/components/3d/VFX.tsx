@@ -59,6 +59,11 @@ export function BleedingVFX({ collision }: { collision?: Vector3D | null }) {
   const particles = useRef<BleedParticle[]>([]);
   const matrix = useMemo(() => new Matrix4(), []);
 
+  // Reusable Vector3 instances to prevent allocations in hot loop
+  const tempPosition = useMemo(() => new Vector3(), []);
+  const tempScale = useMemo(() => new Vector3(), []);
+  const downwardVelocity = useMemo(() => new Vector3(0, -1, 0), []);
+
   useEffect(() => {
     if (!collision || !meshRef.current) return;
     particles.current.push({
@@ -72,18 +77,26 @@ export function BleedingVFX({ collision }: { collision?: Vector3D | null }) {
     const mesh = meshRef.current;
     if (!mesh) return;
     const nextParticles = particles.current
-      .map((particle) => ({
-        ...particle,
-        life: particle.life - delta * 0.4,
-        position: particle.position.clone().add(new Vector3(0, -delta * 0.2, 0)),
-      }))
+      .map((particle) => {
+        // Reuse tempPosition instead of clone + new Vector3
+        tempPosition.copy(particle.position);
+        tempPosition.addScaledVector(downwardVelocity, delta * 0.2);
+
+        return {
+          ...particle,
+          life: particle.life - delta * 0.4,
+          position: tempPosition.clone(), // Clone once for storage
+        };
+      })
       .filter((particle) => particle.life > 0);
     particles.current = nextParticles;
 
     nextParticles.forEach((particle, index) => {
       matrix.makeTranslation(particle.position.x, particle.position.y, particle.position.z);
       const scale = 0.12 * particle.life;
-      matrix.scale(new Vector3(scale, scale, scale));
+      // Reuse tempScale instead of new Vector3
+      tempScale.set(scale, scale, scale);
+      matrix.scale(tempScale);
       mesh.setMatrixAt(index, matrix);
     });
 

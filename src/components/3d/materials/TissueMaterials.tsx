@@ -94,11 +94,24 @@ export const TISSUE_MATERIALS: Record<TissueType, TissueMaterialProps> = {
 }
 
 /**
+ * Material cache for pooling and reuse
+ * Prevents creating duplicate material instances for the same tissue type
+ */
+const materialCache = new Map<TissueType, MeshStandardMaterial>()
+
+/**
  * Create a Three.js MeshStandardMaterial from tissue type
+ * Uses material pooling to prevent duplication and reduce memory usage
  * @param tissueType Type of tissue
- * @returns Configured MeshStandardMaterial
+ * @returns Configured MeshStandardMaterial (cached instance)
  */
 export function createTissueMaterial(tissueType: TissueType): MeshStandardMaterial {
+  // Check cache first
+  if (materialCache.has(tissueType)) {
+    return materialCache.get(tissueType)!
+  }
+
+  // Create new material if not cached
   const props = TISSUE_MATERIALS[tissueType]
 
   const material = new MeshStandardMaterial({
@@ -114,7 +127,21 @@ export function createTissueMaterial(tissueType: TissueType): MeshStandardMateri
     material.emissiveIntensity = props.emissiveIntensity ?? 0.0
   }
 
+  // Cache for future reuse
+  materialCache.set(tissueType, material)
+
   return material
+}
+
+/**
+ * Clear material cache and dispose all cached materials
+ * Call this when cleaning up the scene or resetting the application
+ */
+export function clearMaterialCache(): void {
+  materialCache.forEach((material) => {
+    material.dispose()
+  })
+  materialCache.clear()
 }
 
 /**
