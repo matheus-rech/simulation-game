@@ -3,6 +3,8 @@ import { Vector3 } from 'three'
 import { SphenoidSinus } from './SphenoidSinus'
 import { SellaTurcica } from './SellaTurcica'
 import { PituitaryAdenoma } from './PituitaryAdenoma'
+import { InternalCarotidArtery } from './InternalCarotidArtery'
+import { CavernousSinus } from './CavernousSinus'
 
 /**
  * AnatomyManager - Orchestrator for all anatomical structures
@@ -93,70 +95,26 @@ export function AnatomyManager({ level }: AnatomyManagerProps) {
         </group>
       )}
 
-      {/* Phase 3: Critical Structures (To be implemented) */}
+      {/* Phase 3: Critical Structures ✅ */}
       {visibleStructures.ica && (
         <>
-          <group
-            name="ica-left-group"
-            position={ANATOMY_POSITIONS.icaLeft}
-          >
-            {/* InternalCarotidArtery (left) component will go here */}
-            {/* TODO: Tube geometry along anatomical curve with pulsation */}
-            <mesh>
-              <cylinderGeometry args={[0.08, 0.08, 1.5, 16]} />
-              <meshStandardMaterial color="#b71c2b" emissive="#b71c2b" emissiveIntensity={0.3} />
-            </mesh>
-          </group>
-
-          <group
-            name="ica-right-group"
-            position={ANATOMY_POSITIONS.icaRight}
-          >
-            {/* InternalCarotidArtery (right) component will go here */}
-            <mesh>
-              <cylinderGeometry args={[0.08, 0.08, 1.5, 16]} />
-              <meshStandardMaterial color="#b71c2b" emissive="#b71c2b" emissiveIntensity={0.3} />
-            </mesh>
-          </group>
+          <InternalCarotidArtery
+            side="left"
+            pulsationRate={72}
+            pulsationAmplitude={0.08}
+          />
+          <InternalCarotidArtery
+            side="right"
+            pulsationRate={72}
+            pulsationAmplitude={0.08}
+          />
         </>
       )}
 
       {visibleStructures.mwcs && (
         <>
-          <group
-            name="mwcs-left-group"
-            position={ANATOMY_POSITIONS.mwcsLeft}
-          >
-            {/* CavernousSinus (left) component will go here */}
-            {/* TODO: MWCS membrane following ICA curve */}
-            <mesh>
-              <planeGeometry args={[0.3, 1.5]} />
-              <meshStandardMaterial
-                color="#e8dcc8"
-                roughness={0.4}
-                opacity={0.6}
-                transparent
-                side={2}
-              />
-            </mesh>
-          </group>
-
-          <group
-            name="mwcs-right-group"
-            position={ANATOMY_POSITIONS.mwcsRight}
-          >
-            {/* CavernousSinus (right) component will go here */}
-            <mesh>
-              <planeGeometry args={[0.3, 1.5]} />
-              <meshStandardMaterial
-                color="#e8dcc8"
-                roughness={0.4}
-                opacity={0.6}
-                transparent
-                side={2}
-              />
-            </mesh>
-          </group>
+          <CavernousSinus side="left" width={0.3} />
+          <CavernousSinus side="right" width={0.3} />
         </>
       )}
 
