@@ -6,6 +6,7 @@ import { Physics } from "@react-three/rapier";
 import { AnatomyManager } from "./3d/anatomy/AnatomyManager";
 import { EndoscopeRig } from "./3d/EndoscopeRig";
 import { BleedingVFX, DustParticles, Vector3D } from "./3d/VFX";
+import { CrisisEvent } from "./3d/collision/types";
 
 export interface ScopeAngle {
   pitch: number;
@@ -19,6 +20,7 @@ export interface EndoscopeViewProps {
   collision?: Vector3D | null;
   level: number;
   onRaycastCollision?: (point: Vector3D) => void;
+  onCrisis?: (crisis: CrisisEvent) => void;
 }
 
 const ambientColor = "#f7d9cd";
@@ -30,11 +32,16 @@ export function EndoscopeView({
   collision,
   level,
   onRaycastCollision,
+  onCrisis,
 }: EndoscopeViewProps) {
   const tipVector = useMemo(
     () => new Vector3(tipPosition.x, tipPosition.y, tipPosition.z),
     [tipPosition.x, tipPosition.y, tipPosition.z]
   );
+
+  // TODO: Integrate onCrisis with EndoscopeRig tissue-type collision detection
+  // For now, onCrisis is available for future implementation
+  void onCrisis;
 
   return (
     <Canvas camera={{ position: [0, 0, 1.5], fov: 55 }} shadows>

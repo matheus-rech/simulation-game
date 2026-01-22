@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
+import { CrisisEvent } from "./components/3d/collision/types";
 
 const initialTipPosition: Vector3D = { x: 0, y: 0, z: 1.2 };
 
@@ -64,6 +65,35 @@ const styles = {
     transition: 'all 0.2s ease',
     whiteSpace: 'nowrap' as const,
     outline: 'none', // Focus handled by visible focus ring if possible, but for inline styles we rely on browser default or explicit focus style
+  },
+  crisisAlert: {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    padding: 24,
+    background: 'rgba(183, 28, 43, 0.95)',
+    borderRadius: 12,
+    color: '#ffffff',
+    fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+    zIndex: 1000,
+    border: '2px solid #ff4444',
+    backdropFilter: 'blur(8px)',
+    boxShadow: '0 8px 24px rgba(183, 28, 43, 0.6)',
+    minWidth: 320,
+    animation: 'pulse 1s ease-in-out infinite',
+  },
+  crisisTitle: {
+    margin: '0 0 12px 0',
+    fontSize: '1.5rem',
+    fontWeight: 700,
+    textAlign: 'center' as const,
+  },
+  crisisDescription: {
+    margin: 0,
+    fontSize: '1rem',
+    textAlign: 'center' as const,
+    opacity: 0.95,
   }
 };
 
@@ -100,6 +130,7 @@ export default function App() {
   const [lastCollision, setLastCollision] = useState<Vector3D | null>(null);
   const [collisionCount, setCollisionCount] = useState(0);
   const [score, setScore] = useState(100);
+  const [activeCrisis, setActiveCrisis] = useState<CrisisEvent | null>(null);
 
   const rotationZ = useMemo(() => scopeAngle.yaw * 0.2, [scopeAngle.yaw]);
 
@@ -109,8 +140,22 @@ export default function App() {
     setScore((prev) => Math.max(prev - 2, 0));
   }, []);
 
+  const handleCrisis = useCallback((crisis: CrisisEvent) => {
+    setActiveCrisis(crisis);
+    // Massive score penalty for crisis
+    setScore((prev) => Math.max(prev - 50, 0));
+  }, []);
+
   return (
     <div style={{ height: "100vh", width: "100vw", background: "#0f0a0a" }}>
+      {/* Crisis Alert Banner */}
+      {activeCrisis && (
+        <div style={styles.crisisAlert} role="alert" aria-live="assertive">
+          <h2 style={styles.crisisTitle}>🚨 CRITICAL EVENT</h2>
+          <p style={styles.crisisDescription}>{activeCrisis.description}</p>
+        </div>
+      )}
+
       <section aria-label="Simulation Status" style={styles.overlay}>
         <dl style={styles.statsList}>
           <div style={styles.statItem}>
@@ -150,6 +195,7 @@ export default function App() {
         rotationZ={rotationZ}
         collision={lastCollision}
         onRaycastCollision={handleRaycastCollision}
+        onCrisis={handleCrisis}
       />
     </div>
   );
