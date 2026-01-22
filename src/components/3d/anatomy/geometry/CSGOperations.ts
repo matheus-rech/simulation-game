@@ -200,16 +200,32 @@ export function cleanupGeometry(geometry: BufferGeometry): void {
 
 /**
  * Cache for CSG operation results
- * Key: serialized operation parameters
+ * Key: operation name + geometry UUIDs
  * Value: resulting geometry
  */
 const csgCache = new Map<string, BufferGeometry>()
 
 /**
+ * Cache statistics for performance monitoring
+ */
+let cacheHits = 0
+let cacheMisses = 0
+
+/**
  * Generate cache key for CSG operation
+ * Uses geometry UUIDs instead of JSON.stringify for O(1) performance
  */
 function generateCacheKey(operation: string, ...params: unknown[]): string {
-  return `${operation}:${JSON.stringify(params)}`
+  // Extract UUIDs from BufferGeometry instances
+  const uuids = params.map((param) => {
+    if (param && typeof param === 'object' && 'uuid' in param) {
+      return (param as BufferGeometry).uuid
+    }
+    // Fallback for non-geometry params (strings, numbers, etc.)
+    return String(param)
+  })
+
+  return `${operation}:${uuids.join(':')}`
 }
 
 /**
@@ -221,13 +237,61 @@ export function cachedUnion(
   geometryB: BufferGeometry,
   cacheKey?: string
 ): BufferGeometry {
-  const key = cacheKey || generateCacheKey('union', geometryA.uuid, geometryB.uuid)
+  const key = cacheKey || generateCacheKey('union', geometryA, geometryB)
 
   if (csgCache.has(key)) {
+    cacheHits++
     return csgCache.get(key)!.clone()
   }
 
+  cacheMisses++
   const result = union(geometryA, geometryB)
+  csgCache.set(key, result)
+
+  return result
+}
+
+/**
+ * Cached subtract operation
+ * Reuses previous results if geometries haven't changed
+ */
+export function cachedSubtract(
+  geometryA: BufferGeometry,
+  geometryB: BufferGeometry,
+  cacheKey?: string
+): BufferGeometry {
+  const key = cacheKey || generateCacheKey('subtract', geometryA, geometryB)
+
+  if (csgCache.has(key)) {
+    cacheHits++
+    return csgCache.get(key)!.clone()
+  }
+
+  cacheMisses++
+  const result = subtract(geometryA, geometryB)
+  csgCache.set(key, result)
+
+  return result
+}
+
+/**
+ * Cached intersect operation
+ * Reuses previous results if geometries haven't changed
+ */
+export function cachedIntersect(
+  geometryA: BufferGeometry,
+  geometryB: BufferGeometry,
+  cacheKey?: string
+): BufferGeometry {
+  const key = cacheKey || generateCacheKey('intersect', geometryA, geometryB)
+
+  if (csgCache.has(key)) {
+    cacheHits++
+    return csgCache.get(key)!.clone()
+  }
+
+  cacheMisses++
+  const result = intersect(geometryA, geometryB)
   csgCache.set(key, result)
 
   return result
@@ -243,14 +307,28 @@ export function clearCSGCache(): void {
     geometry.dispose()
   }
   csgCache.clear()
+
+  // Reset statistics
+  cacheHits = 0
+  cacheMisses = 0
 }
 
 /**
- * Get cache statistics
+ * Get cache statistics for performance monitoring
  */
-export function getCacheStats(): { size: number; keys: string[] } {
+export function getCacheStats(): {
+  size: number
+  keys: string[]
+  hits: number
+  misses: number
+  hitRate: number
+} {
+  const total = cacheHits + cacheMisses
   return {
     size: csgCache.size,
     keys: Array.from(csgCache.keys()),
+    hits: cacheHits,
+    misses: cacheMisses,
+    hitRate: total > 0 ? cacheHits / total : 0,
   }
 }

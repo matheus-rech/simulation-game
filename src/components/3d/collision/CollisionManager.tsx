@@ -39,7 +39,9 @@ export function useCollisionManager({
   const lastCollisionTime = useRef<number>(0)
   const DEBOUNCE_MS = 250
 
-  // Collision history
+  // Collision history with bounded size to prevent memory growth
+  const MAX_COLLISION_HISTORY = 100
+  const MAX_CRISIS_HISTORY = 20
   const collisionHistory = useRef<CollisionEvent[]>([])
   const crisisHistory = useRef<CrisisEvent[]>([])
 
@@ -105,8 +107,11 @@ export function useCollisionManager({
         intensity,
       }
 
-      // Add to history
+      // Add to history with bounds check
       collisionHistory.current.push(collision)
+      if (collisionHistory.current.length > MAX_COLLISION_HISTORY) {
+        collisionHistory.current.shift() // Remove oldest
+      }
 
       // Get response configuration
       const response = getCollisionResponse(tissueType)
@@ -131,6 +136,9 @@ export function useCollisionManager({
         }
 
         crisisHistory.current.push(crisis)
+        if (crisisHistory.current.length > MAX_CRISIS_HISTORY) {
+          crisisHistory.current.shift() // Remove oldest
+        }
 
         // Notify crisis callback
         if (onCrisis) {

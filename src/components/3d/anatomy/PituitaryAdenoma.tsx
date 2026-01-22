@@ -70,7 +70,7 @@ export function PituitaryAdenoma({
       tumor,
       irregularity, // Distortion strength
       2.0, // Frequency (higher = finer details)
-      4 // Octaves (more = more detail layers)
+      2 // Octaves (optimized for performance, still provides good detail)
     )
 
     // Apply heterogeneous vertex colors (variable cell density)
