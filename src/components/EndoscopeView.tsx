@@ -55,6 +55,12 @@ export function EndoscopeView({
 
   return (
     <>
+      {/* Debug controls (keyboard shortcuts) - HTML overlay */}
+      <DebugControls onStateChange={setDebugState} />
+
+      {/* Performance stats overlay (toggle with S key) - HTML overlay */}
+      {debugState.stats && <PerformanceMonitor visible={true} />}
+
       <Canvas camera={{ position: [0, 0, 1.5], fov: 55 }} shadows>
         <color attach="background" args={["#1a1111"]} />
         <ambientLight intensity={0.4} color={ambientColor} />
@@ -74,12 +80,6 @@ export function EndoscopeView({
               }
             />
           </Physics>
-
-          {/* Debug controls (keyboard shortcuts) */}
-          <DebugControls onStateChange={setDebugState} />
-
-          {/* Performance stats overlay (toggle with S key) */}
-          {debugState.stats && <PerformanceMonitor visible={true} />}
         </Suspense>
         <EffectComposer>
           <DepthOfField focusDistance={0.02} focalLength={0.04} bokehScale={3.2} />
