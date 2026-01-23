@@ -9,6 +9,7 @@ import { PatientCase, CaseDifficulty, KnospGrade, getAvailableCases, ALL_CASES }
 interface CaseSelectorProps {
   onCaseSelected: (patientCase: PatientCase) => void;
   completedCaseIds: string[];
+  onEnterCurriculumMode?: () => void;
 }
 
 const styles = {
@@ -136,7 +137,7 @@ const styles = {
   },
 };
 
-export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorProps) {
+export function CaseSelector({ onCaseSelected, completedCaseIds, onEnterCurriculumMode }: CaseSelectorProps) {
   const [selectedCase, setSelectedCase] = useState<PatientCase | null>(null);
   const availableCases = getAvailableCases(completedCaseIds);
 
@@ -307,7 +308,36 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
 
         {!selectedCase && (
           <div style={{ textAlign: 'center', color: '#9ca3af', marginTop: '32px' }}>
-            <p>Select a case above to view the pre-operative briefing</p>
+            <p style={{ marginBottom: '16px' }}>Select a case above to view the pre-operative briefing</p>
+            {onEnterCurriculumMode && (
+              <>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', margin: '16px 0' }}>
+                  <span style={{ fontSize: '0.875rem', opacity: 0.5 }}>— OR —</span>
+                </div>
+                <button
+                  onClick={onEnterCurriculumMode}
+                  style={{
+                    background: 'transparent',
+                    border: '1px solid #3b82f6',
+                    color: '#60a5fa',
+                    padding: '8px 16px',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '0.875rem',
+                    transition: 'all 0.2s',
+                    fontFamily: 'inherit'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  Enter Skills Training Mode
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
