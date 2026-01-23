@@ -1,7 +1,8 @@
-import { useMemo } from 'react'
-import { BoxGeometry, PlaneGeometry } from 'three'
+import { useMemo, useEffect, useState } from 'react'
+import { BoxGeometry, PlaneGeometry, Texture } from 'three'
 import { subtract, union } from './geometry/CSGOperations'
 import { TissueType } from '../materials/TissueMaterials'
+import { loadAnatomyTexture } from '../materials/TextureLoader'
 
 /**
  * SphenoidSinus - Anatomically accurate sphenoid sinus with septations
@@ -38,6 +39,29 @@ export function SphenoidSinus({
   seed = 12345,
   showSellarFloor = true,
 }: SphenoidSinusProps) {
+  // AI-generated textures from Nano Banana Pro
+  const [sinusTexture, setSinusTexture] = useState<Texture | null>(null)
+  const [sellarFloorTexture, setSellarFloorTexture] = useState<Texture | null>(null)
+
+  // Load AI-generated textures
+  useEffect(() => {
+    let mounted = true
+
+    // Load sphenoid sinus texture (air-filled cavity)
+    loadAnatomyTexture('sphenoidSinus').then((texture) => {
+      if (mounted) setSinusTexture(texture)
+    })
+
+    // Load sella floor texture (bone over pituitary fossa)
+    loadAnatomyTexture('sellaFloor').then((texture) => {
+      if (mounted) setSellarFloorTexture(texture)
+    })
+
+    return () => {
+      mounted = false
+    }
+  }, [])
+
   // Generate reproducible random number from seed
   const seededRandom = useMemo(() => {
     let s = seed
@@ -124,7 +148,7 @@ export function SphenoidSinus({
 
   return (
     <group name="sphenoid-sinus">
-      {/* Main sinus cavity with septations */}
+      {/* Main sinus cavity with AI-generated texture */}
       <mesh
         geometry={sinusGeometry}
         castShadow
@@ -132,13 +156,14 @@ export function SphenoidSinus({
         userData={{ tissueType: TissueType.BONE }}
       >
         <meshStandardMaterial
-          color="#f3eee4" // Bone color
+          map={sinusTexture} // AI-generated sphenoid sinus texture (84/100 quality, 630KB)
+          color={sinusTexture ? "#ffffff" : "#f3eee4"} // White when textured, fallback bone color
           roughness={0.75}
           metalness={0.0}
         />
       </mesh>
 
-      {/* Sellar floor (superior wall) - thinner bone */}
+      {/* Sellar floor (superior wall) with AI-generated texture */}
       {showSellarFloor && (
         <mesh
           geometry={sellarFloorGeometry}
@@ -147,7 +172,8 @@ export function SphenoidSinus({
           userData={{ tissueType: TissueType.BONE }}
         >
           <meshStandardMaterial
-            color="#f3eee4"
+            map={sellarFloorTexture} // AI-generated sella floor texture (84/100 quality, 648KB)
+            color={sellarFloorTexture ? "#ffffff" : "#f3eee4"} // White when textured, fallback bone color
             roughness={0.75}
             metalness={0.0}
             opacity={0.9}

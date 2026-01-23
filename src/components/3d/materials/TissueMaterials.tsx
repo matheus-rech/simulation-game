@@ -19,6 +19,7 @@ export enum TissueType {
   PSEUDOCAPSULE = 'pseudocapsule',
   ICA = 'ica',
   MWCS = 'mwcs',
+  NERVE = 'nerve',
 }
 
 /**
@@ -90,6 +91,15 @@ export const TISSUE_MATERIALS: Record<TissueType, TissueMaterialProps> = {
     metalness: 0.0,
     opacity: 0.7,
     transparent: true,
+  },
+
+  [TissueType.NERVE]: {
+    color: '#f0e8d8', // Cream (myelin sheath)
+    roughness: 0.35,
+    metalness: 0.0,
+    emissive: '#ffe8d0',
+    emissiveIntensity: 0.15,
+    opacity: 1.0,
   },
 }
 
@@ -218,6 +228,14 @@ export const TISSUE_PROPERTIES: Record<TissueType, TissueProperties> = {
     visualEffect: 'bleeding',
     critical: false,
     resistance: 0.25,
+  },
+
+  [TissueType.NERVE]: {
+    name: 'Optic Nerve',
+    scorePenalty: 100,
+    visualEffect: 'bleeding',
+    critical: true,
+    resistance: 0.4,
   },
 }
 

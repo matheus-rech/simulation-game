@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { BufferAttribute, InstancedMesh, Matrix4, Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
-import { v4 as uuidv4 } from "uuid";
 
 export interface Vector3D {
   x: number;
@@ -51,8 +50,20 @@ export function DustParticles() {
 interface BleedParticle {
   id: string;
   position: Vector3;
+  velocity: Vector3;
   life: number;
 }
+
+/**
+ * Bleeding VFX with optimized memory management
+ *
+ * OPTIMIZATION: Particle pool with reused Vector3 instances
+ * - Pre-allocated particle pool (max 24 particles)
+ * - Reusable Vector3 instances to reduce GC pressure
+ * - In-place position updates instead of clone operations
+ */
+const MAX_BLOOD_PARTICLES = 24;
+let particleIdCounter = 0;
 
 export function BleedingVFX({ collision }: { collision?: Vector3D | null }) {
   const meshRef = useRef<InstancedMesh>(null);
@@ -60,47 +71,69 @@ export function BleedingVFX({ collision }: { collision?: Vector3D | null }) {
   const matrix = useMemo(() => new Matrix4(), []);
 
   // Reusable Vector3 instances to prevent allocations in hot loop
-  const tempPosition = useMemo(() => new Vector3(), []);
   const tempScale = useMemo(() => new Vector3(), []);
-  const downwardVelocity = useMemo(() => new Vector3(0, -1, 0), []);
+
+  // Pre-allocated particle pool for memory efficiency
+  const particlePool = useMemo(() => {
+    const pool: BleedParticle[] = [];
+    for (let i = 0; i < MAX_BLOOD_PARTICLES; i++) {
+      pool.push({
+        id: '',
+        position: new Vector3(),
+        velocity: new Vector3(0, -0.2, 0),
+        life: 0,
+      });
+    }
+    return pool;
+  }, []);
 
   useEffect(() => {
     if (!collision || !meshRef.current) return;
-    particles.current.push({
-      id: uuidv4(),
-      position: new Vector3(collision.x, collision.y, collision.z),
-      life: 1,
-    });
-  }, [collision]);
+
+    // Find inactive particle in pool
+    const inactiveParticle = particlePool.find(p => p.life <= 0);
+    if (inactiveParticle) {
+      inactiveParticle.id = `p-${particleIdCounter++}`;
+      inactiveParticle.position.set(collision.x, collision.y, collision.z);
+      inactiveParticle.life = 1;
+      if (!particles.current.includes(inactiveParticle)) {
+        particles.current.push(inactiveParticle);
+      }
+    }
+  }, [collision, particlePool]);
 
   useFrame((_, delta) => {
     const mesh = meshRef.current;
     if (!mesh) return;
-    const nextParticles = particles.current
-      .map((particle) => {
-        // Reuse tempPosition instead of clone + new Vector3
-        tempPosition.copy(particle.position);
-        tempPosition.addScaledVector(downwardVelocity, delta * 0.2);
 
-        return {
-          ...particle,
-          life: particle.life - delta * 0.4,
-          position: tempPosition.clone(), // Clone once for storage
-        };
-      })
-      .filter((particle) => particle.life > 0);
-    particles.current = nextParticles;
+    // Update particles in-place (no allocations)
+    let activeCount = 0;
+    for (let i = particles.current.length - 1; i >= 0; i--) {
+      const particle = particles.current[i];
 
-    nextParticles.forEach((particle, index) => {
+      // Update position in-place
+      particle.position.addScaledVector(particle.velocity, delta);
+
+      // Update life
+      particle.life -= delta * 0.4;
+
+      if (particle.life <= 0) {
+        // Remove from active list (particle stays in pool)
+        particles.current.splice(i, 1);
+      }
+    }
+
+    // Update instanced mesh matrices
+    particles.current.forEach((particle, index) => {
       matrix.makeTranslation(particle.position.x, particle.position.y, particle.position.z);
       const scale = 0.12 * particle.life;
-      // Reuse tempScale instead of new Vector3
       tempScale.set(scale, scale, scale);
       matrix.scale(tempScale);
       mesh.setMatrixAt(index, matrix);
+      activeCount++;
     });
 
-    mesh.count = nextParticles.length;
+    mesh.count = activeCount;
     mesh.instanceMatrix.needsUpdate = true;
   });
 

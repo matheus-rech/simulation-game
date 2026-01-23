@@ -1,0 +1,28 @@
+# NeuroSim AI Mentor Backend Dependencies
+
+# Core Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+
+# Claude API
+anthropic>=0.18.0
+
+# Async Support
+websockets>=12.0
+
+# Data Processing
+numpy>=1.26.0
+
+# Optional: NeuroVision Integration
+# opencv-python>=4.9.0
+# pillow>=10.0.0
+
+# Development
+python-dotenv>=1.0.0
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+httpx>=0.26.0  # For testing FastAPI
+
+# Production
+gunicorn>=21.0.0

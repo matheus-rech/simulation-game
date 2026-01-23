@@ -1,7 +1,8 @@
-import { useMemo, useEffect } from 'react'
-import { SphereGeometry } from 'three'
+import { useMemo, useEffect, useState } from 'react'
+import { SphereGeometry, Texture } from 'three'
 import { createOffsetGeometry } from './geometry/ProceduralGeometry'
 import { TissueType } from '../materials/TissueMaterials'
+import { loadAnatomyTexture } from '../materials/TextureLoader'
 
 /**
  * SellaTurcica - Anatomically accurate sella turcica with bone and dura layers
@@ -35,6 +36,29 @@ export interface SellaTurcicaProps {
 }
 
 export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }: SellaTurcicaProps) {
+  // AI-generated textures from Nano Banana Pro
+  const [sellaFloorTexture, setSellaFloorTexture] = useState<Texture | null>(null)
+  const [duraTexture, setDuraTexture] = useState<Texture | null>(null)
+
+  // Load AI-generated textures
+  useEffect(() => {
+    let mounted = true
+
+    // Load sella floor bone texture
+    loadAnatomyTexture('sellaFloor').then((texture) => {
+      if (mounted) setSellaFloorTexture(texture)
+    })
+
+    // Load dura mater texture
+    loadAnatomyTexture('dura').then((texture) => {
+      if (mounted) setDuraTexture(texture)
+    })
+
+    return () => {
+      mounted = false
+    }
+  }, [])
+
   // Calculate sphere segments based on LOD level
   const widthSegments = useMemo(() => {
     switch (lodLevel) {
@@ -100,7 +124,7 @@ export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }:
 
   return (
     <group name="sella-turcica">
-      {/* Bone shell */}
+      {/* Bone shell with AI-generated texture */}
       {showBone && (
         <mesh
           geometry={boneGeometry}
@@ -109,14 +133,15 @@ export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }:
           userData={{ tissueType: TissueType.BONE }}
         >
           <meshStandardMaterial
-            color="#f3eee4" // Bone color (cream)
+            map={sellaFloorTexture} // AI-generated sella floor bone texture (84/100 quality)
+            color={sellaFloorTexture ? "#ffffff" : "#f3eee4"} // White when textured, fallback cream
             roughness={0.75}
             metalness={0.0}
           />
         </mesh>
       )}
 
-      {/* Dura mater lining */}
+      {/* Dura mater lining with AI-generated texture */}
       {showDura && (
         <mesh
           geometry={duraGeometry}
@@ -125,7 +150,8 @@ export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }:
           userData={{ tissueType: TissueType.DURA }}
         >
           <meshStandardMaterial
-            color="#e8dcc8" // Dura color (pearl-gray)
+            map={duraTexture} // AI-generated dura mater texture (84/100 quality, 635KB)
+            color={duraTexture ? "#ffffff" : "#e8dcc8"} // White when textured, fallback pearl-gray
             roughness={0.4}
             metalness={0.0}
             opacity={0.85}

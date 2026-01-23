@@ -1,12 +1,15 @@
 import { useMemo, useRef, useCallback, useState, useEffect } from 'react'
-import { Vector3, Object3D, Mesh } from 'three'
+import { Vector3, Object3D, Mesh, Group } from 'three'
 import { useFrame, useThree } from '@react-three/fiber'
 import { SphenoidSinus } from './SphenoidSinus'
 import { SellaTurcica } from './SellaTurcica'
 import { PituitaryAdenoma } from './PituitaryAdenoma'
 import { InternalCarotidArtery } from './InternalCarotidArtery'
 import { CavernousSinus } from './CavernousSinus'
-import { TissueType } from '../materials/TissueMaterials'
+import { NasalSeptum } from './NasalSeptum'
+import { NasalTurbinate } from './NasalTurbinate'
+import { SphenoidOstium } from './SphenoidOstium'
+import { OpticNerve } from './OpticNerve'
 
 /**
  * AnatomyManager - Orchestrator for all anatomical structures
@@ -56,10 +59,25 @@ export function AnatomyManager({ level, onCollidableMeshesReady }: AnatomyManage
   const { camera } = useThree()
   const [lodLevel, setLodLevel] = useState(0)
 
-  // Refs to track collidable meshes for optimized raycasting
+  // Refs to track collidable meshes for optimized raycasting (deprecated simple geometry)
   const turbinate1Ref = useRef<Mesh>(null)
   const turbinate2Ref = useRef<Mesh>(null)
   const ostiumRef = useRef<Mesh>(null)
+
+  // Group refs for collecting child meshes from anatomical structures
+  const nasalSeptumRef = useRef<Group>(null)
+  const nasalTurbinateLeftRef = useRef<Group>(null)
+  const nasalTurbinateRightRef = useRef<Group>(null)
+  const sphenoidOstiumRef = useRef<Group>(null)
+  const sphenoidGroupRef = useRef<Group>(null)
+  const sellaGroupRef = useRef<Group>(null)
+  const pituitaryGroupRef = useRef<Group>(null)
+  const icaLeftRef = useRef<Group>(null)
+  const icaRightRef = useRef<Group>(null)
+  const opticLeftRef = useRef<Group>(null)
+  const opticRightRef = useRef<Group>(null)
+  const mwcsLeftRef = useRef<Group>(null)
+  const mwcsRightRef = useRef<Group>(null)
 
   // Calculate LOD level based on camera distance from pituitary (reference point)
   useFrame(() => {
@@ -86,30 +104,61 @@ export function AnatomyManager({ level, onCollidableMeshesReady }: AnatomyManage
     }
   })
 
+  /**
+   * Collect all collidable meshes from anatomical structure groups
+   * OPTIMIZATION: This provides targeted raycasting array, reducing complexity
+   * from O(n) scene traversal to O(m) anatomy-only checks
+   */
+  const collectMeshesFromGroup = useCallback((group: Group | null, meshes: Object3D[]) => {
+    if (!group) return
+    group.traverse((child) => {
+      if (child instanceof Mesh && child.userData?.tissueType) {
+        meshes.push(child)
+      }
+    })
+  }, [])
+
   // Callback to update collidable meshes when they mount/unmount
   const registerCollidableMesh = useCallback(() => {
     if (!onCollidableMeshesReady) return
 
     const meshes: Object3D[] = []
 
-    // Collect all non-null mesh refs
+    // Collect all non-null direct mesh refs (deprecated simple geometry)
     if (turbinate1Ref.current) meshes.push(turbinate1Ref.current)
     if (turbinate2Ref.current) meshes.push(turbinate2Ref.current)
     if (ostiumRef.current) meshes.push(ostiumRef.current)
 
-    // Also collect meshes from child components (SphenoidSinus, SellaTurcica, etc)
-    // These components render their own meshes, which we'll gather via group children
-    // This callback is invoked after all meshes have mounted
+    // OPTIMIZATION: Collect meshes from all anatomical structure groups
+    // This ensures raycasting targets ALL anatomy with AI textures
+    collectMeshesFromGroup(nasalSeptumRef.current, meshes)
+    collectMeshesFromGroup(nasalTurbinateLeftRef.current, meshes)
+    collectMeshesFromGroup(nasalTurbinateRightRef.current, meshes)
+    collectMeshesFromGroup(sphenoidOstiumRef.current, meshes)
+    collectMeshesFromGroup(sphenoidGroupRef.current, meshes)
+    collectMeshesFromGroup(sellaGroupRef.current, meshes)
+    collectMeshesFromGroup(pituitaryGroupRef.current, meshes)
+    collectMeshesFromGroup(icaLeftRef.current, meshes)
+    collectMeshesFromGroup(icaRightRef.current, meshes)
+    collectMeshesFromGroup(opticLeftRef.current, meshes)
+    collectMeshesFromGroup(opticRightRef.current, meshes)
+    collectMeshesFromGroup(mwcsLeftRef.current, meshes)
+    collectMeshesFromGroup(mwcsRightRef.current, meshes)
 
     if (meshes.length > 0) {
       onCollidableMeshesReady(meshes)
     }
-  }, [onCollidableMeshesReady])
+  }, [onCollidableMeshesReady, collectMeshesFromGroup])
 
   // Trigger mesh collection after render when refs are populated
+  // Re-register when level changes (structures become visible/hidden)
   useEffect(() => {
-    registerCollidableMesh()
-  }, [registerCollidableMesh])
+    // Small delay to ensure all refs are populated after render
+    const timeoutId = setTimeout(() => {
+      registerCollidableMesh()
+    }, 100)
+    return () => clearTimeout(timeoutId)
+  }, [registerCollidableMesh, level])
 
   // Determine which structures are visible based on level
   const visibleStructures = useMemo(() => {
@@ -132,6 +181,7 @@ export function AnatomyManager({ level, onCollidableMeshesReady }: AnatomyManage
       {/* Phase 2: Core Structures ✅ */}
       {visibleStructures.sphenoidSinus && (
         <group
+          ref={sphenoidGroupRef}
           name="sphenoid-sinus-group"
           position={ANATOMY_POSITIONS.sphenoidSinus}
         >
@@ -145,6 +195,7 @@ export function AnatomyManager({ level, onCollidableMeshesReady }: AnatomyManage
 
       {visibleStructures.sellaTurcica && (
         <group
+          ref={sellaGroupRef}
           name="sella-turcica-group"
           position={ANATOMY_POSITIONS.sellaTurcica}
         >
@@ -158,6 +209,7 @@ export function AnatomyManager({ level, onCollidableMeshesReady }: AnatomyManage
 
       {visibleStructures.pituitary && (
         <group
+          ref={pituitaryGroupRef}
           name="pituitary-adenoma-group"
           position={ANATOMY_POSITIONS.pituitary}
         >
@@ -171,68 +223,74 @@ export function AnatomyManager({ level, onCollidableMeshesReady }: AnatomyManage
         </group>
       )}
 
-      {/* Phase 3: Critical Structures ✅ */}
+      {/* Phase 3: Critical Structures with AI Textures (Nano Banana Pro) ✅ */}
       {visibleStructures.ica && (
         <>
-          <InternalCarotidArtery
-            side="left"
-            pulsationRate={72}
-            pulsationAmplitude={0.08}
-          />
-          <InternalCarotidArtery
-            side="right"
-            pulsationRate={72}
-            pulsationAmplitude={0.08}
-          />
+          {/* Internal Carotid Arteries (⚠️ CRITICAL - 607KB, 84/100) */}
+          <group ref={icaLeftRef}>
+            <InternalCarotidArtery
+              side="left"
+              pulsationRate={72}
+              pulsationAmplitude={0.08}
+            />
+          </group>
+          <group ref={icaRightRef}>
+            <InternalCarotidArtery
+              side="right"
+              pulsationRate={72}
+              pulsationAmplitude={0.08}
+            />
+          </group>
         </>
       )}
 
       {visibleStructures.mwcs && (
         <>
-          <CavernousSinus side="left" width={0.3} />
-          <CavernousSinus side="right" width={0.3} />
+          {/* Medial Wall Cavernous Sinus (⚠️ CRITICAL - 662KB, 84/100) */}
+          <group ref={mwcsLeftRef}>
+            <CavernousSinus side="left" width={0.3} />
+          </group>
+          <group ref={mwcsRightRef}>
+            <CavernousSinus side="right" width={0.3} />
+          </group>
+
+          {/* Optic Nerves (⚠️ CRITICAL - 788KB, 84/100) */}
+          <group ref={opticLeftRef}>
+            <OpticNerve side="left" visible={true} />
+          </group>
+          <group ref={opticRightRef}>
+            <OpticNerve side="right" visible={true} />
+          </group>
         </>
       )}
 
-      {/* Temporary simple nasal cavity (will be enhanced in Phase 2) */}
+      {/* Level 0: Nasal Cavity with AI Textures (Nano Banana Pro) ✅ */}
       {visibleStructures.nasalCavity && (
-        <group name="nasal-cavity-simple">
+        <group name="nasal-cavity-ai-textured">
+          {/* AI-Generated Nasal Septum (midline partition) */}
+          <group ref={nasalSeptumRef}>
+            <NasalSeptum visible={true} positionZ={-4.0} />
+          </group>
+
+          {/* AI-Generated Nasal Turbinates (bilateral, ⭐ Nano Banana Pro SUCCESS) */}
+          <group ref={nasalTurbinateLeftRef}>
+            <NasalTurbinate side="left" visible={true} seed={67890} />
+          </group>
+          <group ref={nasalTurbinateRightRef}>
+            <NasalTurbinate side="right" visible={true} seed={67891} />
+          </group>
+
+          {/* Lighting for nasal cavity */}
           <pointLight position={[0, 0.5, -4]} intensity={0.6} distance={5} color="#f7d9cd" />
           <pointLight position={[0, 0.3, -6]} intensity={0.5} distance={4} color="#f7d9cd" />
-
-          {/* Basic turbinates for navigation reference */}
-          <mesh
-            ref={turbinate1Ref}
-            position={[0.5, -0.1, -4.5]}
-            rotation={[0, 0, Math.PI / 6]}
-            userData={{ tissueType: TissueType.MUCOSA }}
-          >
-            <cylinderGeometry args={[0.15, 0.2, 3, 16]} />
-            <meshStandardMaterial color="#c56c72" roughness={0.55} />
-          </mesh>
-          <mesh
-            ref={turbinate2Ref}
-            position={[-0.5, -0.1, -4.5]}
-            rotation={[0, 0, -Math.PI / 6]}
-            userData={{ tissueType: TissueType.MUCOSA }}
-          >
-            <cylinderGeometry args={[0.15, 0.2, 3, 16]} />
-            <meshStandardMaterial color="#c56c72" roughness={0.55} />
-          </mesh>
         </group>
       )}
 
-      {/* Sphenoid ostium marker (anatomical landmark) */}
+      {/* Level 1: AI-Generated Sphenoid Ostium (surgical landmark) ✅ */}
       {visibleStructures.sphenoidOstium && (
-        <mesh
-          ref={ostiumRef}
-          position={ANATOMY_POSITIONS.sphenoidOstium}
-          rotation={[Math.PI / 2, 0, 0]}
-          userData={{ tissueType: TissueType.BONE }}
-        >
-          <torusGeometry args={[0.22, 0.05, 16, 32]} />
-          <meshStandardMaterial color="#f3eee4" roughness={0.75} />
-        </mesh>
+        <group ref={sphenoidOstiumRef}>
+          <SphenoidOstium visible={true} diameter={0.3} />
+        </group>
       )}
     </group>
   )

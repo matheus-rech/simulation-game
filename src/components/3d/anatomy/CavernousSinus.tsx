@@ -1,7 +1,8 @@
-import { useMemo } from 'react'
-import { BufferGeometry, Vector3, BufferAttribute } from 'three'
+import { useMemo, useEffect, useState } from 'react'
+import { BufferGeometry, Vector3, BufferAttribute, Texture } from 'three'
 import { createLeftMWCScurve, createRightMWCScurve, sampleCurvePoints } from './geometry/AnatomicalCurves'
 import { TissueType } from '../materials/TissueMaterials'
+import { loadAnatomyTexture } from '../materials/TextureLoader'
 
 /**
  * CavernousSinus - Medial wall of cavernous sinus (MWCS)
@@ -36,6 +37,25 @@ export interface CavernousSinusProps {
 }
 
 export function CavernousSinus({ side, width = 0.3 }: CavernousSinusProps) {
+  // AI-generated MWCS texture (⚠️ CRITICAL STRUCTURE - 84/100 quality)
+  const [mwcsTexture, setMwcsTexture] = useState<Texture | null>(null)
+
+  // Load AI-generated MWCS texture
+  useEffect(() => {
+    let mounted = true
+
+    loadAnatomyTexture('mwcs').then((texture) => {
+      if (mounted) {
+        setMwcsTexture(texture)
+        console.log(`✅ Loaded MWCS texture for ${side} cavernous sinus`)
+      }
+    })
+
+    return () => {
+      mounted = false
+    }
+  }, [side])
+
   // Create MWCS curve based on side
   const curve = useMemo(() => {
     return side === 'left' ? createLeftMWCScurve() : createRightMWCScurve()
@@ -101,7 +121,7 @@ export function CavernousSinus({ side, width = 0.3 }: CavernousSinusProps) {
 
   return (
     <group name={`mwcs-${side}`}>
-      {/* MWCS membrane */}
+      {/* MWCS membrane with AI-generated texture (⚠️ CRITICAL) */}
       <mesh
         geometry={membraneGeometry}
         castShadow
@@ -109,7 +129,8 @@ export function CavernousSinus({ side, width = 0.3 }: CavernousSinusProps) {
         userData={{ tissueType: TissueType.MWCS }}
       >
         <meshStandardMaterial
-          color="#d4c8d8" // Dural membrane color (purple-gray)
+          map={mwcsTexture} // AI-generated MWCS texture (84/100 quality, 662KB)
+          color={mwcsTexture ? "#ffffff" : "#d4c8d8"} // White when textured, fallback purple-gray
           roughness={0.4}
           metalness={0.0}
           opacity={0.7}

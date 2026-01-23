@@ -1,0 +1,6 @@
+❌ Error: GEMINI_API_KEY environment variable not set
+
+Please set your API key:
+  export GEMINI_API_KEY="your_key_here"
+  or create unity-tools/.env with: GEMINI_API_KEY=your_key_here
+

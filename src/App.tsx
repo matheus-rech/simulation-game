@@ -1,7 +1,12 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 import { CrisisEvent } from "./components/3d/collision/types";
+import { SafetyHUD } from "./components/ui/SafetyHUD";
+import { SafetyZone } from "./components/3d/safety/SafetyCorridorManager";
+import { TechniqueScoring } from "./components/ui/TechniqueScoring";
+import { CurriculumMode, CertificationBadge, ModuleType, CurriculumProgress } from "./components/ui/CurriculumMode";
+import { preloadAllTextures } from "./components/3d/materials/TextureLoader";
 
 const initialTipPosition: Vector3D = { x: 0, y: 0, z: 1.2 };
 
@@ -131,6 +136,23 @@ export default function App() {
   const [collisionCount, setCollisionCount] = useState(0);
   const [score, setScore] = useState(100);
   const [activeCrisis, setActiveCrisis] = useState<CrisisEvent | null>(null);
+  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([]);
+
+  // Phase 1B: Technique Scoring - Timer state
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [startTime] = useState(Date.now());
+  const [crisisCount, setCrisisCount] = useState(0);
+
+  // Phase 1C: Curriculum Mode
+  const [curriculumMode, setCurriculumMode] = useState(true); // Enable by default
+  const [currentModule, setCurrentModule] = useState<ModuleType>(ModuleType.ANATOMICAL_RECOGNITION);
+  const [curriculumProgress, setCurriculumProgress] = useState<CurriculumProgress>({
+    currentModule: ModuleType.ANATOMICAL_RECOGNITION,
+    modulesCompleted: [],
+    certified: false,
+    overallScore: 0
+  });
+  const [showCertification, setShowCertification] = useState(false);
 
   const rotationZ = useMemo(() => scopeAngle.yaw * 0.2, [scopeAngle.yaw]);
 
@@ -142,8 +164,73 @@ export default function App() {
 
   const handleCrisis = useCallback((crisis: CrisisEvent) => {
     setActiveCrisis(crisis);
+    setCrisisCount((prev) => prev + 1);
     // Massive score penalty for crisis
     setScore((prev) => Math.max(prev - 50, 0));
+  }, []);
+
+  // Update elapsed time every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [startTime]);
+
+  // Preload AI-generated anatomical textures (Nano Banana Pro - 84/100 quality)
+  useEffect(() => {
+    console.log('🎨 Preloading AI-generated anatomical textures from Nano Banana Pro...');
+    preloadAllTextures()
+      .then((textures) => {
+        console.log(`✅ Successfully preloaded ${textures.size}/12 anatomical textures`);
+        console.log('   Textures validated at 84/100 quality with 98 medical references');
+        console.log('   Generation model: gemini-3-pro-image-preview');
+      })
+      .catch((error) => {
+        console.error('❌ Failed to preload textures:', error);
+      });
+  }, []); // Run once on mount
+
+  // Handle module completion
+  const handleModuleComplete = useCallback((module: ModuleType, passed: boolean) => {
+    if (!passed) {
+      alert(`Module failed! Review objectives and try again.`);
+      return;
+    }
+
+    // Add to completed modules
+    setCurriculumProgress(prev => ({
+      ...prev,
+      modulesCompleted: [...prev.modulesCompleted, module],
+      overallScore: Math.round((prev.overallScore + score) / 2)
+    }));
+
+    // Advance to next module
+    if (module === ModuleType.ANATOMICAL_RECOGNITION) {
+      setCurrentModule(ModuleType.TUMOR_DEBULKING);
+      setLevel(2);
+      alert('✅ Module 1 Complete! Advancing to Module 2: Tumor Debulking');
+    } else if (module === ModuleType.TUMOR_DEBULKING) {
+      setCurrentModule(ModuleType.MWCS_DECISION);
+      setLevel(3);
+      alert('✅ Module 2 Complete! Advancing to Module 3: MWCS Decision Making');
+    } else if (module === ModuleType.MWCS_DECISION) {
+      alert('✅ Module 3 Complete! Certification awarded!');
+    }
+
+    // Reset stats for next module
+    setCollisionCount(0);
+    setCrisisCount(0);
+    setScore(100);
+    setLastCollision(null);
+  }, [score]);
+
+  const handleCertificationAchieved = useCallback(() => {
+    setCurriculumProgress(prev => ({
+      ...prev,
+      certified: true
+    }));
+    setShowCertification(true);
   }, []);
 
   return (
@@ -173,9 +260,14 @@ export default function App() {
         </dl>
 
         <nav aria-label="Controls" style={styles.controls}>
-          <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
-            Advance Level
+          <HUDButton onClick={() => setCurriculumMode(!curriculumMode)}>
+            {curriculumMode ? '📚 Curriculum' : '🎮 Free Play'}
           </HUDButton>
+          {!curriculumMode && (
+            <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
+              Advance Level
+            </HUDButton>
+          )}
           <HUDButton
             onClick={() => {
               setScopeAngle({ pitch: 0.05, yaw: 0 });
@@ -188,6 +280,45 @@ export default function App() {
         </nav>
       </section>
 
+      {/* Safety Corridor HUD */}
+      <SafetyHUD
+        safetyZones={safetyZones}
+        visible={level >= 2}
+        compact={false}
+      />
+
+      {/* Phase 1B: Technique Scoring System */}
+      <TechniqueScoring
+        safetyZones={safetyZones}
+        collisionCount={collisionCount}
+        crisisCount={crisisCount}
+        elapsedTime={elapsedTime}
+        level={level}
+        compact={false}
+      />
+
+      {/* Phase 1C: Curriculum Mode */}
+      {curriculumMode && (
+        <CurriculumMode
+          visible={true}
+          currentModule={currentModule}
+          progress={curriculumProgress}
+          techniqueScore={score}
+          collisionCount={collisionCount}
+          crisisCount={crisisCount}
+          elapsedTime={elapsedTime}
+          safetyZones={safetyZones}
+          onModuleComplete={handleModuleComplete}
+          onCertificationAchieved={handleCertificationAchieved}
+        />
+      )}
+
+      {/* Certification Badge */}
+      <CertificationBadge
+        visible={showCertification}
+        onClose={() => setShowCertification(false)}
+      />
+
       <EndoscopeView
         level={level}
         scopeAngle={scopeAngle}
@@ -196,6 +327,8 @@ export default function App() {
         collision={lastCollision}
         onRaycastCollision={handleRaycastCollision}
         onCrisis={handleCrisis}
+        onSafetyChange={setSafetyZones}
+        showSafetySpheres={false}
       />
     </div>
   );

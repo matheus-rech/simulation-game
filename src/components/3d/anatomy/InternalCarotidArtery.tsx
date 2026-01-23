@@ -1,8 +1,9 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useEffect, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Mesh, TubeGeometry } from 'three'
+import { Mesh, TubeGeometry, Texture } from 'three'
 import { createLeftICAcurve, createRightICAcurve } from './geometry/AnatomicalCurves'
 import { TissueType } from '../materials/TissueMaterials'
+import { loadAnatomyTexture } from '../materials/TextureLoader'
 
 /**
  * InternalCarotidArtery - Anatomically accurate ICA with pulsation
@@ -45,6 +46,25 @@ export function InternalCarotidArtery({
 }: InternalCarotidArteryProps) {
   const meshRef = useRef<Mesh>(null)
 
+  // AI-generated ICA texture (⚠️ CRITICAL STRUCTURE - 84/100 quality)
+  const [icaTexture, setIcaTexture] = useState<Texture | null>(null)
+
+  // Load AI-generated texture for ICA
+  useEffect(() => {
+    let mounted = true
+
+    loadAnatomyTexture('ica').then((texture) => {
+      if (mounted) {
+        setIcaTexture(texture)
+        console.log(`✅ Loaded ICA texture for ${side} artery`)
+      }
+    })
+
+    return () => {
+      mounted = false
+    }
+  }, [side])
+
   // Create anatomical curve based on side
   const curve = useMemo(() => {
     return side === 'left' ? createLeftICAcurve() : createRightICAcurve()
@@ -77,7 +97,7 @@ export function InternalCarotidArtery({
 
   return (
     <group name={`ica-${side}`}>
-      {/* ICA vessel */}
+      {/* ICA vessel with AI-generated texture (⚠️ CRITICAL) */}
       <mesh
         ref={meshRef}
         geometry={geometry}
@@ -86,11 +106,12 @@ export function InternalCarotidArtery({
         userData={{ tissueType: TissueType.ICA }}
       >
         <meshStandardMaterial
-          color="#b71c2b" // Arterial blood color (bright red)
+          map={icaTexture} // AI-generated ICA texture (84/100 quality, 607KB)
+          color={icaTexture ? "#ffffff" : "#b71c2b"} // White when textured, fallback arterial red
           roughness={0.3} // Slightly glossy (blood vessel wall)
           metalness={0.0}
-          emissive="#b71c2b" // Self-illumination
-          emissiveIntensity={0.4} // Visible glow
+          emissive="#b71c2b" // Self-illumination for critical structure visibility
+          emissiveIntensity={icaTexture ? 0.2 : 0.4} // Reduced when textured
         />
       </mesh>
 

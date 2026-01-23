@@ -1,6 +1,4 @@
 import { useEffect, useState, useCallback } from 'react'
-import { useThree } from '@react-three/fiber'
-import { Mesh } from 'three'
 
 /**
  * DebugControls - Development utilities for debugging and optimization
@@ -17,6 +15,9 @@ import { Mesh } from 'three'
  * - Performance statistics
  * - Collision visualization
  * - Real-time toggling without page reload
+ *
+ * NOTE: This component handles keyboard input and UI only.
+ * Scene manipulation (wireframe) is handled by WireframeController inside Canvas.
  */
 
 export interface DebugState {
@@ -43,41 +44,10 @@ const DEFAULT_STATE: DebugState = {
 }
 
 export function DebugControls({ initialState, onStateChange }: DebugControlsProps) {
-  const { scene } = useThree()
   const [debugState, setDebugState] = useState<DebugState>({
     ...DEFAULT_STATE,
     ...initialState,
   })
-
-  // Apply wireframe mode to all materials in scene
-  const applyWireframe = useCallback(
-    (enabled: boolean) => {
-      scene.traverse((object) => {
-        if (object instanceof Mesh) {
-          const material = object.material
-          if (material) {
-            if (Array.isArray(material)) {
-              material.forEach((mat) => {
-                if ('wireframe' in mat) {
-                  (mat as any).wireframe = enabled
-                }
-              })
-            } else {
-              if ('wireframe' in material) {
-                (material as any).wireframe = enabled
-              }
-            }
-          }
-        }
-      })
-    },
-    [scene]
-  )
-
-  // Update wireframe when state changes
-  useEffect(() => {
-    applyWireframe(debugState.wireframe)
-  }, [debugState.wireframe, applyWireframe])
 
   // Keyboard event handler
   const handleKeyPress = useCallback(

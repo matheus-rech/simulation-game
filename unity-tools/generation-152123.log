@@ -1,0 +1,423 @@
+
+🚀 Starting AI-Powered Anatomy Texture Generation Pipeline
+   Model: Gemini 3 Pro Image (Nano Banana Pro)
+   Validation: Gemini 3 Pro + Google Search Grounding
+   Target: Unity VR + Three.js Web Platform
+
+
+============================================================
+GENERATING: nasal-septum
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 4 medical references
+
+🔄 Attempt 1/3 for nasal-septum
+
+🎨 Generating texture: nasal-septum (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 5 references
+💾 Saved: nasal-septum_standard.png (1425.8 KB)
+📚 Medical sources: 9 references
+
+============================================================
+GENERATING: nasal-turbinate
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 4 medical references
+
+🔄 Attempt 1/3 for nasal-turbinate
+
+🎨 Generating texture: nasal-turbinate (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 79/100
+   Status: ❌ FAIL
+
+   Feedback: As an experienced neurosurgeon, my assessment is that while this AI-generated image shows impressive technical quality in some areas, it fails as a realistic depiction of a nasal turbinate in a surgical context. The color fidelity and high-resolution texture of the mucosa, including the differentiation of arterioles and venules, are excellent and closely mimic real endoscopic video. The lighting model also convincingly reproduces the central hotspot and specular highlights of a xenon endoscope. However, the image's primary and most critical failure is in its anatomical accuracy. The structure shown lacks the characteristic C-shape, size, and underlying bony prominence of a middle turbinate. It appears more like an isolated, dissected pedicle or a fold of mucosa, devoid of any orienting anatomical landmarks like the nasal septum or lateral nasal wall. Furthermore, the surface is covered in small, perfectly spherical, bead-like structures that are not representative of natural mucus, glandular openings, or even irrigation bubbles; they appear as an AI artifact. This lack of correct morphology makes the image medically unrealistic and unsuitable for educational or peer-review purposes, as it would mislead any trainee trying to learn the relevant anatomy.
+   Critical Errors:
+     - Incorrect gross morphology: The central structure does not possess the characteristic scrolled shape, size, or form of a nasal turbinate. It looks more like a dissected tissue flap.
+     - Lack of anatomical context: The image is a 'floating' close-up with no surrounding landmarks (e.g., nasal septum, sphenoid ostium, lateral wall) to provide orientation within the nasal cavity.
+     - Unrealistic surface texture artifacts: The tissue is covered with numerous, uniform, perfectly spherical micro-beads which do not correspond to any normal anatomical feature or common surgical artifact like irrigation bubbles.
+
+⚠️ Validation failed (Score: 79/100)
+   Refining prompt based on feedback...
+
+🔄 Attempt 2/3 for nasal-turbinate
+
+🎨 Generating texture: nasal-turbinate (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 43/100
+   Status: ❌ FAIL
+
+   Feedback: As a neurosurgeon with over two decades of experience in this specific approach, I must state unequivocally that this image is a catastrophic failure of anatomical representation. The central structure bears zero resemblance to a human nasal turbinate. Instead of a shelf-like, mucosal-covered bone, the image depicts a coiled, segmented, tube-like structure reminiscent of a small intestine or perhaps a roundworm. This is fundamentally incorrect. The flanking pale, band-like structures do not correspond to the nasal septum, lateral nasal wall, or any standard surgical instrument used in this procedure. While some technical aspects like the endoscopic lighting, specular highlights on wet surfaces, and the fine surface vasculature are rendered with some degree of realism, they are applied to a completely fictitious anatomical scene. This image is not only unusable for medical education but would be dangerously misleading, teaching anatomy that is patently false. The uncanny valley effect is profound; it mimics biological tissue but in a completely alien configuration. This image would be immediately rejected by any peer-reviewed medical journal.
+   Critical Errors:
+     - The central structure is coiled and segmented, appearing like a small intestine, which is completely incorrect. A nasal turbinate is a solid, shelf-like bony projection covered in mucosa.
+     - The flanking pale, yellowish-white, band-like structures do not correspond to any known nasal anatomy or standard surgical instrumentation.
+     - The overall spatial relationship of the depicted elements does not represent any view obtainable within the human nasal cavity during a transsphenoidal approach.
+     - The hole in the background is generic and lacks the specific features of a sphenoid ostium.
+
+⚠️ Validation failed (Score: 43/100)
+   Refining prompt based on feedback...
+
+🔄 Attempt 3/3 for nasal-turbinate
+
+🎨 Generating texture: nasal-turbinate (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 50/100
+   Status: ❌ FAIL
+
+   Feedback: As a neurosurgeon with over two decades of experience in this specific approach, I must state that this image is profoundly and fundamentally incorrect. While the technical rendering quality is high, the subject matter is a complete anatomical fiction. The structures depicted bear zero resemblance to nasal turbinates or any anatomy encountered during an endoscopic transsphenoidal approach. The AI appears to have confused sinonasal endoscopy with gastrointestinal endoscopy. The main structures are tubular and free-floating, resembling segments of the small intestine. The background structure with its regular, circumferential folds looks strikingly like a colonic or small bowel anastomosis. In an actual procedure, I would expect to see the nasal septum, the shelf-like middle and superior turbinates attached to the lateral nasal wall, and the sphenoid ostium. None of these critical landmarks are present. The image is therefore not only useless for educational or simulation purposes but is actively misleading and could ingrain dangerously false anatomical concepts. The high texture and plausible lighting cannot compensate for the catastrophic failure in anatomical accuracy.
+   Critical Errors:
+     - The primary structures are depicted as free-floating tubes, whereas nasal turbinates are bony shelves covered in mucosa, attached to the lateral nasal wall.
+     - The image completely lacks essential anatomical landmarks for this procedure, such as the nasal septum, the sphenoid ostium, or the characteristic shape of the nasal cavity.
+     - The structures shown are morphologically consistent with gastrointestinal anatomy (e.g., small intestine segments, bowel anastomosis) and not sinonasal anatomy.
+     - The spatial relationship between the instruments and the tissue is anatomically nonsensical for a transsphenoidal approach.
+
+⚠️ Validation failed (Score: 50/100)
+
+❌ Failed to generate nasal-turbinate: Error: Failed to generate acceptable texture for nasal-turbinate after 3 attempts
+    at generateAndValidate (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:460:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async generateCompleteTextureSet (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:562:46)
+
+============================================================
+GENERATING: sphenoid-ostium
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 4 medical references
+
+🔄 Attempt 1/3 for sphenoid-ostium
+
+🎨 Generating texture: sphenoid-ostium (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 5 references
+💾 Saved: sphenoid-ostium_standard.png (1292.9 KB)
+📚 Medical sources: 9 references
+
+============================================================
+GENERATING: sphenoid-sinus
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ❌ REJECTED
+   Issues found: The description of bony septations as 'white to light gray' is imprecise. While the underlying bone is whitish, it is covered by a thin, vascular mucosal layer, making its intraoperative appearance pale pink to pinkish-white., The prompt is ambiguous about the surgical stage. A view 'during' transsphenoidal surgery for a pituitary tumor is of a widely opened sphenoid sinus (post-sphenoidotomy), not a view of the small, natural ostium (~2-3mm). The surgical view must show the posterior wall of the sinus with key landmarks., The prompt lacks critical anatomical landmarks that define this specific surgical view, such as the bulge of the sellar floor, the opticocarotid recesses, and the clivus., The lighting description 'diffuse with shadows' is slightly contradictory to the more accurate 'central hotspot'. The latter is the primary characteristic of an endoscope's light source, causing bright central illumination with light fall-off and deep shadows peripherally.
+   Sources consulted: 4 medical references
+⚠️ Initial prompt rejected, using refined version...
+
+🔄 Attempt 1/3 for sphenoid-sinus
+
+🎨 Generating texture: sphenoid-sinus (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 82/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 82/100)
+   Medical sources: 5 references
+💾 Saved: sphenoid-sinus_standard.png (1716.2 KB)
+📚 Medical sources: 9 references
+
+============================================================
+GENERATING: sella-floor
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 4 medical references
+
+🔄 Attempt 1/3 for sella-floor
+
+🎨 Generating texture: sella-floor (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 5 references
+💾 Saved: sella-floor_standard.png (1459.8 KB)
+📚 Medical sources: 9 references
+
+============================================================
+GENERATING: dura
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 4 medical references
+
+🔄 Attempt 1/3 for dura
+
+🎨 Generating texture: dura (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 4 references
+💾 Saved: dura_standard.png (1426.8 KB)
+📚 Medical sources: 8 references
+
+============================================================
+GENERATING: pituitary-adenoma
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 4 medical references
+
+🔄 Attempt 1/3 for pituitary-adenoma
+
+🎨 Generating texture: pituitary-adenoma (endoscope view, knosp-2)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 5 references
+💾 Saved: pituitary-adenoma_knosp-2.png (1576.7 KB)
+📚 Medical sources: 9 references
+
+============================================================
+GENERATING: pseudocapsule
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 4 medical references
+
+🔄 Attempt 1/3 for pseudocapsule
+
+🎨 Generating texture: pseudocapsule (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 4 references
+💾 Saved: pseudocapsule_standard.png (1466.0 KB)
+📚 Medical sources: 8 references
+
+============================================================
+GENERATING: ica
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 4 medical references
+
+🔄 Attempt 1/3 for ica
+
+🎨 Generating texture: ica (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 6 references
+💾 Saved: ica_standard.png (1513.6 KB)
+📚 Medical sources: 10 references
+
+============================================================
+GENERATING: mwcs
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 3 medical references
+
+🔄 Attempt 1/3 for mwcs
+
+🎨 Generating texture: mwcs (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 60/100
+   Status: ❌ FAIL
+
+   Feedback: As an experienced endoscopic surgeon, my assessment is that this AI-generated image, while technically impressive in resolution and surface rendering, is a failure from a medical and anatomical standpoint. It could not be used for education or surgical planning. The primary issue is a profound lack of anatomical fidelity. The central structure, a convoluted mass of worm-like vessels, bears no resemblance to the actual contents of the sellar or parasellar region. In reality, one would expect to see the smooth, tough dural covering of the medial wall of the cavernous sinus (MWCS), with the distinct, gentle bulge of the cavernous segment of the internal carotid artery (the 'carotid prominence') as the key landmark. This is completely absent. The surrounding whitish tissue is depicted with a striated, fibrous texture more akin to muscle fascia than the actual dura mater. While the color palette is generally plausible for biological tissue and the textures are high-resolution, these qualities are applied to anatomically fictitious structures, creating a significant 'uncanny valley' effect. The lighting mimics an endoscope but the central hotspot is too harsh and blown-out, obscuring detail in a way that modern surgical camera systems avoid. To improve, the AI model requires extensive training on curated, anatomically-labeled intraoperative endoscopic footage to learn the correct morphology, position, and relationships of the pituitary gland, dura, cavernous sinus, and the ICA.
+   Critical Errors:
+     - The central convoluted vascular mass is anatomically fictitious; it does not represent the cavernous sinus, the ICA, or a pituitary adenoma.
+     - Complete absence of the single most important surgical landmark of the MWCS: the carotid prominence (the bulge created by the internal carotid artery).
+     - The texture of the surrounding dural tissue is incorrect, appearing striated and fibrous instead of the smooth, tough membrane of the actual dura mater.
+
+⚠️ Validation failed (Score: 60/100)
+   Refining prompt based on feedback...
+
+🔄 Attempt 2/3 for mwcs
+
+🎨 Generating texture: mwcs (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 5 references
+💾 Saved: mwcs_standard.png (1429.4 KB)
+📚 Medical sources: 8 references
+
+============================================================
+GENERATING: optic-nerve
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ❌ REJECTED
+   Issues found: The prompt is anatomically and procedurally ambiguous. In a standard endoscopic transsphenoidal surgery for a pituitary tumor, the surgeon initially visualizes the bony prominence of the optic canal, not the nerve itself. The nerve/chiasm is typically only seen directly after the sellar dura is opened and the tumor is removed, allowing the optic apparatus to prolapse into view. The prompt should specify this context to generate a clinically accurate image., The term 'optic-nerve' is slightly imprecise in this context. The most prominent and relevant structure seen from this inferior approach after decompression is the optic chiasm, where the two optic nerves meet. The prompt should specify the optic chiasm for greater accuracy.
+   Sources consulted: 3 medical references
+⚠️ Initial prompt rejected, using refined version...
+
+🔄 Attempt 1/3 for optic-nerve
+
+🎨 Generating texture: optic-nerve (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 68/100
+   Status: ❌ FAIL
+
+   Feedback: As a neurosurgeon with extensive experience in endoscopic pituitary surgery, I find this image to be a mix of impressive technical quality and critical anatomical failure. While the image is visually striking, it is not a realistic depiction of the optic nerve as viewed through a transsphenoidal approach.
+
+STRENGTHS:
+- **Nerve Texture:** The depiction of the central nerve structure is excellent. The pale, yellowish-white color is accurate for a healthy optic nerve, and the longitudinal striations convincingly represent nerve fascicles. The fine pial vasculature on its surface is also well-rendered.
+- **Color Palette:** The color fidelity of individual elements is high. The bright red of arterioles and the darker pools of venous blood are realistic. The overall color saturation feels appropriate for an endoscopic view.
+- **Texture Detail:** The texture resolution is superb. The fine details on the vascular network and the pitted, almost glandular appearance of the lower tissue structure are technically impressive, even if anatomically incorrect in this context.
+
+CRITICAL WEAKNESSES:
+- **Anatomical Context:** This is the image's most significant failing. The anatomy surrounding the nerve is completely inconsistent with the sellar and parasellar region. In a transsphenoidal approach, the optic nerve/chiasm is seen in direct relation to the pituitary gland, the diaphragma sellae, the internal carotid arteries (and their corresponding bony protuberances), and the arachnoid membrane. None of these key landmarks are identifiable. The large, smooth brown structure on the left does not resemble the ICA, cavernous sinus, or pituitary. The pale, reticulated tissue at the bottom is foreign to this region entirely; it resembles lung parenchyma or exocrine glandular tissue.
+- **Nerve Morphology:** The branching pattern seen on the upper right is atypical for a single optic nerve entering the chiasm. It appears more like a nerve plexus, which is incorrect for this location.
+- **Lighting:** The lighting simulates an endoscope's circular view but lacks authenticity. A real xenon light source creates a very bright, sometimes overexposed central hotspot with significant light falloff towards the periphery. The lighting here is too diffuse and soft. The bright glow in the center appears emissive rather than a reflection, which is unnatural.
+- **Medical Realism:** Due to the profound anatomical inaccuracies, this image has zero value for medical education or surgical planning. It would be immediately rejected by any peer-reviewed neurosurgical journal. It creates a significant 'uncanny valley' effect for any practicing surgeon, as it combines hyper-realistic textures with anatomically impossible arrangements.
+   Critical Errors:
+     - Complete absence of recognizable sellar and parasellar landmarks, such as the internal carotid artery, pituitary gland, diaphragma sellae, or cavernous sinus.
+     - The surrounding tissues are anatomically incorrect for the specified surgical view. The pitted tissue inferiorly and the smooth brown tissue laterally do not correspond to any structure in this region.
+     - The branching morphology of the nerve is inconsistent with the anatomy of the optic nerve or chiasm.
+     - The image lacks the bony confines of the sphenoid sinus and sellar floor from which this view would originate.
+
+⚠️ Validation failed (Score: 68/100)
+   Refining prompt based on feedback...
+
+🔄 Attempt 2/3 for optic-nerve
+
+🎨 Generating texture: optic-nerve (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 4 references
+💾 Saved: optic-nerve_standard.png (1538.3 KB)
+📚 Medical sources: 7 references
+
+============================================================
+GENERATING: cavernous-sinus
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ❌ REJECTED
+   Issues found: The prompt is anatomically ambiguous. The 'cavernous sinus' is a complex 3D space, not a single surface. From the specified surgical view (endoscopic transsphenoidal), the surgeon sees the 'medial wall' of the cavernous sinus., The prompt fails to mention the most critical and defining anatomical landmark of this view: the prominence of the cavernous segment of the internal carotid artery (ICA). Without this feature, any generated image would be anatomically incorrect and useless for surgical training., The prompt could be more specific about the surrounding structures (sphenoid bone, mucosa) to provide better context.
+   Sources consulted: 4 medical references
+⚠️ Initial prompt rejected, using refined version...
+
+🔄 Attempt 1/3 for cavernous-sinus
+
+🎨 Generating texture: cavernous-sinus (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 80/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 80/100)
+   Medical sources: 4 references
+💾 Saved: cavernous-sinus_standard.png (1690.6 KB)
+📚 Medical sources: 8 references
+
+📊 Generation Summary:
+   Textures Generated: 11/12
+   Average Score: 83.5/100
+   Medical Sources: 92 unique references
+   Output Directory: /Users/matheusrech/simulation-game/unity-tools/unity-textures
+   Validation Report: /Users/matheusrech/simulation-game/unity-tools/unity-textures/validation_report.json
+   Sources Document: /Users/matheusrech/simulation-game/unity-tools/unity-textures/medical_sources.json
+
+✅ AI-Powered Texture Generation Complete!
+   ✓ Google Search Grounding: ENABLED
+   ✓ Pre-generation Curation: ENABLED
+   ✓ Post-generation Validation: ENABLED
+
+📦 Next Steps:
+   1. Review generated textures in unity-textures/
+   2. Review medical_sources.json for validation references
+   3. Import into Unity Resources/AI_Generated/
+   4. Apply to anatomy prefabs via CompleteAnatomyManager.cs
+   5. Deploy to Quest 3 and test in VR
+

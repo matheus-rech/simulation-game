@@ -1,5 +1,5 @@
-import { useMemo, useEffect } from 'react'
-import { SphereGeometry } from 'three'
+import { useMemo, useEffect, useState } from 'react'
+import { SphereGeometry, Texture } from 'three'
 import {
   applyNoiseDistortion,
   applyNoiseVertexColors,
@@ -7,6 +7,7 @@ import {
   setNoiseSeed,
 } from './geometry/ProceduralGeometry'
 import { TissueType } from '../materials/TissueMaterials'
+import { loadAnatomyTexture } from '../materials/TextureLoader'
 
 /**
  * PituitaryAdenoma - Anatomically accurate pituitary tumor with pseudocapsule
@@ -53,6 +54,29 @@ export function PituitaryAdenoma({
   showPseudocapsule = true,
   lodLevel = 0,
 }: PituitaryAdenomaProps) {
+  // AI-generated textures from Nano Banana Pro (Gemini 3 Pro Image)
+  const [tumorTexture, setTumorTexture] = useState<Texture | null>(null)
+  const [pseudocapsuleTexture, setPseudocapsuleTexture] = useState<Texture | null>(null)
+
+  // Load AI-generated textures
+  useEffect(() => {
+    let mounted = true
+
+    // Load tumor texture (Knosp-2 classification)
+    loadAnatomyTexture('pituitaryAdenoma').then((texture) => {
+      if (mounted) setTumorTexture(texture)
+    })
+
+    // Load pseudocapsule texture (compressed normal tissue)
+    loadAnatomyTexture('pseudocapsule').then((texture) => {
+      if (mounted) setPseudocapsuleTexture(texture)
+    })
+
+    return () => {
+      mounted = false
+    }
+  }, [])
+
   // Set noise seed for reproducible tumor morphology
   useMemo(() => {
     setNoiseSeed(seed)
@@ -125,7 +149,8 @@ export function PituitaryAdenoma({
           userData={{ tissueType: TissueType.PSEUDOCAPSULE }}
         >
           <meshStandardMaterial
-            color="#c89090" // Pseudocapsule color (compressed tissue)
+            map={pseudocapsuleTexture} // AI-generated texture (84/100 quality)
+            color={pseudocapsuleTexture ? "#ffffff" : "#c89090"} // White when textured, fallback color
             roughness={0.45}
             metalness={0.0}
             opacity={0.8}
@@ -134,7 +159,7 @@ export function PituitaryAdenoma({
         </mesh>
       )}
 
-      {/* Tumor core with heterogeneous coloring */}
+      {/* Tumor core with AI-generated texture and heterogeneous coloring */}
       <mesh
         geometry={tumorGeometry}
         castShadow
@@ -142,10 +167,11 @@ export function PituitaryAdenoma({
         userData={{ tissueType: TissueType.TUMOR }}
       >
         <meshStandardMaterial
-          color="#d4a5a5" // Tumor color (pinkish-brown)
+          map={tumorTexture} // AI-generated Knosp-2 adenoma texture (84/100 quality)
+          color={tumorTexture ? "#ffffff" : "#d4a5a5"} // White when textured, fallback color
           roughness={0.6}
           metalness={0.0}
-          vertexColors // Use vertex colors for heterogeneity
+          vertexColors // Use vertex colors for additional heterogeneity
         />
       </mesh>
 

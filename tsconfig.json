@@ -26,5 +26,10 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["src"],
+  "exclude": [
+    "src/test/aiMentorTestUtils.ts",
+    "src/examples/**/*.tsx",
+    "src/components/3d/safety/__tests__/**"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

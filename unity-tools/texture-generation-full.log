@@ -1,0 +1,44 @@
+
+🚀 Starting AI-Powered Anatomy Texture Generation Pipeline
+   Model: Gemini 3 Pro Image (Nano Banana Pro)
+   Validation: Gemini 3 Pro + Google Search Grounding
+   Target: Unity VR + Three.js Web Platform
+
+
+============================================================
+GENERATING: nasal-septum
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ✅ APPROVED
+   Sources consulted: 3 medical references
+
+🔄 Attempt 1/3 for nasal-septum
+
+🎨 Generating texture: nasal-septum (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 89/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 89/100)
+   Medical sources: 3 references
+💾 Saved: nasal-septum_standard.png (598.4 KB)
+📚 Medical sources: 6 references
+
+============================================================
+GENERATING: nasal-turbinate
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ❌ REJECTED
+   Issues found: Specificity: 'Nasal-turbinate' is too generic. In transsphenoidal pituitary surgery, the Middle Turbinate and Superior Turbinate are the critical landmarks. A generic generation may result in a non-specific polyp-like shape., Physiological State: The prompt lacks description of the mucosal surface properties essential for photorealism, specifically 'specular highlights' (wetness/mucus) and 'submucosal vascularity'., Color Accuracy: While 'tissue color' is requested, specifying 'pink-to-red respiratory mucosa' prevents the AI from generating overly pale or necrotic-looking tissue., Lighting Physics: While 5500K is correct, explicit mention of 'peripheral vignetting' and 'specular reflection' is needed to sell the 'endoscope' effect over a standard camera photo.
+   Sources consulted: 3 medical references
+⚠️ Initial prompt rejected, using refined version...
+
+🔄 Attempt 1/3 for nasal-turbinate
+
+🎨 Generating texture: nasal-turbinate (endoscope view, standard)
