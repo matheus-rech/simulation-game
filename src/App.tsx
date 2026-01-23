@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect } from "react";
+import React, { useCallback, useMemo, useState, useEffect, useRef } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
 import { CrisisEvent } from "./components/3d/collision/types";
@@ -7,6 +7,10 @@ import { SafetyZone } from "./components/3d/safety/SafetyCorridorManager";
 import { TechniqueScoring } from "./components/ui/TechniqueScoring";
 import { CurriculumMode, CertificationBadge, ModuleType, CurriculumProgress } from "./components/ui/CurriculumMode";
 import { preloadAllTextures } from "./components/3d/materials/TextureLoader";
+import { CaseSelector } from "./components/ui/CaseSelector";
+import { SurgicalInterface } from "./components/ui/SurgicalInterface";
+import { TaskManager, TaskProgress } from "./services/TaskManager";
+import { PatientCase } from "./data/patientCases";
 
 const initialTipPosition: Vector3D = { x: 0, y: 0, z: 1.2 };
 
@@ -144,7 +148,7 @@ export default function App() {
   const [crisisCount, setCrisisCount] = useState(0);
 
   // Phase 1C: Curriculum Mode
-  const [curriculumMode, setCurriculumMode] = useState(true); // Enable by default
+  const [curriculumMode, setCurriculumMode] = useState(false); // Disabled by default (using serious game mode)
   const [currentModule, setCurrentModule] = useState<ModuleType>(ModuleType.ANATOMICAL_RECOGNITION);
   const [curriculumProgress, setCurriculumProgress] = useState<CurriculumProgress>({
     currentModule: ModuleType.ANATOMICAL_RECOGNITION,
@@ -153,6 +157,12 @@ export default function App() {
     overallScore: 0
   });
   const [showCertification, setShowCertification] = useState(false);
+
+  // Serious Game Mode - Patient Case System
+  const [selectedCase, setSelectedCase] = useState<PatientCase | null>(null);
+  const [completedCaseIds, setCompletedCaseIds] = useState<string[]>([]);
+  const [taskProgress, setTaskProgress] = useState<TaskProgress | null>(null);
+  const taskManagerRef = useRef<TaskManager | null>(null);
 
   const rotationZ = useMemo(() => scopeAngle.yaw * 0.2, [scopeAngle.yaw]);
 
@@ -233,6 +243,93 @@ export default function App() {
     setShowCertification(true);
   }, []);
 
+  // Serious Game Mode Handlers
+  const handleCaseSelected = useCallback((patientCase: PatientCase) => {
+    setSelectedCase(patientCase);
+
+    // Initialize TaskManager
+    const taskManager = new TaskManager(
+      patientCase,
+      (progress) => {
+        setTaskProgress(progress);
+        setScore(progress.score);
+      },
+      (feedback) => {
+        console.log(`📋 ${feedback.type.toUpperCase()}: ${feedback.message}`);
+        // TODO: Display feedback in UI (toast notification)
+      }
+    );
+
+    taskManagerRef.current = taskManager;
+    setTaskProgress(taskManager.getProgress());
+
+    // Set level based on first phase
+    setLevel(1);
+
+    // Reset simulation state
+    setScore(100);
+    setCollisionCount(0);
+    setCrisisCount(0);
+    setLastCollision(null);
+    setScopeAngle({ pitch: 0.05, yaw: 0 });
+    setTipPosition(initialTipPosition);
+
+    console.log(`🏥 Starting case: ${patientCase.name} (${patientCase.diagnosis})`);
+  }, []);
+
+  const handleExitCase = useCallback(() => {
+    if (taskManagerRef.current) {
+      // Save completion if all objectives completed
+      if (taskManagerRef.current.isCompleted()) {
+        setCompletedCaseIds(prev => [...prev, selectedCase!.id]);
+        console.log(`✅ Case completed: ${selectedCase!.name}`);
+      }
+    }
+
+    setSelectedCase(null);
+    setTaskProgress(null);
+    taskManagerRef.current = null;
+    setLevel(1);
+    setScore(100);
+  }, [selectedCase]);
+
+  // Wire collision system to TaskManager
+  const handleRaycastCollisionWithTask = useCallback((point: Vector3D) => {
+    setLastCollision(point);
+    setCollisionCount((count) => count + 1);
+
+    if (taskManagerRef.current) {
+      // Apply penalty through TaskManager
+      taskManagerRef.current.applyPenalty(-2, 'Tissue contact detected');
+    } else {
+      // Fallback to old system
+      setScore((prev) => Math.max(prev - 2, 0));
+    }
+  }, []);
+
+  const handleCrisisWithTask = useCallback((crisis: CrisisEvent) => {
+    setActiveCrisis(crisis);
+    setCrisisCount((prev) => prev + 1);
+
+    if (taskManagerRef.current) {
+      // Apply crisis penalty through TaskManager
+      taskManagerRef.current.applyPenalty(-50, `CRISIS: ${crisis.description}`);
+    } else {
+      // Fallback to old system
+      setScore((prev) => Math.max(prev - 50, 0));
+    }
+  }, []);
+
+  // Show case selector if no case is selected and not in curriculum mode
+  if (!selectedCase && !curriculumMode) {
+    return (
+      <CaseSelector
+        onCaseSelected={handleCaseSelected}
+        completedCaseIds={completedCaseIds}
+      />
+    );
+  }
+
   return (
     <div style={{ height: "100vh", width: "100vw", background: "#0f0a0a" }}>
       {/* Crisis Alert Banner */}
@@ -243,81 +340,97 @@ export default function App() {
         </div>
       )}
 
-      <section aria-label="Simulation Status" style={styles.overlay}>
-        <dl style={styles.statsList}>
-          <div style={styles.statItem}>
-            <dt style={styles.statLabel}>Level</dt>
-            <dd style={styles.statValue} aria-live="polite">{level}</dd>
-          </div>
-          <div style={styles.statItem}>
-            <dt style={styles.statLabel}>Score</dt>
-            <dd style={styles.statValue} aria-live="polite">{score}</dd>
-          </div>
-          <div style={styles.statItem}>
-            <dt style={styles.statLabel}>Collisions</dt>
-            <dd style={styles.statValue} aria-live="polite">{collisionCount}</dd>
-          </div>
-        </dl>
-
-        <nav aria-label="Controls" style={styles.controls}>
-          <HUDButton onClick={() => setCurriculumMode(!curriculumMode)}>
-            {curriculumMode ? '📚 Curriculum' : '🎮 Free Play'}
-          </HUDButton>
-          {!curriculumMode && (
-            <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
-              Advance Level
-            </HUDButton>
-          )}
-          <HUDButton
-            onClick={() => {
-              setScopeAngle({ pitch: 0.05, yaw: 0 });
-              setTipPosition(initialTipPosition);
-              setLastCollision(null);
-            }}
-          >
-            Reset Scope
-          </HUDButton>
-        </nav>
-      </section>
-
-      {/* Safety Corridor HUD */}
-      <SafetyHUD
-        safetyZones={safetyZones}
-        visible={level >= 2}
-        compact={false}
-      />
-
-      {/* Phase 1B: Technique Scoring System */}
-      <TechniqueScoring
-        safetyZones={safetyZones}
-        collisionCount={collisionCount}
-        crisisCount={crisisCount}
-        elapsedTime={elapsedTime}
-        level={level}
-        compact={false}
-      />
-
-      {/* Phase 1C: Curriculum Mode */}
-      {curriculumMode && (
-        <CurriculumMode
-          visible={true}
-          currentModule={currentModule}
-          progress={curriculumProgress}
-          techniqueScore={score}
-          collisionCount={collisionCount}
-          crisisCount={crisisCount}
-          elapsedTime={elapsedTime}
-          safetyZones={safetyZones}
-          onModuleComplete={handleModuleComplete}
-          onCertificationAchieved={handleCertificationAchieved}
+      {/* Serious Game Mode - OR-Style Interface */}
+      {selectedCase && taskProgress && (
+        <SurgicalInterface
+          patientCase={selectedCase}
+          taskProgress={taskProgress}
+          currentObjective={taskManagerRef.current?.getCurrentObjective() || null}
+          elapsedTime={taskManagerRef.current?.getElapsedTime() || 0}
+          timeRemaining={taskManagerRef.current?.getTotalTimeRemaining() || 0}
+          phaseProgress={taskManagerRef.current?.getPhaseProgress() || 0}
+          onExitCase={handleExitCase}
         />
       )}
 
-      {/* Certification Badge */}
-      <CertificationBadge
-        visible={showCertification}
-        onClose={() => setShowCertification(false)}
-      />
+      {/* Legacy UI - Only show when in curriculum mode or no case selected */}
+      {!selectedCase && curriculumMode && (
+        <>
+          <section aria-label="Simulation Status" style={styles.overlay}>
+            <dl style={styles.statsList}>
+              <div style={styles.statItem}>
+                <dt style={styles.statLabel}>Level</dt>
+                <dd style={styles.statValue} aria-live="polite">{level}</dd>
+              </div>
+              <div style={styles.statItem}>
+                <dt style={styles.statLabel}>Score</dt>
+                <dd style={styles.statValue} aria-live="polite">{score}</dd>
+              </div>
+              <div style={styles.statItem}>
+                <dt style={styles.statLabel}>Collisions</dt>
+                <dd style={styles.statValue} aria-live="polite">{collisionCount}</dd>
+              </div>
+            </dl>
+
+            <nav aria-label="Controls" style={styles.controls}>
+              <HUDButton onClick={() => setCurriculumMode(!curriculumMode)}>
+                {curriculumMode ? '📚 Curriculum' : '🎮 Serious Game'}
+              </HUDButton>
+              {!curriculumMode && (
+                <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
+                  Advance Level
+                </HUDButton>
+              )}
+              <HUDButton
+                onClick={() => {
+                  setScopeAngle({ pitch: 0.05, yaw: 0 });
+                  setTipPosition(initialTipPosition);
+                  setLastCollision(null);
+                }}
+              >
+                Reset Scope
+              </HUDButton>
+            </nav>
+          </section>
+
+          {/* Safety Corridor HUD */}
+          <SafetyHUD
+            safetyZones={safetyZones}
+            visible={level >= 2}
+            compact={false}
+          />
+
+          {/* Phase 1B: Technique Scoring System */}
+          <TechniqueScoring
+            safetyZones={safetyZones}
+            collisionCount={collisionCount}
+            crisisCount={crisisCount}
+            elapsedTime={elapsedTime}
+            level={level}
+            compact={false}
+          />
+
+          {/* Phase 1C: Curriculum Mode */}
+          <CurriculumMode
+            visible={true}
+            currentModule={currentModule}
+            progress={curriculumProgress}
+            techniqueScore={score}
+            collisionCount={collisionCount}
+            crisisCount={crisisCount}
+            elapsedTime={elapsedTime}
+            safetyZones={safetyZones}
+            onModuleComplete={handleModuleComplete}
+            onCertificationAchieved={handleCertificationAchieved}
+          />
+
+          {/* Certification Badge */}
+          <CertificationBadge
+            visible={showCertification}
+            onClose={() => setShowCertification(false)}
+          />
+        </>
+      )}
 
       <EndoscopeView
         level={level}
@@ -325,8 +438,8 @@ export default function App() {
         tipPosition={tipPosition}
         rotationZ={rotationZ}
         collision={lastCollision}
-        onRaycastCollision={handleRaycastCollision}
-        onCrisis={handleCrisis}
+        onRaycastCollision={selectedCase ? handleRaycastCollisionWithTask : handleRaycastCollision}
+        onCrisis={selectedCase ? handleCrisisWithTask : handleCrisis}
         onSafetyChange={setSafetyZones}
         showSafetySpheres={false}
       />
