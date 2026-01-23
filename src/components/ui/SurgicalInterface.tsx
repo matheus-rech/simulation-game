@@ -1,7 +1,6 @@
 /**
  * Surgical Interface - Immersive OR-style UI overlay
- *
- * Replaces basic HUD with operating room context
+ * Using inline styles (no Tailwind dependency)
  */
 
 import { PatientCase, SurgicalObjective } from '../../data/patientCases';
@@ -17,6 +16,12 @@ interface SurgicalInterfaceProps {
   onExitCase: () => void;
 }
 
+const formatTime = (seconds: number): string => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
 export function SurgicalInterface({
   patientCase,
   taskProgress,
@@ -26,61 +31,74 @@ export function SurgicalInterface({
   phaseProgress,
   onExitCase,
 }: SurgicalInterfaceProps) {
-  const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  const getTimeColor = (): string => {
+    if (timeRemaining < 300) return '#f87171'; // <5 min - red
+    if (timeRemaining < 900) return '#fbbf24'; // <15 min - yellow
+    return '#34d399'; // green
   };
 
-  const getTimeColor = (): string => {
-    if (timeRemaining < 300) return 'text-red-400'; // <5 min
-    if (timeRemaining < 900) return 'text-yellow-400'; // <15 min
-    return 'text-green-400';
-  };
+  const timeColor = getTimeColor();
 
   return (
-    <div className="fixed inset-0 pointer-events-none">
-      {/* Top Bar - Patient Info & Timer */}
-      <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent p-4 pointer-events-auto">
-        <div className="flex items-center justify-between max-w-screen-xl mx-auto">
-          {/* Patient Info */}
-          <div className="flex items-center gap-6">
-            <div className="bg-blue-600/20 border border-blue-500 rounded-lg px-4 py-2">
-              <div className="text-xs text-blue-300">PATIENT</div>
-              <div className="text-white font-bold">{patientCase.name}, {patientCase.age}</div>
+    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', fontFamily: "'Segoe UI', sans-serif" }}>
+      {/* Top Bar */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)',
+        padding: '16px',
+        pointerEvents: 'auto',
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+            <div style={{ background: 'rgba(37, 99, 235, 0.2)', border: '1px solid #3b82f6', borderRadius: '8px', padding: '8px 16px' }}>
+              <div style={{ fontSize: '0.75rem', color: '#93c5fd' }}>PATIENT</div>
+              <div style={{ color: 'white', fontWeight: 700 }}>{patientCase.name}, {patientCase.age}</div>
             </div>
 
-            <div className="bg-purple-600/20 border border-purple-500 rounded-lg px-4 py-2">
-              <div className="text-xs text-purple-300">DIAGNOSIS</div>
-              <div className="text-white font-semibold text-sm">{patientCase.tumorType}</div>
+            <div style={{ background: 'rgba(147, 51, 234, 0.2)', border: '1px solid #a855f7', borderRadius: '8px', padding: '8px 16px' }}>
+              <div style={{ fontSize: '0.75rem', color: '#e9d5ff' }}>DIAGNOSIS</div>
+              <div style={{ color: 'white', fontWeight: 600, fontSize: '0.875rem' }}>{patientCase.tumorType}</div>
             </div>
 
-            <div className="bg-amber-600/20 border border-amber-500 rounded-lg px-4 py-2">
-              <div className="text-xs text-amber-300">TUMOR SIZE</div>
-              <div className="text-white font-bold">{patientCase.tumorSize} cm</div>
+            <div style={{ background: 'rgba(245, 158, 11, 0.2)', border: '1px solid #f59e0b', borderRadius: '8px', padding: '8px 16px' }}>
+              <div style={{ fontSize: '0.75rem', color: '#fcd34d' }}>TUMOR SIZE</div>
+              <div style={{ color: 'white', fontWeight: 700 }}>{patientCase.tumorSize} cm</div>
             </div>
           </div>
 
-          {/* Timer & Score */}
-          <div className="flex items-center gap-4">
-            <div className="bg-slate-800/90 border border-slate-600 rounded-lg px-4 py-2 min-w-[120px]">
-              <div className="text-xs text-gray-400">ELAPSED</div>
-              <div className="text-white font-mono text-xl">{formatTime(elapsedTime)}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ background: 'rgba(15, 23, 42, 0.9)', border: '1px solid #475569', borderRadius: '8px', padding: '8px 16px', minWidth: '120px' }}>
+              <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>ELAPSED</div>
+              <div style={{ color: 'white', fontFamily: 'monospace', fontSize: '1.25rem' }}>{formatTime(elapsedTime)}</div>
             </div>
 
-            <div className={`bg-slate-800/90 border ${timeRemaining < 300 ? 'border-red-500' : 'border-slate-600'} rounded-lg px-4 py-2 min-w-[120px]`}>
-              <div className="text-xs text-gray-400">REMAINING</div>
-              <div className={`${getTimeColor()} font-mono text-xl`}>{formatTime(timeRemaining)}</div>
+            <div style={{ background: 'rgba(15, 23, 42, 0.9)', border: timeRemaining < 300 ? '1px solid #ef4444' : '1px solid #475569', borderRadius: '8px', padding: '8px 16px', minWidth: '120px' }}>
+              <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>REMAINING</div>
+              <div style={{ color: timeColor, fontFamily: 'monospace', fontSize: '1.25rem' }}>{formatTime(timeRemaining)}</div>
             </div>
 
-            <div className="bg-green-600/20 border border-green-500 rounded-lg px-4 py-2 min-w-[100px]">
-              <div className="text-xs text-green-300">SCORE</div>
-              <div className="text-white font-bold text-2xl">{taskProgress.score}</div>
+            <div style={{ background: 'rgba(16, 185, 129, 0.2)', border: '1px solid #10b981', borderRadius: '8px', padding: '8px 16px', minWidth: '100px' }}>
+              <div style={{ fontSize: '0.75rem', color: '#6ee7b7' }}>SCORE</div>
+              <div style={{ color: 'white', fontWeight: 700, fontSize: '1.5rem' }}>{taskProgress.score}</div>
             </div>
 
             <button
               onClick={onExitCase}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+              style={{
+                background: '#dc2626',
+                color: 'white',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = '#b91c1c'}
+              onMouseLeave={(e) => e.currentTarget.style.background = '#dc2626'}
             >
               Exit Case
             </button>
@@ -88,57 +106,88 @@ export function SurgicalInterface({
         </div>
       </div>
 
-      {/* Left Sidebar - Objectives & Phase Progress */}
-      <div className="absolute left-0 top-20 bottom-20 w-80 p-4 pointer-events-auto">
-        <div className="bg-slate-900/90 border border-slate-700 rounded-lg p-4 h-full overflow-y-auto">
+      {/* Left Sidebar - Objectives */}
+      <div style={{
+        position: 'absolute',
+        left: 0,
+        top: '80px',
+        bottom: '80px',
+        width: '320px',
+        padding: '16px',
+        pointerEvents: 'auto',
+      }}>
+        <div style={{
+          background: 'rgba(15, 23, 42, 0.9)',
+          border: '1px solid #475569',
+          borderRadius: '8px',
+          padding: '16px',
+          height: '100%',
+          overflowY: 'auto',
+        }}>
           {/* Phase Indicator */}
-          <div className="mb-6">
-            <div className="text-xs text-gray-400 uppercase tracking-wide mb-2">Surgical Phase</div>
-            <div className="text-2xl font-bold text-white mb-2">
+          <div style={{ marginBottom: '24px' }}>
+            <div style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+              Surgical Phase
+            </div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'white', marginBottom: '8px' }}>
               Phase {taskProgress.currentPhase} of {Math.max(...patientCase.objectives.map(o => o.phase))}
             </div>
             {currentObjective && (
-              <div className="text-blue-300 text-sm">{currentObjective.title}</div>
+              <div style={{ color: '#93c5fd', fontSize: '0.875rem' }}>{currentObjective.title}</div>
             )}
 
-            {/* Phase Progress Bar */}
-            <div className="mt-3 bg-slate-800 rounded-full h-2 overflow-hidden">
-              <div
-                className="bg-blue-500 h-full transition-all duration-500"
-                style={{ width: `${phaseProgress}%` }}
-              />
+            {/* Progress Bar */}
+            <div style={{ marginTop: '12px', background: '#1e293b', borderRadius: '999px', height: '8px', overflow: 'hidden' }}>
+              <div style={{
+                background: '#3b82f6',
+                height: '100%',
+                width: `${phaseProgress}%`,
+                transition: 'width 0.5s',
+              }} />
             </div>
-            <div className="text-xs text-gray-400 mt-1">{Math.round(phaseProgress)}% Complete</div>
+            <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '4px' }}>
+              {Math.round(phaseProgress)}% Complete
+            </div>
           </div>
 
           {/* Current Objective */}
           {currentObjective && (
-            <div className="mb-6 bg-blue-600/10 border border-blue-500 rounded-lg p-4">
-              <div className="text-xs text-blue-300 uppercase tracking-wide mb-2">Current Objective</div>
-              <div className="text-white font-semibold mb-2">{currentObjective.title}</div>
-              <div className="text-sm text-gray-300 mb-3">{currentObjective.description}</div>
+            <div style={{
+              marginBottom: '24px',
+              background: 'rgba(59, 130, 246, 0.1)',
+              border: '1px solid #3b82f6',
+              borderRadius: '8px',
+              padding: '16px',
+            }}>
+              <div style={{ fontSize: '0.75rem', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+                Current Objective
+              </div>
+              <div style={{ color: 'white', fontWeight: 600, marginBottom: '8px' }}>{currentObjective.title}</div>
+              <div style={{ fontSize: '0.875rem', color: '#d1d5db', marginBottom: '12px' }}>{currentObjective.description}</div>
 
-              <div className="text-xs text-gray-400 mb-2">Required Actions:</div>
-              <ul className="space-y-1">
+              <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '8px' }}>Required Actions:</div>
+              <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
                 {currentObjective.requiredActions.map((action, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-gray-300">
-                    <span className="text-blue-400">▸</span>
+                  <li key={idx} style={{ display: 'flex', gap: '8px', fontSize: '0.875rem', color: '#d1d5db', marginBottom: '4px' }}>
+                    <span style={{ color: '#60a5fa' }}>▸</span>
                     <span>{action}</span>
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-3 pt-3 border-t border-blue-500/30">
-                <div className="text-xs text-gray-400">Success Criteria:</div>
-                <div className="text-sm text-green-300 mt-1">{currentObjective.successCriteria}</div>
+              <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid rgba(59, 130, 246, 0.3)' }}>
+                <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>Success Criteria:</div>
+                <div style={{ fontSize: '0.875rem', color: '#6ee7b7', marginTop: '4px' }}>{currentObjective.successCriteria}</div>
               </div>
             </div>
           )}
 
           {/* All Objectives List */}
           <div>
-            <div className="text-xs text-gray-400 uppercase tracking-wide mb-3">All Objectives</div>
-            <div className="space-y-2">
+            <div style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+              All Objectives
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {patientCase.objectives.map((objective) => {
                 const isCompleted = taskProgress.completedObjectives.includes(objective.id);
                 const isCurrent = currentObjective?.id === objective.id;
@@ -146,27 +195,29 @@ export function SurgicalInterface({
                 return (
                   <div
                     key={objective.id}
-                    className={`
-                      p-3 rounded border
-                      ${isCurrent ? 'bg-blue-600/20 border-blue-500' : 'bg-slate-800/50 border-slate-700'}
-                      ${isCompleted ? 'opacity-60' : ''}
-                    `}
+                    style={{
+                      padding: '12px',
+                      borderRadius: '6px',
+                      border: isCurrent ? '1px solid #3b82f6' : '1px solid #475569',
+                      background: isCurrent ? 'rgba(59, 130, 246, 0.2)' : 'rgba(30, 41, 59, 0.5)',
+                      opacity: isCompleted ? 0.6 : 1,
+                    }}
                   >
-                    <div className="flex items-start gap-2">
-                      <div className="flex-shrink-0 mt-0.5">
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                      <div style={{ flexShrink: 0, marginTop: '2px' }}>
                         {isCompleted ? (
-                          <span className="text-green-400">✓</span>
+                          <span style={{ color: '#10b981' }}>✓</span>
                         ) : isCurrent ? (
-                          <span className="text-blue-400">▸</span>
+                          <span style={{ color: '#60a5fa' }}>▸</span>
                         ) : (
-                          <span className="text-gray-600">○</span>
+                          <span style={{ color: '#4b5563' }}>○</span>
                         )}
                       </div>
-                      <div className="flex-1">
-                        <div className="text-sm font-semibold text-white">
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'white' }}>
                           {objective.title}
                         </div>
-                        <div className="text-xs text-gray-400 mt-0.5">
+                        <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '2px' }}>
                           Phase {objective.phase}
                         </div>
                       </div>
@@ -180,35 +231,47 @@ export function SurgicalInterface({
       </div>
 
       {/* Right Sidebar - Vital Signs & Instruments */}
-      <div className="absolute right-0 top-20 bottom-20 w-72 p-4 pointer-events-auto">
-        <div className="space-y-4 h-full flex flex-col">
-          {/* Vital Signs Monitor */}
-          <div className="bg-slate-900/90 border border-slate-700 rounded-lg p-4">
-            <div className="text-xs text-gray-400 uppercase tracking-wide mb-3">Vital Signs</div>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-300">Heart Rate</span>
-                <span className="text-green-400 font-mono font-bold">75 bpm</span>
+      <div style={{
+        position: 'absolute',
+        right: 0,
+        top: '80px',
+        bottom: '80px',
+        width: '288px',
+        padding: '16px',
+        pointerEvents: 'auto',
+      }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
+          {/* Vital Signs */}
+          <div style={{ background: 'rgba(15, 23, 42, 0.9)', border: '1px solid #475569', borderRadius: '8px', padding: '16px' }}>
+            <div style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+              Vital Signs
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.875rem', color: '#d1d5db' }}>Heart Rate</span>
+                <span style={{ color: '#34d399', fontFamily: 'monospace', fontWeight: 700 }}>75 bpm</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-300">Blood Pressure</span>
-                <span className="text-green-400 font-mono font-bold">120/80</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.875rem', color: '#d1d5db' }}>Blood Pressure</span>
+                <span style={{ color: '#34d399', fontFamily: 'monospace', fontWeight: 700 }}>120/80</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-300">O₂ Saturation</span>
-                <span className="text-green-400 font-mono font-bold">98%</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.875rem', color: '#d1d5db' }}>O₂ Saturation</span>
+                <span style={{ color: '#34d399', fontFamily: 'monospace', fontWeight: 700 }}>98%</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-300">Est. Blood Loss</span>
-                <span className="text-yellow-400 font-mono font-bold">50 mL</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.875rem', color: '#d1d5db' }}>Est. Blood Loss</span>
+                <span style={{ color: '#fbbf24', fontFamily: 'monospace', fontWeight: 700 }}>50 mL</span>
               </div>
             </div>
           </div>
 
           {/* Instrument Tray */}
-          <div className="bg-slate-900/90 border border-slate-700 rounded-lg p-4 flex-1">
-            <div className="text-xs text-gray-400 uppercase tracking-wide mb-3">Surgical Instruments</div>
-            <div className="grid grid-cols-2 gap-2">
+          <div style={{ background: 'rgba(15, 23, 42, 0.9)', border: '1px solid #475569', borderRadius: '8px', padding: '16px', flex: 1 }}>
+            <div style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+              Surgical Instruments
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
               {[
                 { name: 'Endoscope', icon: '🔬', active: true },
                 { name: 'Suction', icon: '💨', active: false },
@@ -219,49 +282,79 @@ export function SurgicalInterface({
               ].map((instrument) => (
                 <button
                   key={instrument.name}
-                  className={`
-                    p-3 rounded border text-center transition-all
-                    ${instrument.active
-                      ? 'bg-blue-600/30 border-blue-500 text-white'
-                      : 'bg-slate-800/50 border-slate-600 text-gray-400 hover:bg-slate-700/50'
+                  style={{
+                    padding: '12px',
+                    borderRadius: '6px',
+                    border: instrument.active ? '1px solid #3b82f6' : '1px solid #475569',
+                    background: instrument.active ? 'rgba(59, 130, 246, 0.3)' : 'rgba(30, 41, 59, 0.5)',
+                    color: instrument.active ? 'white' : '#9ca3af',
+                    textAlign: 'center',
+                    transition: 'all 0.2s',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!instrument.active) {
+                      e.currentTarget.style.background = 'rgba(51, 65, 85, 0.5)';
                     }
-                  `}
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!instrument.active) {
+                      e.currentTarget.style.background = 'rgba(30, 41, 59, 0.5)';
+                    }
+                  }}
                 >
-                  <div className="text-2xl mb-1">{instrument.icon}</div>
-                  <div className="text-xs">{instrument.name}</div>
+                  <div style={{ fontSize: '1.5rem', marginBottom: '4px' }}>{instrument.icon}</div>
+                  <div style={{ fontSize: '0.75rem' }}>{instrument.name}</div>
                 </button>
               ))}
             </div>
 
-            <div className="mt-4 p-2 bg-amber-600/20 border border-amber-500 rounded text-xs text-amber-200">
+            <div style={{ marginTop: '16px', padding: '8px', background: 'rgba(245, 158, 11, 0.2)', border: '1px solid #f59e0b', borderRadius: '4px', fontSize: '0.75rem', color: '#fcd34d' }}>
               💡 Instrument selection coming in next update
             </div>
           </div>
 
           {/* Critical Structures Warning */}
-          <div className="bg-red-600/20 border border-red-500 rounded-lg p-3">
-            <div className="text-xs text-red-300 uppercase tracking-wide mb-2">⚠️ Critical Structures</div>
-            <div className="space-y-1">
+          <div style={{ background: 'rgba(220, 38, 38, 0.2)', border: '1px solid #ef4444', borderRadius: '8px', padding: '12px' }}>
+            <div style={{ fontSize: '0.75rem', color: '#fca5a5', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+              ⚠️ Critical Structures
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {patientCase.criticalStructures.slice(0, 3).map((structure, idx) => (
-                <div key={idx} className="text-xs text-red-200">• {structure}</div>
+                <div key={idx} style={{ fontSize: '0.75rem', color: '#fecaca' }}>• {structure}</div>
               ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar - Mentor Feedback */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pointer-events-auto">
-        <div className="max-w-screen-xl mx-auto">
-          <div className="bg-slate-800/90 border border-blue-500 rounded-lg p-3 flex items-center gap-3">
-            <div className="text-2xl">🤖</div>
+      {/* Bottom Bar - AI Mentor */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+        padding: '16px',
+        pointerEvents: 'auto',
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{
+            background: 'rgba(30, 41, 59, 0.9)',
+            border: '1px solid #3b82f6',
+            borderRadius: '8px',
+            padding: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+          }}>
+            <div style={{ fontSize: '1.5rem' }}>🤖</div>
             <div>
-              <div className="text-xs text-blue-300">AI SURGICAL MENTOR</div>
-              <div className="text-white text-sm">
+              <div style={{ fontSize: '0.75rem', color: '#93c5fd' }}>AI SURGICAL MENTOR</div>
+              <div style={{ color: 'white', fontSize: '0.875rem' }}>
                 {currentObjective
                   ? `Focus on: ${currentObjective.description}`
-                  : 'Awaiting next objective...'
-                }
+                  : 'Awaiting next objective...'}
               </div>
             </div>
           </div>
