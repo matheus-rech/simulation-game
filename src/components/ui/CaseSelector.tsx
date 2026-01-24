@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { PatientCase, CaseDifficulty, KnospGrade, getAvailableCases, ALL_CASES } from '../../data/patientCases';
+import { PatientCase, CaseDifficulty, getAvailableCases, ALL_CASES } from '../../data/patientCases';
 
 interface CaseSelectorProps {
   onCaseSelected: (patientCase: PatientCase) => void;
@@ -118,7 +118,7 @@ const styles = {
   },
   list: {
     listStyle: 'disc',
-    listStylePosition: 'inside',
+    listStylePosition: 'inside' as const,
     color: '#d1d5db',
   },
   startButton: {
@@ -165,13 +165,21 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
             const isSelected = selectedCase?.id === patientCase.id;
 
             return (
-              <div
+              <button
                 key={patientCase.id}
-                onClick={() => isAvailable && setSelectedCase(patientCase)}
+                type="button"
+                disabled={isLocked}
+                aria-pressed={isSelected}
+                aria-labelledby={`case-title-${patientCase.id}`}
+                onClick={() => setSelectedCase(patientCase)}
                 style={{
                   ...styles.caseCard,
                   ...(isSelected ? styles.caseCardSelected : {}),
                   ...(isLocked ? styles.caseCardLocked : {}),
+                  width: '100%',
+                  textAlign: 'left',
+                  fontFamily: 'inherit',
+                  color: 'inherit',
                 }}
                 onMouseEnter={(e) => {
                   if (isAvailable && !isSelected) {
@@ -180,6 +188,19 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                   }
                 }}
                 onMouseLeave={(e) => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  }
+                }}
+                onFocus={(e) => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.borderColor = '#93c5fd';
+                    e.currentTarget.style.outline = 'none';
+                  }
+                }}
+                onBlur={(e) => {
                   if (isAvailable && !isSelected) {
                     e.currentTarget.style.transform = 'scale(1)';
                     e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
@@ -216,7 +237,9 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                   {patientCase.difficulty.toUpperCase()}
                 </div>
 
-                <h3 style={styles.patientName}>{patientCase.name}</h3>
+                <h3 id={`case-title-${patientCase.id}`} style={styles.patientName}>
+                  {patientCase.name}
+                </h3>
                 <p style={styles.patientInfo}>
                   {patientCase.age} year old {patientCase.gender === 'M' ? 'Male' : 'Female'}
                 </p>
@@ -242,7 +265,7 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                     </div>
                   </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
