@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { PatientCase, CaseDifficulty, KnospGrade, getAvailableCases, ALL_CASES } from '../../data/patientCases';
+import { PatientCase, CaseDifficulty, getAvailableCases, ALL_CASES } from '../../data/patientCases';
 
 interface CaseSelectorProps {
   onCaseSelected: (patientCase: PatientCase) => void;
@@ -55,6 +55,11 @@ const styles = {
     border: '2px solid rgba(255, 255, 255, 0.2)',
     cursor: 'pointer',
     transition: 'all 0.2s',
+    // Button resets
+    width: '100%',
+    textAlign: 'left' as const,
+    fontFamily: 'inherit',
+    appearance: 'none' as const,
   },
   caseCardSelected: {
     border: '2px solid #60a5fa',
@@ -134,7 +139,119 @@ const styles = {
     cursor: 'pointer',
     transition: 'background 0.2s',
   },
+  srOnly: {
+    position: 'absolute' as const,
+    width: '1px',
+    height: '1px',
+    padding: 0,
+    margin: '-1px',
+    overflow: 'hidden',
+    clip: 'rect(0, 0, 0, 0)',
+    whiteSpace: 'nowrap' as const,
+    borderWidth: 0,
+  },
 };
+
+interface CaseCardProps {
+  patientCase: PatientCase;
+  isAvailable: boolean;
+  isCompleted: boolean;
+  isSelected: boolean;
+  onSelect: (patientCase: PatientCase) => void;
+  getDifficultyColor: (difficulty: CaseDifficulty) => string;
+}
+
+function CaseCard({
+  patientCase,
+  isAvailable,
+  isCompleted,
+  isSelected,
+  onSelect,
+  getDifficultyColor
+}: CaseCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const isLocked = !isAvailable;
+
+  const currentStyle = {
+    ...styles.caseCard,
+    ...(isSelected ? styles.caseCardSelected : {}),
+    ...(isLocked ? styles.caseCardLocked : {}),
+    transform: (isHovered || isFocused) && isAvailable && !isSelected ? 'scale(1.05)' : 'scale(1)',
+    borderColor: (isHovered || isFocused) && isAvailable && !isSelected ? '#93c5fd' : (isSelected ? '#60a5fa' : 'rgba(255, 255, 255, 0.2)'),
+  };
+
+  return (
+    <button
+      onClick={() => isAvailable && onSelect(patientCase)}
+      disabled={isLocked}
+      style={currentStyle}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+    >
+      {isSelected && <span style={styles.srOnly}>Selected case: </span>}
+
+      {isLocked && (
+        <div style={styles.lockedOverlay}>
+          <div style={{ fontSize: '3rem', marginBottom: '8px' }}>🔒</div>
+          <div style={{ color: 'white', fontWeight: 600 }}>Locked</div>
+          <div style={{ fontSize: '0.75rem', color: '#d1d5db', marginTop: '4px' }}>
+            Complete previous case to unlock
+          </div>
+        </div>
+      )}
+
+      {isCompleted && (
+        <div style={{
+          position: 'absolute',
+          top: '16px',
+          right: '16px',
+          background: '#16a34a',
+          color: 'white',
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          padding: '4px 8px',
+          borderRadius: '4px',
+        }}>
+          ✓ COMPLETED
+        </div>
+      )}
+
+      <div style={{ ...styles.difficultyBadge, background: getDifficultyColor(patientCase.difficulty) }}>
+        {patientCase.difficulty.toUpperCase()}
+      </div>
+
+      <h3 style={styles.patientName}>{patientCase.name}</h3>
+      <p style={styles.patientInfo}>
+        {patientCase.age} year old {patientCase.gender === 'M' ? 'Male' : 'Female'}
+      </p>
+
+      <div style={{ fontSize: '0.875rem', color: '#d1d5db' }}>
+        <div style={{ marginBottom: '8px' }}>
+          <strong>Chief Complaint:</strong>
+          <p style={{ marginTop: '4px', color: '#9ca3af' }}>{patientCase.chiefComplaint}</p>
+        </div>
+
+        <div style={{ display: 'flex', gap: '16px', fontSize: '0.75rem', marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
+          <div>
+            <div style={{ fontWeight: 600, color: '#d1d5db' }}>Tumor Size</div>
+            <div>{patientCase.tumorSize} cm</div>
+          </div>
+          <div>
+            <div style={{ fontWeight: 600, color: '#d1d5db' }}>Knosp Grade</div>
+            <div>{patientCase.knospGrade}</div>
+          </div>
+          <div>
+            <div style={{ fontWeight: 600, color: '#d1d5db' }}>Time Limit</div>
+            <div>{patientCase.timeLimit} min</div>
+          </div>
+        </div>
+      </div>
+    </button>
+  );
+}
 
 export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorProps) {
   const [selectedCase, setSelectedCase] = useState<PatientCase | null>(null);
@@ -161,88 +278,18 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
           {ALL_CASES.map((patientCase) => {
             const isAvailable = availableCases.some(c => c.id === patientCase.id);
             const isCompleted = completedCaseIds.includes(patientCase.id);
-            const isLocked = !isAvailable;
             const isSelected = selectedCase?.id === patientCase.id;
 
             return (
-              <div
+              <CaseCard
                 key={patientCase.id}
-                onClick={() => isAvailable && setSelectedCase(patientCase)}
-                style={{
-                  ...styles.caseCard,
-                  ...(isSelected ? styles.caseCardSelected : {}),
-                  ...(isLocked ? styles.caseCardLocked : {}),
-                }}
-                onMouseEnter={(e) => {
-                  if (isAvailable && !isSelected) {
-                    e.currentTarget.style.transform = 'scale(1.05)';
-                    e.currentTarget.style.borderColor = '#93c5fd';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (isAvailable && !isSelected) {
-                    e.currentTarget.style.transform = 'scale(1)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                  }
-                }}
-              >
-                {isLocked && (
-                  <div style={styles.lockedOverlay}>
-                    <div style={{ fontSize: '3rem', marginBottom: '8px' }}>🔒</div>
-                    <div style={{ color: 'white', fontWeight: 600 }}>Locked</div>
-                    <div style={{ fontSize: '0.75rem', color: '#d1d5db', marginTop: '4px' }}>
-                      Complete previous case to unlock
-                    </div>
-                  </div>
-                )}
-
-                {isCompleted && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '16px',
-                    right: '16px',
-                    background: '#16a34a',
-                    color: 'white',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                  }}>
-                    ✓ COMPLETED
-                  </div>
-                )}
-
-                <div style={{ ...styles.difficultyBadge, background: getDifficultyColor(patientCase.difficulty) }}>
-                  {patientCase.difficulty.toUpperCase()}
-                </div>
-
-                <h3 style={styles.patientName}>{patientCase.name}</h3>
-                <p style={styles.patientInfo}>
-                  {patientCase.age} year old {patientCase.gender === 'M' ? 'Male' : 'Female'}
-                </p>
-
-                <div style={{ fontSize: '0.875rem', color: '#d1d5db' }}>
-                  <div style={{ marginBottom: '8px' }}>
-                    <strong>Chief Complaint:</strong>
-                    <p style={{ marginTop: '4px', color: '#9ca3af' }}>{patientCase.chiefComplaint}</p>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '16px', fontSize: '0.75rem', marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
-                    <div>
-                      <div style={{ fontWeight: 600, color: '#d1d5db' }}>Tumor Size</div>
-                      <div>{patientCase.tumorSize} cm</div>
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: 600, color: '#d1d5db' }}>Knosp Grade</div>
-                      <div>{patientCase.knospGrade}</div>
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: 600, color: '#d1d5db' }}>Time Limit</div>
-                      <div>{patientCase.timeLimit} min</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                patientCase={patientCase}
+                isAvailable={isAvailable}
+                isCompleted={isCompleted}
+                isSelected={isSelected}
+                onSelect={setSelectedCase}
+                getDifficultyColor={getDifficultyColor}
+              />
             );
           })}
         </div>
