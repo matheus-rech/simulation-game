@@ -1,0 +1,62 @@
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 15, reused 0, downloaded 10, added 0
+
+   ╭──────────────────────────────────────────╮
+   │                                          │
+   │   Update available! 10.28.0 → 10.28.1.   │
+   │   Changelog: https://pnpm.io/v/10.28.1   │
+   │     To update, run: pnpm add -g pnpm     │
+   │                                          │
+   ╰──────────────────────────────────────────╯
+
+Progress: resolved 22, reused 0, downloaded 21, added 0
+Progress: resolved 27, reused 0, downloaded 25, added 0
+Progress: resolved 64, reused 0, downloaded 56, added 0
+Progress: resolved 132, reused 0, downloaded 120, added 0
+Progress: resolved 191, reused 0, downloaded 160, added 0
+Progress: resolved 284, reused 0, downloaded 258, added 0
+Progress: resolved 445, reused 0, downloaded 372, added 0
+Packages: +412
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 461, reused 0, downloaded 412, added 412, done
+
+dependencies:
++ @anthropic-ai/sdk 0.71.2
++ @google/generative-ai 0.24.1
++ @react-three/drei 10.7.7
++ @react-three/fiber 9.5.0
++ @react-three/postprocessing 3.0.4
++ @react-three/rapier 2.2.0
++ @types/three 0.182.0
++ react 19.2.3
++ react-dom 19.2.3
++ three 0.182.0
++ three-bvh-csg 0.0.17
++ uuid 13.0.0
+
+devDependencies:
++ @testing-library/react 16.3.2
++ @types/react 19.2.9
++ @types/react-dom 19.2.3
++ @typescript-eslint/eslint-plugin 8.53.1
++ @typescript-eslint/parser 8.53.1
++ @vitejs/plugin-react 5.1.2
++ @vitest/coverage-v8 4.0.18
++ @vitest/ui 4.0.18
++ eslint 9.39.2
++ eslint-plugin-react 7.37.5
++ eslint-plugin-react-hooks 7.0.1
++ happy-dom 20.3.7
++ prettier 3.8.1
++ typescript 5.9.3
++ vite 7.3.1
++ vitest 4.0.18
+
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Ignored build scripts: esbuild@0.27.2.                                     │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Done in 11.2s using pnpm v10.28.0
