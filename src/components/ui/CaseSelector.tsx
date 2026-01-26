@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { PatientCase, CaseDifficulty, KnospGrade, getAvailableCases, ALL_CASES } from '../../data/patientCases';
+import { PatientCase, CaseDifficulty, getAvailableCases, ALL_CASES } from '../../data/patientCases';
 
 interface CaseSelectorProps {
   onCaseSelected: (patientCase: PatientCase) => void;
@@ -118,7 +118,7 @@ const styles = {
   },
   list: {
     listStyle: 'disc',
-    listStylePosition: 'inside',
+    listStylePosition: 'inside' as const,
     color: '#d1d5db',
   },
   startButton: {
@@ -165,22 +165,42 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
             const isSelected = selectedCase?.id === patientCase.id;
 
             return (
-              <div
+              <button
                 key={patientCase.id}
-                onClick={() => isAvailable && setSelectedCase(patientCase)}
+                type="button"
+                disabled={isLocked}
+                aria-pressed={isSelected}
+                onClick={() => setSelectedCase(patientCase)}
                 style={{
                   ...styles.caseCard,
+                  width: '100%',
+                  textAlign: 'left',
+                  display: 'block',
+                  fontFamily: 'inherit',
+                  color: 'inherit',
                   ...(isSelected ? styles.caseCardSelected : {}),
                   ...(isLocked ? styles.caseCardLocked : {}),
                 }}
                 onMouseEnter={(e) => {
-                  if (isAvailable && !isSelected) {
+                  if (!isLocked && !isSelected) {
                     e.currentTarget.style.transform = 'scale(1.05)';
                     e.currentTarget.style.borderColor = '#93c5fd';
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (isAvailable && !isSelected) {
+                  if (!isLocked && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  }
+                }}
+                onFocus={(e) => {
+                  if (!isLocked && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.borderColor = '#93c5fd';
+                  }
+                }}
+                onBlur={(e) => {
+                  if (!isLocked && !isSelected) {
                     e.currentTarget.style.transform = 'scale(1)';
                     e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
                   }
@@ -242,7 +262,7 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                     </div>
                   </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
