@@ -1,5 +1,5 @@
-import { useState, useCallback, useMemo } from 'react';
-import { SafetyZone } from '../3d/safety/SafetyCorridorManager';
+import { useState, useCallback, useMemo } from 'react'
+import { SafetyZone } from '../3d/safety/SafetyCorridorManager'
 
 /**
  * Curriculum Mode Component (Phase 1C)
@@ -19,44 +19,44 @@ export enum ModuleType {
 }
 
 export interface LearningObjective {
-  id: string;
-  description: string;
-  achieved: boolean;
-  required: boolean; // Must complete to pass module
+  id: string
+  description: string
+  achieved: boolean
+  required: boolean // Must complete to pass module
 }
 
 export interface ModuleConfig {
-  type: ModuleType;
-  title: string;
-  description: string;
-  level: number; // Surgical depth (1-3)
-  objectives: LearningObjective[];
+  type: ModuleType
+  title: string
+  description: string
+  level: number // Surgical depth (1-3)
+  objectives: LearningObjective[]
   passCriteria: {
-    minScore: number;
-    maxCollisions: number;
-    maxCrises: number;
-    timeLimit?: number; // seconds (optional)
-  };
+    minScore: number
+    maxCollisions: number
+    maxCrises: number
+    timeLimit?: number // seconds (optional)
+  }
 }
 
 export interface CurriculumProgress {
-  currentModule: ModuleType;
-  modulesCompleted: ModuleType[];
-  certified: boolean;
-  overallScore: number;
+  currentModule: ModuleType
+  modulesCompleted: ModuleType[]
+  certified: boolean
+  overallScore: number
 }
 
 export interface CurriculumModeProps {
-  visible: boolean;
-  currentModule: ModuleType;
-  progress: CurriculumProgress;
-  techniqueScore: number;
-  collisionCount: number;
-  crisisCount: number;
-  elapsedTime: number;
-  safetyZones: SafetyZone[];
-  onModuleComplete: (module: ModuleType, passed: boolean) => void;
-  onCertificationAchieved: () => void;
+  visible: boolean
+  currentModule: ModuleType
+  progress: CurriculumProgress
+  techniqueScore: number
+  collisionCount: number
+  crisisCount: number
+  elapsedTime: number
+  safetyZones: SafetyZone[]
+  onModuleComplete: (module: ModuleType, passed: boolean) => void
+  onCertificationAchieved: () => void
 }
 
 /**
@@ -73,33 +73,33 @@ const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
         id: 'identify-sphenoid-ostium',
         description: 'Locate the sphenoid sinus ostium',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'identify-septations',
         description: 'Identify intrasphenoidal septations',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'identify-sella-floor',
         description: 'Recognize the sella floor (sellar prominence)',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'minimal-trauma',
         description: 'Navigate with minimal mucosal trauma (<5 collisions)',
         achieved: false,
-        required: true
-      }
+        required: true,
+      },
     ],
     passCriteria: {
       minScore: 75,
       maxCollisions: 5,
       maxCrises: 0,
-      timeLimit: 120 // 2 minutes
-    }
+      timeLimit: 120, // 2 minutes
+    },
   },
 
   [ModuleType.TUMOR_DEBULKING]: {
@@ -112,39 +112,39 @@ const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
         id: 'identify-pseudocapsule',
         description: 'Identify and preserve the tumor pseudocapsule plane',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'avoid-normal-gland',
         description: 'Avoid damage to normal pituitary tissue',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'recognize-dura',
         description: 'Recognize diaphragma sellae (dura)',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'safety-awareness',
         description: 'Maintain safe distance from ICA (>2mm at all times)',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'no-csf-leak',
         description: 'Complete resection without CSF leak',
         achieved: false,
-        required: true
-      }
+        required: true,
+      },
     ],
     passCriteria: {
       minScore: 80,
       maxCollisions: 10,
       maxCrises: 0,
-      timeLimit: 180 // 3 minutes
-    }
+      timeLimit: 180, // 3 minutes
+    },
   },
 
   [ModuleType.MWCS_DECISION]: {
@@ -157,47 +157,47 @@ const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
         id: 'identify-mwcs',
         description: 'Correctly identify medial wall of cavernous sinus',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'firm-vs-soft',
         description: 'Distinguish firm tissue (MWCS - STOP) from soft tissue (tumor - continue)',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'bilateral-ica',
         description: 'Identify bilateral ICA positions at all times',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'safe-approach',
         description: 'Approach MWCS from medial direction (never lateral)',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'no-ica-injury',
         description: 'Complete case with zero ICA injury events',
         achieved: false,
-        required: true
+        required: true,
       },
       {
         id: 'expert-technique',
         description: 'Achieve technique score ≥85 (expert level)',
         achieved: false,
-        required: true
-      }
+        required: true,
+      },
     ],
     passCriteria: {
       minScore: 85,
       maxCollisions: 15,
       maxCrises: 0,
-      timeLimit: 300 // 5 minutes
-    }
-  }
-};
+      timeLimit: 300, // 5 minutes
+    },
+  },
+}
 
 /**
  * Check if module objectives are achieved
@@ -209,50 +209,50 @@ function updateObjectives(
   crisisCount: number,
   safetyZones: SafetyZone[]
 ): LearningObjective[] {
-  const objectives = [...config.objectives];
+  const objectives = [...config.objectives]
 
   // Module-specific objective checking
   switch (config.type) {
     case ModuleType.ANATOMICAL_RECOGNITION:
       // Check collision count objective
-      const minimalTrauma = objectives.find(o => o.id === 'minimal-trauma');
+      const minimalTrauma = objectives.find(o => o.id === 'minimal-trauma')
       if (minimalTrauma) {
-        minimalTrauma.achieved = collisionCount < 5;
+        minimalTrauma.achieved = collisionCount < 5
       }
-      break;
+      break
 
     case ModuleType.TUMOR_DEBULKING:
       // Check safety awareness
-      const safetyAwareness = objectives.find(o => o.id === 'safety-awareness');
+      const safetyAwareness = objectives.find(o => o.id === 'safety-awareness')
       if (safetyAwareness) {
-        const icaZones = safetyZones.filter(z => z.structureName.includes('ICA'));
-        const allSafe = icaZones.every(z => z.distance >= 2.0);
-        safetyAwareness.achieved = allSafe;
+        const icaZones = safetyZones.filter(z => z.structureName.includes('ICA'))
+        const allSafe = icaZones.every(z => z.distance >= 2.0)
+        safetyAwareness.achieved = allSafe
       }
 
       // Check no CSF leak
-      const noCsfLeak = objectives.find(o => o.id === 'no-csf-leak');
+      const noCsfLeak = objectives.find(o => o.id === 'no-csf-leak')
       if (noCsfLeak) {
-        noCsfLeak.achieved = crisisCount === 0;
+        noCsfLeak.achieved = crisisCount === 0
       }
-      break;
+      break
 
     case ModuleType.MWCS_DECISION:
       // Check no ICA injury
-      const noIcaInjury = objectives.find(o => o.id === 'no-ica-injury');
+      const noIcaInjury = objectives.find(o => o.id === 'no-ica-injury')
       if (noIcaInjury) {
-        noIcaInjury.achieved = crisisCount === 0;
+        noIcaInjury.achieved = crisisCount === 0
       }
 
       // Check expert technique
-      const expertTechnique = objectives.find(o => o.id === 'expert-technique');
+      const expertTechnique = objectives.find(o => o.id === 'expert-technique')
       if (expertTechnique) {
-        expertTechnique.achieved = techniqueScore >= 85;
+        expertTechnique.achieved = techniqueScore >= 85
       }
-      break;
+      break
   }
 
-  return objectives;
+  return objectives
 }
 
 /**
@@ -266,19 +266,19 @@ function checkPassCriteria(
   elapsedTime: number,
   objectives: LearningObjective[]
 ): boolean {
-  const { passCriteria } = config;
+  const { passCriteria } = config
 
   // All required objectives must be achieved
-  const requiredObjectives = objectives.filter(o => o.required);
-  const allRequiredAchieved = requiredObjectives.every(o => o.achieved);
+  const requiredObjectives = objectives.filter(o => o.required)
+  const allRequiredAchieved = requiredObjectives.every(o => o.achieved)
 
   // Check numeric criteria
-  const scorePass = techniqueScore >= passCriteria.minScore;
-  const collisionPass = collisionCount <= passCriteria.maxCollisions;
-  const crisisPass = crisisCount <= passCriteria.maxCrises;
-  const timePass = !passCriteria.timeLimit || elapsedTime <= passCriteria.timeLimit;
+  const scorePass = techniqueScore >= passCriteria.minScore
+  const collisionPass = collisionCount <= passCriteria.maxCollisions
+  const crisisPass = crisisCount <= passCriteria.maxCrises
+  const timePass = !passCriteria.timeLimit || elapsedTime <= passCriteria.timeLimit
 
-  return allRequiredAchieved && scorePass && collisionPass && crisisPass && timePass;
+  return allRequiredAchieved && scorePass && collisionPass && crisisPass && timePass
 }
 
 /**
@@ -294,40 +294,54 @@ export function CurriculumMode({
   elapsedTime,
   safetyZones,
   onModuleComplete,
-  onCertificationAchieved
+  onCertificationAchieved,
 }: CurriculumModeProps) {
-  const [showObjectives, setShowObjectives] = useState(true);
+  const [showObjectives, setShowObjectives] = useState(true)
 
-  const config = MODULE_CONFIGS[currentModule];
+  const config = MODULE_CONFIGS[currentModule]
 
   // Update objectives based on current performance
   const objectives = useMemo(
     () => updateObjectives(config, techniqueScore, collisionCount, crisisCount, safetyZones),
     [config, techniqueScore, collisionCount, crisisCount, safetyZones]
-  );
+  )
 
   // Check if module is passed
   const modulePassed = useMemo(
-    () => checkPassCriteria(config, techniqueScore, collisionCount, crisisCount, elapsedTime, objectives),
+    () =>
+      checkPassCriteria(
+        config,
+        techniqueScore,
+        collisionCount,
+        crisisCount,
+        elapsedTime,
+        objectives
+      ),
     [config, techniqueScore, collisionCount, crisisCount, elapsedTime, objectives]
-  );
+  )
 
   // Calculate objective completion percentage
   const objectiveProgress = useMemo(() => {
-    const achieved = objectives.filter(o => o.achieved).length;
-    return Math.round((achieved / objectives.length) * 100);
-  }, [objectives]);
+    const achieved = objectives.filter(o => o.achieved).length
+    return Math.round((achieved / objectives.length) * 100)
+  }, [objectives])
 
   const handleCompleteModule = useCallback(() => {
-    onModuleComplete(currentModule, modulePassed);
+    onModuleComplete(currentModule, modulePassed)
 
     // Check for certification (all modules completed with passing scores)
     if (progress.modulesCompleted.length === 2 && modulePassed) {
-      onCertificationAchieved();
+      onCertificationAchieved()
     }
-  }, [currentModule, modulePassed, progress.modulesCompleted.length, onModuleComplete, onCertificationAchieved]);
+  }, [
+    currentModule,
+    modulePassed,
+    progress.modulesCompleted.length,
+    onModuleComplete,
+    onCertificationAchieved,
+  ])
 
-  if (!visible) return null;
+  if (!visible) return null
 
   return (
     <div
@@ -346,11 +360,17 @@ export function CurriculumMode({
         minWidth: '400px',
         maxWidth: '600px',
         boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-        zIndex: 15
+        zIndex: 15,
       }}
     >
       {/* Header */}
-      <div style={{ marginBottom: '12px', borderBottom: '1px solid rgba(247, 229, 218, 0.2)', paddingBottom: '8px' }}>
+      <div
+        style={{
+          marginBottom: '12px',
+          borderBottom: '1px solid rgba(247, 229, 218, 0.2)',
+          paddingBottom: '8px',
+        }}
+      >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#64c8ff' }}>
@@ -370,7 +390,7 @@ export function CurriculumMode({
               color: '#64c8ff',
               cursor: 'pointer',
               fontSize: '0.7rem',
-              fontFamily: 'inherit'
+              fontFamily: 'inherit',
             }}
           >
             {showObjectives ? 'Hide' : 'Show'} Objectives
@@ -380,9 +400,18 @@ export function CurriculumMode({
 
       {/* Progress Bar */}
       <div style={{ marginBottom: '12px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '4px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontSize: '0.75rem',
+            marginBottom: '4px',
+          }}
+        >
           <span>Objectives Progress</span>
-          <span style={{ fontWeight: 600, color: objectiveProgress === 100 ? '#00ff88' : '#ffaa00' }}>
+          <span
+            style={{ fontWeight: 600, color: objectiveProgress === 100 ? '#00ff88' : '#ffaa00' }}
+          >
             {objectiveProgress}%
           </span>
         </div>
@@ -391,7 +420,7 @@ export function CurriculumMode({
             height: '8px',
             background: 'rgba(255, 255, 255, 0.1)',
             borderRadius: '4px',
-            overflow: 'hidden'
+            overflow: 'hidden',
           }}
         >
           <div
@@ -399,7 +428,7 @@ export function CurriculumMode({
               width: `${objectiveProgress}%`,
               height: '100%',
               background: objectiveProgress === 100 ? '#00ff88' : '#ffaa00',
-              transition: 'width 0.3s ease'
+              transition: 'width 0.3s ease',
             }}
           />
         </div>
@@ -429,9 +458,7 @@ export function CurriculumMode({
                 <span style={{ fontSize: '1rem' }}>
                   {obj.achieved ? '✅' : obj.required ? '⭕' : '○'}
                 </span>
-                <span style={{ flex: 1, opacity: obj.achieved ? 1 : 0.7 }}>
-                  {obj.description}
-                </span>
+                <span style={{ flex: 1, opacity: obj.achieved ? 1 : 0.7 }}>{obj.description}</span>
                 {obj.required && (
                   <span style={{ fontSize: '0.65rem', opacity: 0.5 }}>REQUIRED</span>
                 )}
@@ -448,22 +475,34 @@ export function CurriculumMode({
           background: 'rgba(100, 200, 255, 0.05)',
           borderRadius: '6px',
           border: '1px solid rgba(100, 200, 255, 0.2)',
-          marginBottom: '12px'
+          marginBottom: '12px',
         }}
       >
-        <div style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: '6px', color: '#64c8ff' }}>
+        <div
+          style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: '6px', color: '#64c8ff' }}
+        >
           Pass Criteria:
         </div>
         <div style={{ display: 'flex', gap: '12px', fontSize: '0.7rem', flexWrap: 'wrap' }}>
           <div>
             <span style={{ opacity: 0.7 }}>Score:</span>{' '}
-            <span style={{ fontWeight: 600, color: techniqueScore >= config.passCriteria.minScore ? '#00ff88' : '#ff6600' }}>
+            <span
+              style={{
+                fontWeight: 600,
+                color: techniqueScore >= config.passCriteria.minScore ? '#00ff88' : '#ff6600',
+              }}
+            >
               {techniqueScore}/{config.passCriteria.minScore}
             </span>
           </div>
           <div>
             <span style={{ opacity: 0.7 }}>Collisions:</span>{' '}
-            <span style={{ fontWeight: 600, color: collisionCount <= config.passCriteria.maxCollisions ? '#00ff88' : '#ff6600' }}>
+            <span
+              style={{
+                fontWeight: 600,
+                color: collisionCount <= config.passCriteria.maxCollisions ? '#00ff88' : '#ff6600',
+              }}
+            >
               {collisionCount}/{config.passCriteria.maxCollisions}
             </span>
           </div>
@@ -476,7 +515,12 @@ export function CurriculumMode({
           {config.passCriteria.timeLimit && (
             <div>
               <span style={{ opacity: 0.7 }}>Time:</span>{' '}
-              <span style={{ fontWeight: 600, color: elapsedTime <= config.passCriteria.timeLimit ? '#00ff88' : '#ff6600' }}>
+              <span
+                style={{
+                  fontWeight: 600,
+                  color: elapsedTime <= config.passCriteria.timeLimit ? '#00ff88' : '#ff6600',
+                }}
+              >
                 {elapsedTime}s/{config.passCriteria.timeLimit}s
               </span>
             </div>
@@ -499,7 +543,7 @@ export function CurriculumMode({
           fontSize: '0.85rem',
           fontWeight: 600,
           fontFamily: 'inherit',
-          transition: 'all 0.2s ease'
+          transition: 'all 0.2s ease',
         }}
       >
         {modulePassed ? '✅ Complete Module' : '⏳ Complete Objectives to Pass'}
@@ -513,20 +557,26 @@ export function CurriculumMode({
           borderTop: '1px solid rgba(247, 229, 218, 0.2)',
           fontSize: '0.65rem',
           opacity: 0.6,
-          textAlign: 'center'
+          textAlign: 'center',
         }}
       >
         Phase 1C: Curriculum Mode • Module {progress.modulesCompleted.length + 1}/3
       </div>
     </div>
-  );
+  )
 }
 
 /**
  * Certification Badge Component
  */
-export function CertificationBadge({ visible, onClose }: { visible: boolean; onClose: () => void }) {
-  if (!visible) return null;
+export function CertificationBadge({
+  visible,
+  onClose,
+}: {
+  visible: boolean
+  onClose: () => void
+}) {
+  if (!visible) return null
 
   return (
     <div
@@ -546,7 +596,7 @@ export function CertificationBadge({ visible, onClose }: { visible: boolean; onC
         zIndex: 1000,
         minWidth: '400px',
         textAlign: 'center',
-        animation: 'pulse 2s ease-in-out infinite'
+        animation: 'pulse 2s ease-in-out infinite',
       }}
     >
       <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🏆</div>
@@ -566,7 +616,7 @@ export function CertificationBadge({ visible, onClose }: { visible: boolean; onC
           borderRadius: '8px',
           border: '1px solid rgba(255, 215, 0, 0.3)',
           marginBottom: '24px',
-          fontSize: '0.8rem'
+          fontSize: '0.8rem',
         }}
       >
         <div style={{ fontWeight: 600, marginBottom: '4px' }}>Certification Requirements Met:</div>
@@ -585,11 +635,11 @@ export function CertificationBadge({ visible, onClose }: { visible: boolean; onC
           cursor: 'pointer',
           fontSize: '0.9rem',
           fontWeight: 600,
-          fontFamily: 'inherit'
+          fontFamily: 'inherit',
         }}
       >
         Continue Training
       </button>
     </div>
-  );
+  )
 }

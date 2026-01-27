@@ -111,7 +111,7 @@ export function AnatomyManager({ level, onCollidableMeshesReady }: AnatomyManage
    */
   const collectMeshesFromGroup = useCallback((group: Group | null, meshes: Object3D[]) => {
     if (!group) return
-    group.traverse((child) => {
+    group.traverse(child => {
       if (child instanceof Mesh && child.userData?.tissueType) {
         meshes.push(child)
       }
@@ -228,18 +228,10 @@ export function AnatomyManager({ level, onCollidableMeshesReady }: AnatomyManage
         <>
           {/* Internal Carotid Arteries (⚠️ CRITICAL - 607KB, 84/100) */}
           <group ref={icaLeftRef}>
-            <InternalCarotidArtery
-              side="left"
-              pulsationRate={72}
-              pulsationAmplitude={0.08}
-            />
+            <InternalCarotidArtery side="left" pulsationRate={72} pulsationAmplitude={0.08} />
           </group>
           <group ref={icaRightRef}>
-            <InternalCarotidArtery
-              side="right"
-              pulsationRate={72}
-              pulsationAmplitude={0.08}
-            />
+            <InternalCarotidArtery side="right" pulsationRate={72} pulsationAmplitude={0.08} />
           </group>
         </>
       )}

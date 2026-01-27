@@ -1,0 +1,1 @@
+## 2024-05-22 - Testing Limitations\n**Learning:** The testing environment (Vitest + React Testing Library) does not include `@testing-library/jest-dom` matchers (like `toBeDisabled`, `toBeInTheDocument`).\n**Action:** Use standard DOM checks in tests (e.g., `element.hasAttribute('disabled')`, `expect(element).toBeTruthy()`) instead of custom matchers.

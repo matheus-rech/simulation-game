@@ -53,7 +53,7 @@ export function InternalCarotidArtery({
   useEffect(() => {
     let mounted = true
 
-    loadAnatomyTexture('ica').then((texture) => {
+    loadAnatomyTexture('ica').then(texture => {
       if (mounted) {
         setIcaTexture(texture)
         console.log(`✅ Loaded ICA texture for ${side} artery`)
@@ -107,7 +107,7 @@ export function InternalCarotidArtery({
       >
         <meshStandardMaterial
           map={icaTexture} // AI-generated ICA texture (84/100 quality, 607KB)
-          color={icaTexture ? "#ffffff" : "#b71c2b"} // White when textured, fallback arterial red
+          color={icaTexture ? '#ffffff' : '#b71c2b'} // White when textured, fallback arterial red
           roughness={0.3} // Slightly glossy (blood vessel wall)
           metalness={0.0}
           emissive="#b71c2b" // Self-illumination for critical structure visibility

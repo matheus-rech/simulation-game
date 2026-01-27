@@ -50,7 +50,7 @@ export function OpticNerve({ side, visible = true }: OpticNerveProps) {
   useEffect(() => {
     let mounted = true
 
-    loadAnatomyTexture('opticNerve').then((texture) => {
+    loadAnatomyTexture('opticNerve').then(texture => {
       if (mounted) {
         setNerveTexture(texture)
         console.log(`✅ Loaded optic nerve texture for ${side} side (788KB, 84/100)`)

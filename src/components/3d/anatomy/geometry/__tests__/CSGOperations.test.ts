@@ -62,7 +62,8 @@ describe('CSGOperations - Basic Operations', () => {
     it('should subtract second geometry from first', () => {
       const result = subtract(boxGeometry, sphereGeometry)
 
-      expect(result).toBeDefined(); expect(result.attributes).toBeDefined()
+      expect(result).toBeDefined()
+      expect(result.attributes).toBeDefined()
       expect(result.attributes.position).toBeDefined()
       expect(result.attributes.position.count).toBeGreaterThan(0)
     })
@@ -85,7 +86,8 @@ describe('CSGOperations - Basic Operations', () => {
 
       const result = subtract(box1, box2)
 
-      expect(result).toBeDefined(); expect(result.attributes).toBeDefined()
+      expect(result).toBeDefined()
+      expect(result.attributes).toBeDefined()
       expect(result.attributes.position.count).toBeGreaterThan(0)
     })
   })
@@ -94,7 +96,8 @@ describe('CSGOperations - Basic Operations', () => {
     it('should create intersection of two geometries', () => {
       const result = intersect(boxGeometry, sphereGeometry)
 
-      expect(result).toBeDefined(); expect(result.attributes).toBeDefined()
+      expect(result).toBeDefined()
+      expect(result.attributes).toBeDefined()
       expect(result.attributes.position).toBeDefined()
     })
 
@@ -121,7 +124,8 @@ describe('CSGOperations - Basic Operations', () => {
 
       const result = intersect(box1, box2)
 
-      expect(result).toBeDefined(); expect(result.attributes).toBeDefined()
+      expect(result).toBeDefined()
+      expect(result.attributes).toBeDefined()
       // Non-overlapping intersection should have no vertices
       expect(result.attributes.position.count).toBe(0)
     })
@@ -139,7 +143,8 @@ describe('CSGOperations - Multiple Operations', () => {
 
       const result = unionMultiple(geometries)
 
-      expect(result).toBeDefined(); expect(result.attributes).toBeDefined()
+      expect(result).toBeDefined()
+      expect(result.attributes).toBeDefined()
       expect(result.attributes.position.count).toBeGreaterThan(0)
     })
 
@@ -174,14 +179,12 @@ describe('CSGOperations - Multiple Operations', () => {
   describe('subtractMultiple', () => {
     it('should subtract multiple geometries from base', () => {
       const base = new BoxGeometry(3, 3, 3)
-      const subtractGeometries = [
-        new SphereGeometry(0.5, 16, 16),
-        new BoxGeometry(0.6, 0.6, 0.6),
-      ]
+      const subtractGeometries = [new SphereGeometry(0.5, 16, 16), new BoxGeometry(0.6, 0.6, 0.6)]
 
       const result = subtractMultiple(base, subtractGeometries)
 
-      expect(result).toBeDefined(); expect(result.attributes).toBeDefined()
+      expect(result).toBeDefined()
+      expect(result.attributes).toBeDefined()
       expect(result.attributes.position.count).toBeGreaterThan(0)
     })
 
@@ -201,7 +204,8 @@ describe('CSGOperations - Multiple Operations', () => {
 
       const result = subtractMultiple(base, [sphere1, sphere2])
 
-      expect(result).toBeDefined(); expect(result.attributes).toBeDefined()
+      expect(result).toBeDefined()
+      expect(result.attributes).toBeDefined()
       expect(result.attributes.position.count).toBeGreaterThan(0)
     })
   })
@@ -213,7 +217,8 @@ describe('CSGOperations - Helper Functions', () => {
       const solid = new BoxGeometry(2, 2, 2)
       const hollow = createHollowGeometry(solid, 0.2)
 
-      expect(hollow).toBeDefined(); expect(hollow.attributes).toBeDefined()
+      expect(hollow).toBeDefined()
+      expect(hollow.attributes).toBeDefined()
       expect(hollow.attributes.position.count).toBeGreaterThan(0)
     })
 
@@ -240,7 +245,8 @@ describe('CSGOperations - Helper Functions', () => {
       const solid = new BoxGeometry(2, 2, 2)
       const hollow = createHollowGeometry(solid, 0.05)
 
-      expect(hollow).toBeDefined(); expect(hollow.attributes).toBeDefined()
+      expect(hollow).toBeDefined()
+      expect(hollow.attributes).toBeDefined()
       expect(hollow.attributes.position.count).toBeGreaterThan(0)
     })
   })
@@ -250,7 +256,8 @@ describe('CSGOperations - Helper Functions', () => {
       const geometry = new SphereGeometry(1, 64, 64)
       const simplified = simplifyGeometry(geometry, 0.5)
 
-      expect(simplified).toBeDefined(); expect(simplified.attributes).toBeDefined()
+      expect(simplified).toBeDefined()
+      expect(simplified.attributes).toBeDefined()
       expect(simplified.attributes.position.count).toBeGreaterThan(0)
     })
 
@@ -260,14 +267,16 @@ describe('CSGOperations - Helper Functions', () => {
 
       const simplified = simplifyGeometry(nonIndexed, 0.3)
 
-      expect(simplified).toBeDefined(); expect(simplified.attributes).toBeDefined()
+      expect(simplified).toBeDefined()
+      expect(simplified.attributes).toBeDefined()
     })
 
     it('should work with default parameters', () => {
       const geometry = new BoxGeometry(1, 1, 1)
       const simplified = simplifyGeometry(geometry)
 
-      expect(simplified).toBeDefined(); expect(simplified.attributes).toBeDefined()
+      expect(simplified).toBeDefined()
+      expect(simplified.attributes).toBeDefined()
     })
   })
 
@@ -451,7 +460,8 @@ describe('CSGOperations - Integration Tests', () => {
 
     const withSeptations = unionMultiple([cavity, septation1, septation2])
 
-    expect(withSeptations).toBeDefined(); expect(withSeptations.attributes).toBeDefined()
+    expect(withSeptations).toBeDefined()
+    expect(withSeptations.attributes).toBeDefined()
     expect(withSeptations.attributes.position.count).toBeGreaterThan(0)
 
     // Verify cleanup
@@ -488,7 +498,8 @@ describe('CSGOperations - Integration Tests', () => {
     // Cleanup
     cleanupGeometry(withCutout)
 
-    expect(withCutout).toBeDefined(); expect(withCutout.attributes).toBeDefined()
+    expect(withCutout).toBeDefined()
+    expect(withCutout.attributes).toBeDefined()
     expect(withCutout.attributes.position.count).toBeGreaterThan(0)
     expect(withCutout.attributes.normal).toBeDefined()
     expect(withCutout.boundingBox).toBeDefined()

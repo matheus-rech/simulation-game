@@ -462,7 +462,7 @@ describe('CollisionManager - Hook Integration Tests', () => {
 
       // Should have at least the ICA crisis
       expect(crises.length).toBeGreaterThanOrEqual(1)
-      expect(crises.some((c) => c.type === CrisisType.ICA_INJURY)).toBe(true)
+      expect(crises.some(c => c.type === CrisisType.ICA_INJURY)).toBe(true)
     })
   })
 

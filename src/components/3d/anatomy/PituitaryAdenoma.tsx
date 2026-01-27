@@ -63,12 +63,12 @@ export function PituitaryAdenoma({
     let mounted = true
 
     // Load tumor texture (Knosp-2 classification)
-    loadAnatomyTexture('pituitaryAdenoma').then((texture) => {
+    loadAnatomyTexture('pituitaryAdenoma').then(texture => {
       if (mounted) setTumorTexture(texture)
     })
 
     // Load pseudocapsule texture (compressed normal tissue)
-    loadAnatomyTexture('pseudocapsule').then((texture) => {
+    loadAnatomyTexture('pseudocapsule').then(texture => {
       if (mounted) setPseudocapsuleTexture(texture)
     })
 
@@ -85,10 +85,14 @@ export function PituitaryAdenoma({
   // Calculate sphere segments based on LOD level
   const segments = useMemo(() => {
     switch (lodLevel) {
-      case 0: return 32 // Full detail
-      case 1: return 24 // Medium detail (70% vertices)
-      case 2: return 16 // Low detail (40% vertices)
-      default: return 32
+      case 0:
+        return 32 // Full detail
+      case 1:
+        return 24 // Medium detail (70% vertices)
+      case 2:
+        return 16 // Low detail (40% vertices)
+      default:
+        return 32
     }
   }, [lodLevel])
 
@@ -150,7 +154,7 @@ export function PituitaryAdenoma({
         >
           <meshStandardMaterial
             map={pseudocapsuleTexture} // AI-generated texture (84/100 quality)
-            color={pseudocapsuleTexture ? "#ffffff" : "#c89090"} // White when textured, fallback color
+            color={pseudocapsuleTexture ? '#ffffff' : '#c89090'} // White when textured, fallback color
             roughness={0.45}
             metalness={0.0}
             opacity={0.8}
@@ -168,7 +172,7 @@ export function PituitaryAdenoma({
       >
         <meshStandardMaterial
           map={tumorTexture} // AI-generated Knosp-2 adenoma texture (84/100 quality)
-          color={tumorTexture ? "#ffffff" : "#d4a5a5"} // White when textured, fallback color
+          color={tumorTexture ? '#ffffff' : '#d4a5a5'} // White when textured, fallback color
           roughness={0.6}
           metalness={0.0}
           vertexColors // Use vertex colors for additional heterogeneity

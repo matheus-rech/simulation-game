@@ -67,8 +67,7 @@ export function PerformanceProfiler({
     const elapsed = now - lastSampleTime.current
     if (elapsed >= samplingInterval) {
       const fps = (frameCount.current / elapsed) * 1000
-      const avgFrameTime =
-        frameTimes.current.reduce((a, b) => a + b, 0) / frameTimes.current.length
+      const avgFrameTime = frameTimes.current.reduce((a, b) => a + b, 0) / frameTimes.current.length
 
       const metrics: PerformanceMetrics = {
         fps: Math.round(fps),
@@ -205,9 +204,7 @@ export const PerformanceAnalyzer = {
     }
 
     if (this.isHighDrawCalls(metrics, 100)) {
-      recommendations.push(
-        'Draw calls high (>100). Consider geometry batching or instancing.'
-      )
+      recommendations.push('Draw calls high (>100). Consider geometry batching or instancing.')
     }
 
     if (metrics.renderer.triangles > 100000) {

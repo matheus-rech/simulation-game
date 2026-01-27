@@ -10,10 +10,10 @@
  * - Cache hit rate: >70% for common scenarios
  */
 
-import Anthropic from '@anthropic-ai/sdk';
-import { Vector3D } from '../../components/3d/VFX';
-import { CollisionEvent, CrisisEvent } from '../../components/3d/collision/types';
-import { SafetyZone } from '../../components/3d/safety/SafetyCorridorManager';
+import Anthropic from '@anthropic-ai/sdk'
+import { Vector3D } from '../../components/3d/VFX'
+import { CollisionEvent, CrisisEvent } from '../../components/3d/collision/types'
+import { SafetyZone } from '../../components/3d/safety/SafetyCorridorManager'
 
 // ============================================================================
 // Types & Interfaces
@@ -21,60 +21,60 @@ import { SafetyZone } from '../../components/3d/safety/SafetyCorridorManager';
 
 export interface SimulationState {
   /** Current surgical level (1-3) */
-  level: number;
+  level: number
   /** Current objective description */
-  currentObjective: string;
+  currentObjective: string
   /** Endoscope tip position */
-  scopePosition: Vector3D;
+  scopePosition: Vector3D
   /** Pitch/yaw angles */
-  scopeAngle: { pitch: number; yaw: number };
+  scopeAngle: { pitch: number; yaw: number }
   /** Active safety zones */
-  safetyZones: SafetyZone[];
+  safetyZones: SafetyZone[]
   /** Recent collision events */
-  recentCollisions: CollisionEvent[];
+  recentCollisions: CollisionEvent[]
   /** Current technique scores */
-  techniqueMetrics: TechniqueMetrics;
+  techniqueMetrics: TechniqueMetrics
   /** Overall score */
-  score: number;
+  score: number
   /** Active crisis if any */
-  activeCrisis: CrisisEvent | null;
+  activeCrisis: CrisisEvent | null
 }
 
 export interface TechniqueMetrics {
   /** Economy of motion (0-100) */
-  economyOfMotion: number;
+  economyOfMotion: number
   /** Tissue respect (0-100) */
-  tissueRespect: number;
+  tissueRespect: number
   /** Time efficiency (0-100) */
-  timeEfficiency: number;
+  timeEfficiency: number
   /** Safety awareness (0-100) */
-  safetyAwareness: number;
+  safetyAwareness: number
 }
 
 export interface MentorResponse {
   /** Visible anatomical structures */
-  structuresVisible: string[];
+  structuresVisible: string[]
   /** Safety assessment level */
-  safetyAssessment: 'safe' | 'caution' | 'danger' | 'critical';
+  safetyAssessment: 'safe' | 'caution' | 'danger' | 'critical'
   /** What to do next */
-  recommendation: string;
+  recommendation: string
   /** Tone of feedback */
-  tone: 'encouraging' | 'cautionary' | 'urgent';
+  tone: 'encouraging' | 'cautionary' | 'urgent'
   /** Structures to highlight in 3D */
-  highlightStructures?: string[];
+  highlightStructures?: string[]
   /** Full text response */
-  fullText: string;
+  fullText: string
   /** Confidence score (0-1) */
-  confidence: number;
+  confidence: number
 }
 
 export interface AnalysisRequest {
   /** Base64 encoded screenshot */
-  sceneSnapshot: string;
+  sceneSnapshot: string
   /** Current simulation state */
-  state: SimulationState;
+  state: SimulationState
   /** Include conversation history? */
-  includeHistory?: boolean;
+  includeHistory?: boolean
 }
 
 // ============================================================================
@@ -89,7 +89,7 @@ const CONFIG = {
   CACHE_TTL: 60000, // 1 min
   MAX_CONVERSATION_MESSAGES: 10,
   DEBOUNCE_MS: 2000, // Analyze every 2 seconds
-} as const;
+} as const
 
 // ============================================================================
 // System Prompt
@@ -141,21 +141,21 @@ If you see collision/trauma:
 - Assess severity
 - Explain what went wrong
 - Suggest corrective action
-- Provide encouragement if appropriate`;
+- Provide encouragement if appropriate`
 
 // ============================================================================
 // Claude Vision Service Class
 // ============================================================================
 
 export class ClaudeVisionService {
-  private client: Anthropic;
-  private conversationHistory: Anthropic.MessageParam[] = [];
-  private cache: Map<string, { response: MentorResponse; timestamp: number }> = new Map();
-  private lastAnalysisTime: number = 0;
-  private isProcessing: boolean = false;
+  private client: Anthropic
+  private conversationHistory: Anthropic.MessageParam[] = []
+  private cache: Map<string, { response: MentorResponse; timestamp: number }> = new Map()
+  private lastAnalysisTime: number = 0
+  private isProcessing: boolean = false
 
   constructor(apiKey: string) {
-    this.client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true });
+    this.client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true })
   }
 
   // ==========================================================================
@@ -170,36 +170,36 @@ export class ClaudeVisionService {
    */
   async analyze(request: AnalysisRequest): Promise<MentorResponse> {
     // Debouncing: Prevent analysis spam
-    const now = Date.now();
+    const now = Date.now()
     if (now - this.lastAnalysisTime < CONFIG.DEBOUNCE_MS) {
-      throw new Error('Analysis rate limited. Please wait.');
+      throw new Error('Analysis rate limited. Please wait.')
     }
 
     // Check cache
-    const cacheKey = this.computeCacheKey(request);
-    const cached = this.cache.get(cacheKey);
+    const cacheKey = this.computeCacheKey(request)
+    const cached = this.cache.get(cacheKey)
     if (cached && now - cached.timestamp < CONFIG.CACHE_TTL) {
-      console.log('[ClaudeVision] Cache hit:', cacheKey);
-      return cached.response;
+      console.log('[ClaudeVision] Cache hit:', cacheKey)
+      return cached.response
     }
 
     // Prevent concurrent requests
     if (this.isProcessing) {
-      throw new Error('Analysis already in progress');
+      throw new Error('Analysis already in progress')
     }
 
-    this.isProcessing = true;
-    this.lastAnalysisTime = now;
+    this.isProcessing = true
+    this.lastAnalysisTime = now
 
     try {
-      const response = await this.performAnalysis(request);
+      const response = await this.performAnalysis(request)
 
       // Cache result
-      this.cache.set(cacheKey, { response, timestamp: now });
+      this.cache.set(cacheKey, { response, timestamp: now })
 
-      return response;
+      return response
     } finally {
-      this.isProcessing = false;
+      this.isProcessing = false
     }
   }
 
@@ -213,10 +213,10 @@ export class ClaudeVisionService {
     request: AnalysisRequest,
     onChunk: (text: string) => void
   ): Promise<MentorResponse> {
-    const context = this.buildContextPrompt(request.state);
-    const messages = this.buildMessages(request, context);
+    const context = this.buildContextPrompt(request.state)
+    const messages = this.buildMessages(request, context)
 
-    let fullText = '';
+    let fullText = ''
 
     const stream = await this.client.messages.stream({
       model: CONFIG.MODEL,
@@ -224,32 +224,32 @@ export class ClaudeVisionService {
       temperature: CONFIG.TEMPERATURE,
       system: SURGICAL_MENTOR_SYSTEM,
       messages,
-    });
+    })
 
     for await (const chunk of stream) {
       if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-        const text = chunk.delta.text;
-        fullText += text;
-        onChunk(text);
+        const text = chunk.delta.text
+        fullText += text
+        onChunk(text)
       }
     }
 
     // Parse final response
-    return this.parseResponse(fullText, request.state);
+    return this.parseResponse(fullText, request.state)
   }
 
   /**
    * Clear conversation history
    */
   clearHistory(): void {
-    this.conversationHistory = [];
+    this.conversationHistory = []
   }
 
   /**
    * Clear cache
    */
   clearCache(): void {
-    this.cache.clear();
+    this.cache.clear()
   }
 
   /**
@@ -260,7 +260,7 @@ export class ClaudeVisionService {
     return {
       size: this.cache.size,
       hitRate: 0, // Placeholder
-    };
+    }
   }
 
   // ==========================================================================
@@ -268,8 +268,8 @@ export class ClaudeVisionService {
   // ==========================================================================
 
   private async performAnalysis(request: AnalysisRequest): Promise<MentorResponse> {
-    const context = this.buildContextPrompt(request.state);
-    const messages = this.buildMessages(request, context);
+    const context = this.buildContextPrompt(request.state)
+    const messages = this.buildMessages(request, context)
 
     const response = await this.client.messages.create({
       model: CONFIG.MODEL,
@@ -277,23 +277,23 @@ export class ClaudeVisionService {
       temperature: CONFIG.TEMPERATURE,
       system: SURGICAL_MENTOR_SYSTEM,
       messages,
-    });
+    })
 
     // Extract text from response
-    const textContent = response.content.find(block => block.type === 'text');
-    const fullText = textContent && textContent.type === 'text' ? textContent.text : '';
+    const textContent = response.content.find(block => block.type === 'text')
+    const fullText = textContent && textContent.type === 'text' ? textContent.text : ''
 
     // Update conversation history
-    this.updateConversationHistory(messages, fullText);
+    this.updateConversationHistory(messages, fullText)
 
-    return this.parseResponse(fullText, request.state);
+    return this.parseResponse(fullText, request.state)
   }
 
   private buildContextPrompt(state: SimulationState): string {
-    const levelDesc = this.getLevelDescription(state.level);
-    const closestDanger = this.getClosestDanger(state.safetyZones, state.scopePosition);
-    const recentEvents = this.formatRecentEvents(state.recentCollisions);
-    const scores = this.formatScores(state.techniqueMetrics);
+    const levelDesc = this.getLevelDescription(state.level)
+    const closestDanger = this.getClosestDanger(state.safetyZones, state.scopePosition)
+    const recentEvents = this.formatRecentEvents(state.recentCollisions)
+    const scores = this.formatScores(state.techniqueMetrics)
 
     return `Current situation:
 - Level: ${state.level} (${levelDesc})
@@ -306,13 +306,10 @@ export class ClaudeVisionService {
 - Overall score: ${state.score}
 ${state.activeCrisis ? `- ACTIVE CRISIS: ${state.activeCrisis.description}` : ''}
 
-Analyze the attached endoscope view and provide guidance.`;
+Analyze the attached endoscope view and provide guidance.`
   }
 
-  private buildMessages(
-    request: AnalysisRequest,
-    context: string
-  ): Anthropic.MessageParam[] {
+  private buildMessages(request: AnalysisRequest, context: string): Anthropic.MessageParam[] {
     const newMessage: Anthropic.MessageParam = {
       role: 'user',
       content: [
@@ -329,14 +326,14 @@ Analyze the attached endoscope view and provide guidance.`;
           text: context,
         },
       ],
-    };
+    }
 
     // Include conversation history if requested
     if (request.includeHistory && this.conversationHistory.length > 0) {
-      return [...this.conversationHistory, newMessage];
+      return [...this.conversationHistory, newMessage]
     }
 
-    return [newMessage];
+    return [newMessage]
   }
 
   private updateConversationHistory(
@@ -344,27 +341,29 @@ Analyze the attached endoscope view and provide guidance.`;
     assistantResponse: string
   ): void {
     // Add user message (only the latest)
-    const latestUserMessage = userMessages[userMessages.length - 1];
-    this.conversationHistory.push(latestUserMessage);
+    const latestUserMessage = userMessages[userMessages.length - 1]
+    this.conversationHistory.push(latestUserMessage)
 
     // Add assistant response
     this.conversationHistory.push({
       role: 'assistant',
       content: assistantResponse,
-    });
+    })
 
     // Trim to max length
     if (this.conversationHistory.length > CONFIG.MAX_CONVERSATION_MESSAGES * 2) {
-      this.conversationHistory = this.conversationHistory.slice(-CONFIG.MAX_CONVERSATION_MESSAGES * 2);
+      this.conversationHistory = this.conversationHistory.slice(
+        -CONFIG.MAX_CONVERSATION_MESSAGES * 2
+      )
     }
   }
 
   private parseResponse(text: string, _state: SimulationState): MentorResponse {
     try {
       // Try to extract JSON from response
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      const jsonMatch = text.match(/\{[\s\S]*\}/)
       if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
+        const parsed = JSON.parse(jsonMatch[0])
         return {
           structuresVisible: parsed.structures_visible || [],
           safetyAssessment: parsed.safety_assessment || 'safe',
@@ -373,10 +372,10 @@ Analyze the attached endoscope view and provide guidance.`;
           highlightStructures: parsed.highlight_structures || [],
           fullText: text,
           confidence: parsed.confidence || 0.8,
-        };
+        }
       }
     } catch (error) {
-      console.warn('[ClaudeVision] Failed to parse JSON response:', error);
+      console.warn('[ClaudeVision] Failed to parse JSON response:', error)
     }
 
     // Fallback: Generate response from unstructured text
@@ -387,39 +386,39 @@ Analyze the attached endoscope view and provide guidance.`;
       tone: this.inferToneFromText(text),
       fullText: text,
       confidence: 0.6,
-    };
+    }
   }
 
   private inferSafetyFromText(text: string): 'safe' | 'caution' | 'danger' | 'critical' {
-    const lower = text.toLowerCase();
+    const lower = text.toLowerCase()
     if (lower.includes('critical') || lower.includes('emergency') || lower.includes('ica')) {
-      return 'critical';
+      return 'critical'
     }
     if (lower.includes('danger') || lower.includes('stop') || lower.includes('careful')) {
-      return 'danger';
+      return 'danger'
     }
     if (lower.includes('caution') || lower.includes('watch') || lower.includes('proximity')) {
-      return 'caution';
+      return 'caution'
     }
-    return 'safe';
+    return 'safe'
   }
 
   private inferToneFromText(text: string): 'encouraging' | 'cautionary' | 'urgent' {
-    const lower = text.toLowerCase();
+    const lower = text.toLowerCase()
     if (lower.includes('great') || lower.includes('excellent') || lower.includes('good')) {
-      return 'encouraging';
+      return 'encouraging'
     }
     if (lower.includes('stop') || lower.includes('critical') || lower.includes('emergency')) {
-      return 'urgent';
+      return 'urgent'
     }
-    return 'cautionary';
+    return 'cautionary'
   }
 
   private computeCacheKey(request: AnalysisRequest): string {
-    const { level, scopePosition, safetyZones } = request.state;
-    const pos = `${Math.round(scopePosition.x * 10)},${Math.round(scopePosition.y * 10)},${Math.round(scopePosition.z * 10)}`;
-    const safety = safetyZones.map(z => z.riskLevel).join(',');
-    return `L${level}_${pos}_${safety}`;
+    const { level, scopePosition, safetyZones } = request.state
+    const pos = `${Math.round(scopePosition.x * 10)},${Math.round(scopePosition.y * 10)},${Math.round(scopePosition.z * 10)}`
+    const safety = safetyZones.map(z => z.riskLevel).join(',')
+    return `L${level}_${pos}_${safety}`
   }
 
   // ==========================================================================
@@ -429,51 +428,49 @@ Analyze the attached endoscope view and provide guidance.`;
   private getLevelDescription(level: number): string {
     switch (level) {
       case 1:
-        return 'Beginner - Navigating to sphenoid sinus';
+        return 'Beginner - Navigating to sphenoid sinus'
       case 2:
-        return 'Intermediate - Opening sella turcica';
+        return 'Intermediate - Opening sella turcica'
       case 3:
-        return 'Advanced - Tumor resection near ICA';
+        return 'Advanced - Tumor resection near ICA'
       default:
-        return 'Unknown level';
+        return 'Unknown level'
     }
   }
 
   private formatPosition(pos: Vector3D): string {
-    return `(${pos.x.toFixed(2)}, ${pos.y.toFixed(2)}, ${pos.z.toFixed(2)})`;
+    return `(${pos.x.toFixed(2)}, ${pos.y.toFixed(2)}, ${pos.z.toFixed(2)})`
   }
 
   private getClosestDanger(zones: SafetyZone[], position: Vector3D): string {
-    if (zones.length === 0) return 'No active safety zones';
+    if (zones.length === 0) return 'No active safety zones'
 
     const closest = zones.reduce((prev, curr) => {
-      const prevDist = this.distance(prev.position, position);
-      const currDist = this.distance(curr.position, position);
-      return currDist < prevDist ? curr : prev;
-    });
+      const prevDist = this.distance(prev.position, position)
+      const currDist = this.distance(curr.position, position)
+      return currDist < prevDist ? curr : prev
+    })
 
-    const dist = this.distance(closest.position, position);
-    return `${closest.structureName} at ${dist.toFixed(1)}mm (${closest.riskLevel})`;
+    const dist = this.distance(closest.position, position)
+    return `${closest.structureName} at ${dist.toFixed(1)}mm (${closest.riskLevel})`
   }
 
   private distance(a: Vector3D, b: Vector3D): number {
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
-    const dz = a.z - b.z;
-    return Math.sqrt(dx * dx + dy * dy + dz * dz) * 10; // Convert to mm
+    const dx = a.x - b.x
+    const dy = a.y - b.y
+    const dz = a.z - b.z
+    return Math.sqrt(dx * dx + dy * dy + dz * dz) * 10 // Convert to mm
   }
 
   private formatRecentEvents(collisions: CollisionEvent[]): string {
-    if (collisions.length === 0) return 'None';
+    if (collisions.length === 0) return 'None'
 
-    const recent = collisions.slice(-3);
-    return recent
-      .map(c => `${c.tissueType} (intensity ${c.intensity.toFixed(2)})`)
-      .join(', ');
+    const recent = collisions.slice(-3)
+    return recent.map(c => `${c.tissueType} (intensity ${c.intensity.toFixed(2)})`).join(', ')
   }
 
   private formatScores(metrics: TechniqueMetrics): string {
-    return `Motion=${metrics.economyOfMotion}, Tissue=${metrics.tissueRespect}, Time=${metrics.timeEfficiency}, Safety=${metrics.safetyAwareness}`;
+    return `Motion=${metrics.economyOfMotion}, Tissue=${metrics.tissueRespect}, Time=${metrics.timeEfficiency}, Safety=${metrics.safetyAwareness}`
   }
 }
 
@@ -485,20 +482,20 @@ Analyze the attached endoscope view and provide guidance.`;
  * Capture current scene as base64 JPEG
  */
 export function captureSceneSnapshot(canvas: HTMLCanvasElement): string {
-  const dataURL = canvas.toDataURL('image/jpeg', 0.8);
-  return dataURL.split(',')[1]; // Remove data:image/jpeg;base64, prefix
+  const dataURL = canvas.toDataURL('image/jpeg', 0.8)
+  return dataURL.split(',')[1] // Remove data:image/jpeg;base64, prefix
 }
 
 /**
  * Create singleton instance (use ANTHROPIC_API_KEY from env)
  */
 export function createClaudeVisionService(): ClaudeVisionService | null {
-  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
+  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY
 
   if (!apiKey) {
-    console.warn('[ClaudeVision] No API key found. Set VITE_ANTHROPIC_API_KEY.');
-    return null;
+    console.warn('[ClaudeVision] No API key found. Set VITE_ANTHROPIC_API_KEY.')
+    return null
   }
 
-  return new ClaudeVisionService(apiKey);
+  return new ClaudeVisionService(apiKey)
 }

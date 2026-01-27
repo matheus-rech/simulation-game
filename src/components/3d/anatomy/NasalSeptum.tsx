@@ -43,7 +43,7 @@ export function NasalSeptum({ visible = true, positionZ = -3.0 }: NasalSeptumPro
   useEffect(() => {
     let mounted = true
 
-    loadAnatomyTexture('nasalSeptum').then((texture) => {
+    loadAnatomyTexture('nasalSeptum').then(texture => {
       if (mounted) {
         setSeptumTexture(texture)
         console.log('✅ Loaded nasal septum texture (630KB, 84/100 quality)')

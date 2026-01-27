@@ -20,48 +20,48 @@ export enum CaseDifficulty {
 }
 
 export interface SurgicalObjective {
-  id: string;
-  phase: number;
-  title: string;
-  description: string;
-  completed: boolean;
-  requiredActions: string[];
-  successCriteria: string;
-  timeLimit?: number; // seconds
+  id: string
+  phase: number
+  title: string
+  description: string
+  completed: boolean
+  requiredActions: string[]
+  successCriteria: string
+  timeLimit?: number // seconds
 }
 
 export interface PatientCase {
-  id: string;
-  name: string;
-  age: number;
-  gender: 'M' | 'F';
+  id: string
+  name: string
+  age: number
+  gender: 'M' | 'F'
 
   // Clinical presentation
-  chiefComplaint: string;
-  symptoms: string[];
-  duration: string;
+  chiefComplaint: string
+  symptoms: string[]
+  duration: string
 
   // Diagnosis
-  diagnosis: string;
-  tumorType: string;
-  tumorSize: number; // cm
-  knospGrade: KnospGrade;
+  diagnosis: string
+  tumorType: string
+  tumorSize: number // cm
+  knospGrade: KnospGrade
 
   // Imaging findings
-  imagingFindings: string[];
+  imagingFindings: string[]
 
   // Surgical planning
-  difficulty: CaseDifficulty;
-  objectives: SurgicalObjective[];
-  timeLimit: number; // minutes
+  difficulty: CaseDifficulty
+  objectives: SurgicalObjective[]
+  timeLimit: number // minutes
 
   // Educational context
-  learningObjectives: string[];
-  criticalStructures: string[];
-  potentialComplications: string[];
+  learningObjectives: string[]
+  criticalStructures: string[]
+  potentialComplications: string[]
 
   // Metadata
-  unlockRequirement?: string; // Which case must be completed first
+  unlockRequirement?: string // Which case must be completed first
 }
 
 // ============================================================================
@@ -183,7 +183,7 @@ export const CASE_BEGINNER_1: PatientCase = {
     'Pituitary stalk damage (if central dissection excessive)',
     'Epistaxis (nasal mucosal injury)',
   ],
-};
+}
 
 // ============================================================================
 // INTERMEDIATE CASES
@@ -309,7 +309,7 @@ export const CASE_INTERMEDIATE_1: PatientCase = {
   ],
 
   unlockRequirement: 'case-001-beginner',
-};
+}
 
 // ============================================================================
 // ADVANCED CASES
@@ -441,32 +441,28 @@ export const CASE_ADVANCED_1: PatientCase = {
   ],
 
   unlockRequirement: 'case-002-intermediate',
-};
+}
 
 // ============================================================================
 // CASE REGISTRY
 // ============================================================================
 
-export const ALL_CASES: PatientCase[] = [
-  CASE_BEGINNER_1,
-  CASE_INTERMEDIATE_1,
-  CASE_ADVANCED_1,
-];
+export const ALL_CASES: PatientCase[] = [CASE_BEGINNER_1, CASE_INTERMEDIATE_1, CASE_ADVANCED_1]
 
 export const getCaseById = (id: string): PatientCase | undefined => {
-  return ALL_CASES.find(c => c.id === id);
-};
+  return ALL_CASES.find(c => c.id === id)
+}
 
 export const getCasesByDifficulty = (difficulty: CaseDifficulty): PatientCase[] => {
-  return ALL_CASES.filter(c => c.difficulty === difficulty);
-};
+  return ALL_CASES.filter(c => c.difficulty === difficulty)
+}
 
 export const getAvailableCases = (completedCaseIds: string[]): PatientCase[] => {
   return ALL_CASES.filter(c => {
     // First case is always available
-    if (!c.unlockRequirement) return true;
+    if (!c.unlockRequirement) return true
 
     // Check if unlock requirement is met
-    return completedCaseIds.includes(c.unlockRequirement);
-  });
-};
+    return completedCaseIds.includes(c.unlockRequirement)
+  })
+}

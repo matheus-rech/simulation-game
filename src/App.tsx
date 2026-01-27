@@ -1,18 +1,23 @@
-import React, { useCallback, useMemo, useState, useEffect, useRef } from "react";
-import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
-import { Vector3D } from "./components/3d/VFX";
-import { CrisisEvent } from "./components/3d/collision/types";
-import { SafetyHUD } from "./components/ui/SafetyHUD";
-import { SafetyZone } from "./components/3d/safety/SafetyCorridorManager";
-import { TechniqueScoring } from "./components/ui/TechniqueScoring";
-import { CurriculumMode, CertificationBadge, ModuleType, CurriculumProgress } from "./components/ui/CurriculumMode";
-import { preloadAllTextures } from "./components/3d/materials/TextureLoader";
-import { CaseSelector } from "./components/ui/CaseSelector";
-import { SurgicalInterface } from "./components/ui/SurgicalInterface";
-import { TaskManager, TaskProgress } from "./services/TaskManager";
-import { PatientCase } from "./data/patientCases";
+import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
+import { EndoscopeView, ScopeAngle } from './components/EndoscopeView'
+import { Vector3D } from './components/3d/VFX'
+import { CrisisEvent } from './components/3d/collision/types'
+import { SafetyHUD } from './components/ui/SafetyHUD'
+import { SafetyZone } from './components/3d/safety/SafetyCorridorManager'
+import { TechniqueScoring } from './components/ui/TechniqueScoring'
+import {
+  CurriculumMode,
+  CertificationBadge,
+  ModuleType,
+  CurriculumProgress,
+} from './components/ui/CurriculumMode'
+import { preloadAllTextures } from './components/3d/materials/TextureLoader'
+import { CaseSelector } from './components/ui/CaseSelector'
+import { SurgicalInterface } from './components/ui/SurgicalInterface'
+import { TaskManager, TaskProgress } from './services/TaskManager'
+import { PatientCase } from './data/patientCases'
 
-const initialTipPosition: Vector3D = { x: 0, y: 0, z: 1.2 };
+const initialTipPosition: Vector3D = { x: 0, y: 0, z: 1.2 }
 
 const styles = {
   overlay: {
@@ -103,19 +108,19 @@ const styles = {
     fontSize: '1rem',
     textAlign: 'center' as const,
     opacity: 0.95,
-  }
-};
+  },
+}
 
 // Reusable button component to handle hover state cleanly
 function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
 
   const currentStyle = {
     ...styles.button,
     background: isHovered || isFocused ? 'rgba(247, 229, 218, 0.15)' : 'rgba(247, 229, 218, 0.08)',
     boxShadow: isFocused ? '0 0 0 2px rgba(247, 229, 218, 0.5)' : 'none',
-  };
+  }
 
   return (
     <button
@@ -129,209 +134,207 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
     >
       {children}
     </button>
-  );
+  )
 }
 
 export default function App() {
-  const [level, setLevel] = useState(1);
-  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 });
-  const [tipPosition, setTipPosition] = useState<Vector3D>(initialTipPosition);
-  const [lastCollision, setLastCollision] = useState<Vector3D | null>(null);
-  const [collisionCount, setCollisionCount] = useState(0);
-  const [score, setScore] = useState(100);
-  const [activeCrisis, setActiveCrisis] = useState<CrisisEvent | null>(null);
-  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([]);
+  const [level, setLevel] = useState(1)
+  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 })
+  const [tipPosition, setTipPosition] = useState<Vector3D>(initialTipPosition)
+  const [lastCollision, setLastCollision] = useState<Vector3D | null>(null)
+  const [collisionCount, setCollisionCount] = useState(0)
+  const [score, setScore] = useState(100)
+  const [activeCrisis, setActiveCrisis] = useState<CrisisEvent | null>(null)
+  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([])
 
   // Phase 1B: Technique Scoring - Timer state
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [startTime] = useState(Date.now());
-  const [crisisCount, setCrisisCount] = useState(0);
+  const [elapsedTime, setElapsedTime] = useState(0)
+  const [startTime] = useState(Date.now())
+  const [crisisCount, setCrisisCount] = useState(0)
 
   // Phase 1C: Curriculum Mode
-  const [curriculumMode, setCurriculumMode] = useState(false); // Disabled by default (using serious game mode)
-  const [currentModule, setCurrentModule] = useState<ModuleType>(ModuleType.ANATOMICAL_RECOGNITION);
+  const [curriculumMode, setCurriculumMode] = useState(false) // Disabled by default (using serious game mode)
+  const [currentModule, setCurrentModule] = useState<ModuleType>(ModuleType.ANATOMICAL_RECOGNITION)
   const [curriculumProgress, setCurriculumProgress] = useState<CurriculumProgress>({
     currentModule: ModuleType.ANATOMICAL_RECOGNITION,
     modulesCompleted: [],
     certified: false,
-    overallScore: 0
-  });
-  const [showCertification, setShowCertification] = useState(false);
+    overallScore: 0,
+  })
+  const [showCertification, setShowCertification] = useState(false)
 
   // Serious Game Mode - Patient Case System
-  const [selectedCase, setSelectedCase] = useState<PatientCase | null>(null);
-  const [completedCaseIds, setCompletedCaseIds] = useState<string[]>([]);
-  const [taskProgress, setTaskProgress] = useState<TaskProgress | null>(null);
-  const taskManagerRef = useRef<TaskManager | null>(null);
+  const [selectedCase, setSelectedCase] = useState<PatientCase | null>(null)
+  const [completedCaseIds, setCompletedCaseIds] = useState<string[]>([])
+  const [taskProgress, setTaskProgress] = useState<TaskProgress | null>(null)
+  const taskManagerRef = useRef<TaskManager | null>(null)
 
-  const rotationZ = useMemo(() => scopeAngle.yaw * 0.2, [scopeAngle.yaw]);
+  const rotationZ = useMemo(() => scopeAngle.yaw * 0.2, [scopeAngle.yaw])
 
   const handleRaycastCollision = useCallback((point: Vector3D) => {
-    setLastCollision(point);
-    setCollisionCount((count) => count + 1);
-    setScore((prev) => Math.max(prev - 2, 0));
-  }, []);
+    setLastCollision(point)
+    setCollisionCount(count => count + 1)
+    setScore(prev => Math.max(prev - 2, 0))
+  }, [])
 
   const handleCrisis = useCallback((crisis: CrisisEvent) => {
-    setActiveCrisis(crisis);
-    setCrisisCount((prev) => prev + 1);
+    setActiveCrisis(crisis)
+    setCrisisCount(prev => prev + 1)
     // Massive score penalty for crisis
-    setScore((prev) => Math.max(prev - 50, 0));
-  }, []);
+    setScore(prev => Math.max(prev - 50, 0))
+  }, [])
 
   // Update elapsed time every second
   useEffect(() => {
     const interval = setInterval(() => {
-      setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [startTime]);
+      setElapsedTime(Math.floor((Date.now() - startTime) / 1000))
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [startTime])
 
   // Preload AI-generated anatomical textures (Nano Banana Pro - 84/100 quality)
   useEffect(() => {
-    console.log('🎨 Preloading AI-generated anatomical textures from Nano Banana Pro...');
+    console.log('🎨 Preloading AI-generated anatomical textures from Nano Banana Pro...')
     preloadAllTextures()
-      .then((textures) => {
-        console.log(`✅ Successfully preloaded ${textures.size}/12 anatomical textures`);
-        console.log('   Textures validated at 84/100 quality with 98 medical references');
-        console.log('   Generation model: gemini-3-pro-image-preview');
+      .then(textures => {
+        console.log(`✅ Successfully preloaded ${textures.size}/12 anatomical textures`)
+        console.log('   Textures validated at 84/100 quality with 98 medical references')
+        console.log('   Generation model: gemini-3-pro-image-preview')
       })
-      .catch((error) => {
-        console.error('❌ Failed to preload textures:', error);
-      });
-  }, []); // Run once on mount
+      .catch(error => {
+        console.error('❌ Failed to preload textures:', error)
+      })
+  }, []) // Run once on mount
 
   // Handle module completion
-  const handleModuleComplete = useCallback((module: ModuleType, passed: boolean) => {
-    if (!passed) {
-      alert(`Module failed! Review objectives and try again.`);
-      return;
-    }
+  const handleModuleComplete = useCallback(
+    (module: ModuleType, passed: boolean) => {
+      if (!passed) {
+        alert(`Module failed! Review objectives and try again.`)
+        return
+      }
 
-    // Add to completed modules
-    setCurriculumProgress(prev => ({
-      ...prev,
-      modulesCompleted: [...prev.modulesCompleted, module],
-      overallScore: Math.round((prev.overallScore + score) / 2)
-    }));
+      // Add to completed modules
+      setCurriculumProgress(prev => ({
+        ...prev,
+        modulesCompleted: [...prev.modulesCompleted, module],
+        overallScore: Math.round((prev.overallScore + score) / 2),
+      }))
 
-    // Advance to next module
-    if (module === ModuleType.ANATOMICAL_RECOGNITION) {
-      setCurrentModule(ModuleType.TUMOR_DEBULKING);
-      setLevel(2);
-      alert('✅ Module 1 Complete! Advancing to Module 2: Tumor Debulking');
-    } else if (module === ModuleType.TUMOR_DEBULKING) {
-      setCurrentModule(ModuleType.MWCS_DECISION);
-      setLevel(3);
-      alert('✅ Module 2 Complete! Advancing to Module 3: MWCS Decision Making');
-    } else if (module === ModuleType.MWCS_DECISION) {
-      alert('✅ Module 3 Complete! Certification awarded!');
-    }
+      // Advance to next module
+      if (module === ModuleType.ANATOMICAL_RECOGNITION) {
+        setCurrentModule(ModuleType.TUMOR_DEBULKING)
+        setLevel(2)
+        alert('✅ Module 1 Complete! Advancing to Module 2: Tumor Debulking')
+      } else if (module === ModuleType.TUMOR_DEBULKING) {
+        setCurrentModule(ModuleType.MWCS_DECISION)
+        setLevel(3)
+        alert('✅ Module 2 Complete! Advancing to Module 3: MWCS Decision Making')
+      } else if (module === ModuleType.MWCS_DECISION) {
+        alert('✅ Module 3 Complete! Certification awarded!')
+      }
 
-    // Reset stats for next module
-    setCollisionCount(0);
-    setCrisisCount(0);
-    setScore(100);
-    setLastCollision(null);
-  }, [score]);
+      // Reset stats for next module
+      setCollisionCount(0)
+      setCrisisCount(0)
+      setScore(100)
+      setLastCollision(null)
+    },
+    [score]
+  )
 
   const handleCertificationAchieved = useCallback(() => {
     setCurriculumProgress(prev => ({
       ...prev,
-      certified: true
-    }));
-    setShowCertification(true);
-  }, []);
+      certified: true,
+    }))
+    setShowCertification(true)
+  }, [])
 
   // Serious Game Mode Handlers
   const handleCaseSelected = useCallback((patientCase: PatientCase) => {
-    setSelectedCase(patientCase);
+    setSelectedCase(patientCase)
 
     // Initialize TaskManager
     const taskManager = new TaskManager(
       patientCase,
-      (progress) => {
-        setTaskProgress(progress);
-        setScore(progress.score);
+      progress => {
+        setTaskProgress(progress)
+        setScore(progress.score)
       },
-      (feedback) => {
-        console.log(`📋 ${feedback.type.toUpperCase()}: ${feedback.message}`);
+      feedback => {
+        console.log(`📋 ${feedback.type.toUpperCase()}: ${feedback.message}`)
         // TODO: Display feedback in UI (toast notification)
       }
-    );
+    )
 
-    taskManagerRef.current = taskManager;
-    setTaskProgress(taskManager.getProgress());
+    taskManagerRef.current = taskManager
+    setTaskProgress(taskManager.getProgress())
 
     // Set level based on first phase
-    setLevel(1);
+    setLevel(1)
 
     // Reset simulation state
-    setScore(100);
-    setCollisionCount(0);
-    setCrisisCount(0);
-    setLastCollision(null);
-    setScopeAngle({ pitch: 0.05, yaw: 0 });
-    setTipPosition(initialTipPosition);
+    setScore(100)
+    setCollisionCount(0)
+    setCrisisCount(0)
+    setLastCollision(null)
+    setScopeAngle({ pitch: 0.05, yaw: 0 })
+    setTipPosition(initialTipPosition)
 
-    console.log(`🏥 Starting case: ${patientCase.name} (${patientCase.diagnosis})`);
-  }, []);
+    console.log(`🏥 Starting case: ${patientCase.name} (${patientCase.diagnosis})`)
+  }, [])
 
   const handleExitCase = useCallback(() => {
     if (taskManagerRef.current) {
       // Save completion if all objectives completed
       if (taskManagerRef.current.isCompleted()) {
-        setCompletedCaseIds(prev => [...prev, selectedCase!.id]);
-        console.log(`✅ Case completed: ${selectedCase!.name}`);
+        setCompletedCaseIds(prev => [...prev, selectedCase!.id])
+        console.log(`✅ Case completed: ${selectedCase!.name}`)
       }
     }
 
-    setSelectedCase(null);
-    setTaskProgress(null);
-    taskManagerRef.current = null;
-    setLevel(1);
-    setScore(100);
-  }, [selectedCase]);
+    setSelectedCase(null)
+    setTaskProgress(null)
+    taskManagerRef.current = null
+    setLevel(1)
+    setScore(100)
+  }, [selectedCase])
 
   // Wire collision system to TaskManager
   const handleRaycastCollisionWithTask = useCallback((point: Vector3D) => {
-    setLastCollision(point);
-    setCollisionCount((count) => count + 1);
+    setLastCollision(point)
+    setCollisionCount(count => count + 1)
 
     if (taskManagerRef.current) {
       // Apply penalty through TaskManager
-      taskManagerRef.current.applyPenalty(-2, 'Tissue contact detected');
+      taskManagerRef.current.applyPenalty(-2, 'Tissue contact detected')
     } else {
       // Fallback to old system
-      setScore((prev) => Math.max(prev - 2, 0));
+      setScore(prev => Math.max(prev - 2, 0))
     }
-  }, []);
+  }, [])
 
   const handleCrisisWithTask = useCallback((crisis: CrisisEvent) => {
-    setActiveCrisis(crisis);
-    setCrisisCount((prev) => prev + 1);
+    setActiveCrisis(crisis)
+    setCrisisCount(prev => prev + 1)
 
     if (taskManagerRef.current) {
       // Apply crisis penalty through TaskManager
-      taskManagerRef.current.applyPenalty(-50, `CRISIS: ${crisis.description}`);
+      taskManagerRef.current.applyPenalty(-50, `CRISIS: ${crisis.description}`)
     } else {
       // Fallback to old system
-      setScore((prev) => Math.max(prev - 50, 0));
+      setScore(prev => Math.max(prev - 50, 0))
     }
-  }, []);
+  }, [])
 
   // Show case selector if no case is selected and not in curriculum mode
   if (!selectedCase && !curriculumMode) {
-    return (
-      <CaseSelector
-        onCaseSelected={handleCaseSelected}
-        completedCaseIds={completedCaseIds}
-      />
-    );
+    return <CaseSelector onCaseSelected={handleCaseSelected} completedCaseIds={completedCaseIds} />
   }
 
   return (
-    <div style={{ height: "100vh", width: "100vw", background: "#0f0a0a" }}>
+    <div style={{ height: '100vh', width: '100vw', background: '#0f0a0a' }}>
       {/* Crisis Alert Banner */}
       {activeCrisis && (
         <div style={styles.crisisAlert} role="alert" aria-live="assertive">
@@ -360,15 +363,21 @@ export default function App() {
             <dl style={styles.statsList}>
               <div style={styles.statItem}>
                 <dt style={styles.statLabel}>Level</dt>
-                <dd style={styles.statValue} aria-live="polite">{level}</dd>
+                <dd style={styles.statValue} aria-live="polite">
+                  {level}
+                </dd>
               </div>
               <div style={styles.statItem}>
                 <dt style={styles.statLabel}>Score</dt>
-                <dd style={styles.statValue} aria-live="polite">{score}</dd>
+                <dd style={styles.statValue} aria-live="polite">
+                  {score}
+                </dd>
               </div>
               <div style={styles.statItem}>
                 <dt style={styles.statLabel}>Collisions</dt>
-                <dd style={styles.statValue} aria-live="polite">{collisionCount}</dd>
+                <dd style={styles.statValue} aria-live="polite">
+                  {collisionCount}
+                </dd>
               </div>
             </dl>
 
@@ -377,15 +386,15 @@ export default function App() {
                 {curriculumMode ? '📚 Curriculum' : '🎮 Serious Game'}
               </HUDButton>
               {!curriculumMode && (
-                <HUDButton onClick={() => setLevel((prev) => (prev >= 3 ? 1 : prev + 1))}>
+                <HUDButton onClick={() => setLevel(prev => (prev >= 3 ? 1 : prev + 1))}>
                   Advance Level
                 </HUDButton>
               )}
               <HUDButton
                 onClick={() => {
-                  setScopeAngle({ pitch: 0.05, yaw: 0 });
-                  setTipPosition(initialTipPosition);
-                  setLastCollision(null);
+                  setScopeAngle({ pitch: 0.05, yaw: 0 })
+                  setTipPosition(initialTipPosition)
+                  setLastCollision(null)
                 }}
               >
                 Reset Scope
@@ -394,11 +403,7 @@ export default function App() {
           </section>
 
           {/* Safety Corridor HUD */}
-          <SafetyHUD
-            safetyZones={safetyZones}
-            visible={level >= 2}
-            compact={false}
-          />
+          <SafetyHUD safetyZones={safetyZones} visible={level >= 2} compact={false} />
 
           {/* Phase 1B: Technique Scoring System */}
           <TechniqueScoring
@@ -444,5 +449,5 @@ export default function App() {
         showSafetySpheres={false}
       />
     </div>
-  );
+  )
 }
