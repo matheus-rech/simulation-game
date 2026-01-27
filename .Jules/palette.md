@@ -1,0 +1,3 @@
+## 2024-05-23 - Inline Styles & Accessibility Interaction
+**Learning:** This project relies heavily on inline styles (`styles` object) and lacks a global CSS reset or utility classes. This makes interactive states (hover, focus) difficult for keyboard users as pseudo-classes (`:hover`, `:focus`) aren't available.
+**Action:** When converting non-interactive elements (like `div` cards) to buttons, explicit reset styles (`appearance: none`, `background: none`, etc.) must be applied via `style` prop. To replicate hover/focus effects, use `onMouseEnter`/`onMouseLeave` AND `onFocus`/`onBlur` handlers to directly manipulate `e.currentTarget.style`. Ensure `onBlur` restores the correct state (considering `isSelected` or similar props).
