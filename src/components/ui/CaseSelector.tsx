@@ -55,6 +55,12 @@ const styles = {
     border: '2px solid rgba(255, 255, 255, 0.2)',
     cursor: 'pointer',
     transition: 'all 0.2s',
+    // Button reset styles
+    width: '100%',
+    textAlign: 'left' as const,
+    fontFamily: 'inherit',
+    color: 'inherit',
+    appearance: 'none' as const,
   },
   caseCardSelected: {
     border: '2px solid #60a5fa',
@@ -165,9 +171,12 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
             const isSelected = selectedCase?.id === patientCase.id;
 
             return (
-              <div
+              <button
                 key={patientCase.id}
+                type="button"
                 onClick={() => isAvailable && setSelectedCase(patientCase)}
+                disabled={isLocked}
+                aria-pressed={isSelected}
                 style={{
                   ...styles.caseCard,
                   ...(isSelected ? styles.caseCardSelected : {}),
@@ -183,6 +192,21 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                   if (isAvailable && !isSelected) {
                     e.currentTarget.style.transform = 'scale(1)';
                     e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  }
+                }}
+                onFocus={(e) => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.borderColor = '#93c5fd';
+                    e.currentTarget.style.outline = 'none';
+                    e.currentTarget.style.boxShadow = '0 0 0 4px rgba(147, 197, 253, 0.5)';
+                  }
+                }}
+                onBlur={(e) => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    e.currentTarget.style.boxShadow = 'none';
                   }
                 }}
               >
@@ -242,7 +266,7 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                     </div>
                   </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
