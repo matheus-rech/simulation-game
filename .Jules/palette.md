@@ -1,0 +1,3 @@
+## 2024-10-24 - Interactive Card Accessibility
+**Learning:** When converting non-semantic `div` cards to semantic `button` elements in an inline-style system, standard user-agent button styles (border, background, text alignment) aggressively override design intent. Explicit resets (`appearance: none`, `textAlign: 'left'`, `width: '100%'`, `fontFamily: 'inherit'`) are critical. Additionally, keyboard focus states can cheaply replicate hover effects by binding `onFocus`/`onBlur` to the existing hover state setters.
+**Action:** Always apply a "reset" style object when upgrading `div` -> `button` and map focus handlers to hover state setters to ensure keyboard parity.
