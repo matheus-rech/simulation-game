@@ -381,7 +381,8 @@ export function CaseSelector({ onCaseSelected, completedCaseIds, onEnterCurricul
                     cursor: 'pointer',
                     fontSize: '0.875rem',
                     transition: 'all 0.2s',
-                    fontFamily: 'inherit'
+                    fontFamily: 'inherit',
+                    appearance: 'none'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)';
