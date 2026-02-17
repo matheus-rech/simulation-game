@@ -25,28 +25,28 @@ describe('CaseSelector', () => {
     render(<CaseSelector onCaseSelected={mockOnCaseSelected} completedCaseIds={[]} />)
 
     const buttons = screen.getAllByRole('button')
-    // Assuming order is preserved, the second button is the second case
-    if (buttons.length > 1) {
-      const lockedButton = buttons[1]
-      expect(lockedButton.hasAttribute('disabled')).toBe(true)
-    }
+    // We expect one button per case.
+    expect(buttons.length).toBe(ALL_CASES.length)
+
+    // Assuming order is preserved, the second button corresponds to the second case
+    const lockedButton = buttons[1]
+    expect(lockedButton.hasAttribute('disabled')).toBe(true)
   })
 
   it('should toggle selection state and show details', () => {
     render(<CaseSelector onCaseSelected={mockOnCaseSelected} completedCaseIds={[]} />)
 
     const buttons = screen.getAllByRole('button')
-    if (buttons.length > 0) {
-      const firstButton = buttons[0]
+    expect(buttons.length).toBeGreaterThan(0)
+    const firstButton = buttons[0]
 
-      // Click it
-      fireEvent.click(firstButton)
+    // Click it
+    fireEvent.click(firstButton)
 
-      // Should show details
-      expect(screen.getByText(/Pre-Operative Briefing/)).toBeDefined()
+    // Should show details
+    expect(screen.getByText(/Pre-Operative Briefing/)).toBeDefined()
 
-      // Verify aria-pressed
-      expect(firstButton.getAttribute('aria-pressed')).toBe('true')
-    }
+    // Verify aria-pressed
+    expect(firstButton.getAttribute('aria-pressed')).toBe('true')
   })
 })
