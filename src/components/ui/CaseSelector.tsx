@@ -371,6 +371,7 @@ export function CaseSelector({ onCaseSelected, completedCaseIds, onEnterCurricul
                   <span style={{ fontSize: '0.875rem', opacity: 0.5 }}>— OR —</span>
                 </div>
                 <button
+                  type="button"
                   onClick={onEnterCurriculumMode}
                   style={{
                     background: 'transparent',
