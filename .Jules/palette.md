@@ -8,4 +8,4 @@
 
 ## 2025-05-23 - Converting Divs to Buttons with Inline Styles
 **Learning:** When refactoring interactive `div`s to `<button>` elements in this project (which uses inline styles), standard button resets must be applied explicitly to the `style` prop.
-**Action:** Always add `appearance: 'none', background: 'none', border: 'none', textAlign: 'left', width: '100%', fontFamily: 'inherit', color: 'inherit'` to preserve the original design while gaining accessibility.
+**Action:** First apply a reset via the `style` prop (e.g. `appearance: 'none', background: 'none', border: 'none', textAlign: 'left', width: '100%', fontFamily: 'inherit', color: 'inherit'`), then immediately re-apply the component's intended background and border styles (if any) so the original design is preserved while gaining accessibility.
