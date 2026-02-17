@@ -144,7 +144,7 @@ function HUDButton({ onClick, children, shortcut }: { onClick: () => void; child
       title={shortcut ? `Shortcut: ${shortcut}` : undefined}
     >
       {children}
-      {shortcut && <kbd style={styles.kbd}>{shortcut}</kbd>}
+      {shortcut && <kbd style={styles.kbd} aria-hidden="true">{shortcut}</kbd>}
     </button>
   );
 }
