@@ -183,6 +183,12 @@ export default function App() {
 
   const rotationZ = useMemo(() => scopeAngle.yaw * 0.2, [scopeAngle.yaw]);
 
+  const resetScope = useCallback(() => {
+    setScopeAngle({ pitch: 0.05, yaw: 0 });
+    setTipPosition(initialTipPosition);
+    setLastCollision(null);
+  }, []);
+
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -197,16 +203,14 @@ export default function App() {
 
       switch (e.key.toLowerCase()) {
         case 'r':
-          setScopeAngle({ pitch: 0.05, yaw: 0 });
-          setTipPosition(initialTipPosition);
-          setLastCollision(null);
+          resetScope();
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedCase, curriculumMode]);
+  }, [selectedCase, curriculumMode, resetScope]);
 
   const handleRaycastCollision = useCallback((point: Vector3D) => {
     setLastCollision(point);
@@ -425,11 +429,7 @@ export default function App() {
                 </HUDButton>
               )}
               <HUDButton
-                onClick={() => {
-                  setScopeAngle({ pitch: 0.05, yaw: 0 });
-                  setTipPosition(initialTipPosition);
-                  setLastCollision(null);
-                }}
+                onClick={resetScope}
                 shortcut="R"
               >
                 Reset Scope

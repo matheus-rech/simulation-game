@@ -192,6 +192,7 @@ export function CaseSelector({ onCaseSelected, completedCaseIds, onEnterCurricul
                   fontFamily: 'inherit',
                   color: 'inherit',
                   appearance: 'none',
+                  transform: 'scale(1)',
                 }}
                 onMouseEnter={e => {
                   if (isAvailable && !isSelected) {
@@ -200,10 +201,10 @@ export function CaseSelector({ onCaseSelected, completedCaseIds, onEnterCurricul
                   }
                 }}
                 onMouseLeave={e => {
-                  if (isAvailable && !isSelected) {
-                    e.currentTarget.style.transform = 'scale(1)'
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-                  }
+                  e.currentTarget.style.transform = 'scale(1)'
+                  e.currentTarget.style.borderColor = isSelected
+                    ? '#60a5fa'
+                    : 'rgba(255, 255, 255, 0.2)'
                 }}
                 onFocus={e => {
                   if (isAvailable && !isSelected) {
@@ -212,10 +213,10 @@ export function CaseSelector({ onCaseSelected, completedCaseIds, onEnterCurricul
                   }
                 }}
                 onBlur={e => {
-                  if (isAvailable && !isSelected) {
-                    e.currentTarget.style.transform = 'scale(1)'
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-                  }
+                  e.currentTarget.style.transform = 'scale(1)'
+                  e.currentTarget.style.borderColor = isSelected
+                    ? '#60a5fa'
+                    : 'rgba(255, 255, 255, 0.2)'
                 }}
               >
                 {isLocked && (

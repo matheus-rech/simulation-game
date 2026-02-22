@@ -49,4 +49,21 @@ describe('CaseSelector', () => {
     // Verify aria-pressed
     expect(firstButton.getAttribute('aria-pressed')).toBe('true')
   })
+
+  it('should render Training Mode button and invoke callback on click', () => {
+    const mockOnEnterCurriculumMode = vi.fn()
+    render(
+      <CaseSelector
+        onCaseSelected={mockOnCaseSelected}
+        completedCaseIds={[]}
+        onEnterCurriculumMode={mockOnEnterCurriculumMode}
+      />
+    )
+
+    const trainingButton = screen.getByRole('button', { name: /Enter Skills Training Mode/ })
+    expect(trainingButton).toBeDefined()
+
+    fireEvent.click(trainingButton)
+    expect(mockOnEnterCurriculumMode).toHaveBeenCalledTimes(1)
+  })
 })
