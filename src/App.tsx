@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { PerspectiveCamera, SpotLight } from '@react-three/drei';
 import * as THREE from 'three';
@@ -6,7 +6,11 @@ import { AudioEngine } from './engines/audio';
 import { PhysicsEngine } from './engines/physics';
 import { CavernousSinus } from './components/CavernousSinus';
 import { HandTracker } from './components/HandInput';
-import { inputRefs, useGameStore } from './store';
+import { AVAILABLE_TOOLS, inputRefs, useGameStore } from './store';
+
+// Simulation configuration
+const DOPPLER_SIGNAL_THRESHOLD = 0.8;
+const SUCTION_RATE = 0.5;
 
 const SimulationLoop: React.FC = () => {
   const { activeTool, step, reduceBlood, setFeedback } = useGameStore();
@@ -17,6 +21,13 @@ const SimulationLoop: React.FC = () => {
   const scopeRef = useRef<THREE.PerspectiveCamera>(null);
   const toolRef = useRef<THREE.Mesh>(null);
   const lightRef = useRef<THREE.SpotLight>(null);
+
+  // Cleanup audio engine on unmount
+  useEffect(() => {
+    return () => {
+      audio.dispose();
+    };
+  }, [audio]);
 
   useFrame(() => {
     const sim = physics.update();
@@ -39,12 +50,12 @@ const SimulationLoop: React.FC = () => {
     const isDoppler = activeTool === 'doppler' && inputRefs.rightHand.pinch;
     const signal = audio.updateDoppler(sim.tool.pos, isDoppler);
 
-    if (signal > 0.8 && step === 'MAPPING') {
+    if (signal > DOPPLER_SIGNAL_THRESHOLD && step === 'MAPPING') {
       setFeedback('Anterior Genu Located. Mark for Incision.', 'success');
     }
 
     if (activeTool === 'suction' && inputRefs.rightHand.pinch) {
-      reduceBlood(0.5);
+      reduceBlood(SUCTION_RATE);
     }
   });
 
@@ -55,7 +66,8 @@ const SimulationLoop: React.FC = () => {
       <ambientLight intensity={0.3} />
       <fog attach="fog" args={["#000000", 0, 25]} />
 
-      <CavernousSinus toolPos={toolRef.current?.position || new THREE.Vector3()} audio={audio} />
+      {/* Pass toolRef directly to avoid unnecessary object allocations */}
+      <CavernousSinus toolRef={toolRef} audio={audio} />
 
       <mesh ref={toolRef} visible={activeTool !== 'scope'}>
         <cylinderGeometry args={[0.03, 0.03, 15]} />
@@ -111,7 +123,8 @@ export default function App() {
       </div>
 
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex gap-6 pointer-events-auto cursor-auto">
-        {(['doppler', 'dissector', 'suction', 'drill'] as const).map((t) => (
+        {/* Use AVAILABLE_TOOLS from store for single source of truth */}
+        {AVAILABLE_TOOLS.map((t) => (
           <button
             key={t}
             onClick={() => setTool(t)}

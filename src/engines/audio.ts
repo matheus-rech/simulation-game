@@ -1,17 +1,40 @@
 import * as THREE from 'three';
 import { ICA_PATH } from '../anatomy';
 
+/**
+ * AudioEngine with lazy AudioContext initialization.
+ * Context is created on first user interaction to comply with browser autoplay policies.
+ */
 export class AudioEngine {
-  ctx: AudioContext;
-  osc: OscillatorNode | null = null;
-  gain: GainNode | null = null;
+  private ctx: AudioContext | null = null;
+  private osc: OscillatorNode | null = null;
+  private gain: GainNode | null = null;
+  private alarmOsc: OscillatorNode | null = null;
+  private alarmGain: GainNode | null = null;
 
-  constructor() {
-    const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
-    this.ctx = new AudioContextClass();
+  /**
+   * Lazy-initialize AudioContext on first user interaction.
+   * This avoids SSR issues and browser autoplay policy violations.
+   */
+  private getContext(): AudioContext {
+    if (!this.ctx) {
+      if (typeof window === 'undefined') {
+        throw new Error('AudioEngine requires a browser environment');
+      }
+      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextClass) {
+        throw new Error('Web Audio API not supported');
+      }
+      this.ctx = new AudioContextClass();
+    }
+    // Resume context if suspended (autoplay policy)
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+    return this.ctx;
   }
 
-  updateDoppler(toolPos: THREE.Vector3, active: boolean) {
+  updateDoppler(toolPos: THREE.Vector3, active: boolean): number {
     if (!active) {
       this.silence();
       return 0;
@@ -33,35 +56,96 @@ export class AudioEngine {
     return 0;
   }
 
-  triggerAlarm() {
-    const o = this.ctx.createOscillator();
-    o.type = 'square';
-    o.frequency.setValueAtTime(880, this.ctx.currentTime);
-    o.frequency.exponentialRampToValueAtTime(110, this.ctx.currentTime + 0.5);
-    o.connect(this.ctx.destination);
-    o.start();
-    o.stop(this.ctx.currentTime + 0.5);
+  triggerAlarm(): void {
+    const ctx = this.getContext();
+
+    // Clean up any existing alarm
+    this.cleanupAlarm();
+
+    this.alarmGain = ctx.createGain();
+    this.alarmOsc = ctx.createOscillator();
+    this.alarmOsc.type = 'square';
+    this.alarmOsc.frequency.setValueAtTime(880, ctx.currentTime);
+    this.alarmOsc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.5);
+    this.alarmGain.gain.setValueAtTime(0.3, ctx.currentTime);
+    this.alarmGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+
+    this.alarmOsc.connect(this.alarmGain);
+    this.alarmGain.connect(ctx.destination);
+    this.alarmOsc.start();
+    this.alarmOsc.stop(ctx.currentTime + 0.5);
+
+    // Schedule cleanup after alarm completes
+    this.alarmOsc.onended = () => this.cleanupAlarm();
   }
 
-  private sound(intensity: number) {
+  private cleanupAlarm(): void {
+    if (this.alarmOsc) {
+      try {
+        this.alarmOsc.disconnect();
+      } catch {
+        // Already disconnected
+      }
+      this.alarmOsc = null;
+    }
+    if (this.alarmGain) {
+      try {
+        this.alarmGain.disconnect();
+      } catch {
+        // Already disconnected
+      }
+      this.alarmGain = null;
+    }
+  }
+
+  private sound(intensity: number): void {
+    const ctx = this.getContext();
+
     if (!this.osc) {
-      this.osc = this.ctx.createOscillator();
-      this.gain = this.ctx.createGain();
+      this.osc = ctx.createOscillator();
+      this.gain = ctx.createGain();
       this.osc.type = 'sawtooth';
-      this.osc.connect(this.gain).connect(this.ctx.destination);
+      this.osc.connect(this.gain);
+      this.gain.connect(ctx.destination);
       this.osc.start();
     }
 
-    const t = this.ctx.currentTime;
+    const t = ctx.currentTime;
     this.osc.frequency.setTargetAtTime(400 + intensity * 1200, t, 0.1);
     const pulse = 0.6 + 0.4 * Math.sin(t * 2 * Math.PI * (70 / 60));
     this.gain?.gain.setTargetAtTime(intensity * pulse * 0.5, t, 0.1);
   }
 
-  private silence() {
+  private silence(): void {
     if (this.osc) {
-      this.osc.stop();
+      try {
+        this.osc.stop();
+        this.osc.disconnect();
+      } catch {
+        // Already stopped/disconnected
+      }
       this.osc = null;
+    }
+    if (this.gain) {
+      try {
+        this.gain.disconnect();
+      } catch {
+        // Already disconnected
+      }
+      this.gain = null;
+    }
+  }
+
+  /**
+   * Clean up all audio resources.
+   * Call this when the component unmounts.
+   */
+  dispose(): void {
+    this.silence();
+    this.cleanupAlarm();
+    if (this.ctx) {
+      this.ctx.close();
+      this.ctx = null;
     }
   }
 }

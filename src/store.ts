@@ -1,7 +1,14 @@
 import { create } from 'zustand';
 
+// Tool types available in the simulation
 export type Tool = 'scope' | 'doppler' | 'dissector' | 'suction' | 'drill';
 export type Step = 'MAPPING' | 'INCISION' | 'RESECTION' | 'CLOSURE';
+
+// Exported tools array for UI consistency (single source of truth)
+export const AVAILABLE_TOOLS: readonly Tool[] = ['doppler', 'dissector', 'suction', 'drill'] as const;
+
+// Game configuration constants
+export const RESECTION_COMPLETION_COUNT = 40;
 
 interface GameState {
   step: Step;
@@ -44,7 +51,7 @@ export const useGameStore = create<GameState>((set) => ({
   incrementResection: () =>
     set((state) => {
       const count = state.wallResectedCount + 1;
-      if (count > 40 && state.step === 'RESECTION') {
+      if (count > RESECTION_COMPLETION_COUNT && state.step === 'RESECTION') {
         return {
           wallResectedCount: count,
           step: 'CLOSURE',
