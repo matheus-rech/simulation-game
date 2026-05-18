@@ -183,8 +183,14 @@ App.tsx (updates score, collision count)
 # Install dependencies
 npm install
 
-# No build/dev scripts configured yet
-# Project requires bundler setup (Vite, Webpack, etc.)
+# Start development server (http://localhost:3000)
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
 ---
@@ -197,6 +203,7 @@ npm install
 - Collision detection system
 - Visual effects (dust, bleeding)
 - HUD with score tracking
+- Vite build configuration
 - Multi-level progression
 - Accessibility enhancements
 
@@ -204,7 +211,6 @@ npm install
 - MediaPipe hand tracking (mentioned in README)
 - Patient vitals simulation
 - AI attending surgeon feedback
-- Build/development scripts
 - Testing framework
 - ESLint/Prettier configuration
 
@@ -251,7 +257,7 @@ npm install
 5. **Performance critical**: Use `useMemo`, instanced rendering for 3D
 6. **React Three Fiber**: Not vanilla Three.js - use R3F patterns
 7. **No tests yet**: Consider adding when making changes
-8. **Build setup missing**: May need bundler configuration
+8. **Vite bundler**: Use `npm run dev` for development server
 
 ---
 
