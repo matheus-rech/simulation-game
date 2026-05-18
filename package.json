@@ -1,21 +1,33 @@
 {
   "name": "simulation-game",
   "version": "1.0.0",
-  "description": "**NeuroSim** is a web-based serious game designed for **neurosurgery resident training**, focusing on the **endoscopic endonasal transsphenoidal approach** to pituitary adenomas, including navigation to the sphenoid sinus, identification of the sphenoid ostium, and progressive management of cavernous sinus–related challenges.",
-  "main": "index.js",
+  "description": "NeuroSim - web-based serious game for neurosurgery resident training",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@react-three/postprocessing": "^3.0.4",
-    "@types/three": "^0.182.0",
+    "playwright": "^1.60.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "three": "^0.182.0",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.182.0",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0"
   }
 }
