@@ -191,7 +191,35 @@ npm run build
 
 # Preview production build
 npm run preview
+
+# Deploy to Vercel (requires authentication)
+vercel login
+vercel --prod
 ```
+
+---
+
+## Deployment
+
+### Vercel (Recommended)
+The project is configured for Vercel deployment with `vercel.json`.
+
+**Manual deployment:**
+```bash
+npm install -g vercel
+vercel login
+vercel --prod
+```
+
+**CI/CD (GitHub Actions):**
+Set these secrets in your GitHub repository:
+- `VERCEL_TOKEN` - Get from https://vercel.com/account/tokens
+- `VERCEL_ORG_ID` - Found in `.vercel/project.json` after `vercel link`
+- `VERCEL_PROJECT_ID` - Found in `.vercel/project.json` after `vercel link`
+
+The workflow in `.github/workflows/deploy.yml` auto-deploys:
+- **Preview** deployments on pull requests
+- **Production** deployments on pushes to main
 
 ---
 
@@ -206,6 +234,8 @@ npm run preview
 - Vite build configuration
 - Multi-level progression
 - Accessibility enhancements
+- Vercel deployment configuration
+- GitHub Actions CI/CD workflow
 
 ### Not Yet Implemented
 - MediaPipe hand tracking (mentioned in README)
