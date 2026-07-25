@@ -9,12 +9,12 @@ function clamp(value, min, max) {
 }
 
 function computeForceProxy({ distance, normal, force } = {}) {
-  if (typeof force === "number") {
+  if (Number.isFinite(force)) {
     return force;
   }
 
-  const distanceValue = typeof distance === "number" ? distance : 1;
-  const normalValue = typeof normal === "number" ? normal : 0.5;
+  const distanceValue = Number.isFinite(distance) ? distance : 1;
+  const normalValue = Number.isFinite(normal) ? normal : 0.5;
   const distanceFactor = 1 / Math.max(distanceValue, 0.05);
   const normalFactor = clamp(normalValue, 0, 1);
   return distanceFactor * (0.5 + normalFactor);
