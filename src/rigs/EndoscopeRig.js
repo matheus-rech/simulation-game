@@ -6,7 +6,7 @@ class EndoscopeRig {
     this.onCollisionCallback = onCollision;
   }
 
-  onCollision(hit) {
+  processHit(hit) {
     if (!hit) {
       return null;
     }
