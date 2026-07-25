@@ -103,11 +103,25 @@ const styles = {
     fontSize: '1rem',
     textAlign: 'center' as const,
     opacity: 0.95,
+  },
+  kbd: {
+    display: 'inline-block',
+    padding: '2px 6px',
+    fontSize: '0.75em',
+    lineHeight: '1',
+    color: '#f7e5da',
+    verticalAlign: 'middle',
+    backgroundColor: 'rgba(247, 229, 218, 0.1)',
+    borderRadius: '4px',
+    border: '1px solid rgba(247, 229, 218, 0.2)',
+    boxShadow: 'inset 0 -1px 0 rgba(247, 229, 218, 0.2)',
+    marginLeft: '8px',
+    fontFamily: 'monospace',
   }
 };
 
 // Reusable button component to handle hover state cleanly
-function HUDButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function HUDButton({ onClick, children, shortcut }: { onClick: () => void; children: React.ReactNode; shortcut?: string }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -126,8 +140,11 @@ function HUDButton({ onClick, children }: { onClick: () => void; children: React
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       type="button"
+      aria-keyshortcuts={shortcut}
+      title={shortcut ? `Shortcut: ${shortcut}` : undefined}
     >
       {children}
+      {shortcut && <kbd style={styles.kbd} aria-hidden="true">{shortcut}</kbd>}
     </button>
   );
 }
@@ -165,6 +182,35 @@ export default function App() {
   const taskManagerRef = useRef<TaskManager | null>(null);
 
   const rotationZ = useMemo(() => scopeAngle.yaw * 0.2, [scopeAngle.yaw]);
+
+  const resetScope = useCallback(() => {
+    setScopeAngle({ pitch: 0.05, yaw: 0 });
+    setTipPosition(initialTipPosition);
+    setLastCollision(null);
+  }, []);
+
+  // Global Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only active if Legacy UI is visible (!selectedCase && curriculumMode)
+      if (selectedCase || !curriculumMode) return;
+
+      // Ignore inputs
+      const target = e.target as HTMLElement;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable) {
+        return;
+      }
+
+      switch (e.key.toLowerCase()) {
+        case 'r':
+          resetScope();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedCase, curriculumMode, resetScope]);
 
   const handleRaycastCollision = useCallback((point: Vector3D) => {
     setLastCollision(point);
@@ -326,6 +372,7 @@ export default function App() {
       <CaseSelector
         onCaseSelected={handleCaseSelected}
         completedCaseIds={completedCaseIds}
+        onEnterCurriculumMode={() => setCurriculumMode(true)}
       />
     );
   }
@@ -382,11 +429,8 @@ export default function App() {
                 </HUDButton>
               )}
               <HUDButton
-                onClick={() => {
-                  setScopeAngle({ pitch: 0.05, yaw: 0 });
-                  setTipPosition(initialTipPosition);
-                  setLastCollision(null);
-                }}
+                onClick={resetScope}
+                shortcut="R"
               >
                 Reset Scope
               </HUDButton>
