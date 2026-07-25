@@ -1,0 +1,104 @@
+
+🚀 Starting AI-Powered Anatomy Texture Generation Pipeline
+   Model: Gemini 3 Pro Image (Nano Banana Pro)
+   Validation: Gemini 3 Pro + Google Search Grounding
+   Target: Unity VR + Three.js Web Platform
+
+
+============================================================
+GENERATING: nasal-septum
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+❌ Curation failed: GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent: [400 Bad Request] API key expired. Please renew the API key. [{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"API_KEY_INVALID","domain":"googleapis.com","metadata":{"service":"generativelanguage.googleapis.com"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"API key expired. Please renew the API key."}]
+    at handleResponseNotOk (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:432:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async makeRequest (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:401:9)
+    at async generateContent (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:865:22)
+    at async curatePromptWithGrounding (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:248:20)
+    at async generateAndValidate (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:419:20)
+    at async generateCompleteTextureSet (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:562:46) {
+  status: 400,
+  statusText: 'Bad Request',
+  errorDetails: [
+    {
+      '@type': 'type.googleapis.com/google.rpc.ErrorInfo',
+      reason: 'API_KEY_INVALID',
+      domain: 'googleapis.com',
+      metadata: [Object]
+    },
+    {
+      '@type': 'type.googleapis.com/google.rpc.LocalizedMessage',
+      locale: 'en-US',
+      message: 'API key expired. Please renew the API key.'
+    }
+  ]
+}
+
+🔄 Attempt 1/3 for nasal-septum
+
+🎨 Generating texture: nasal-septum (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 84/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 84/100)
+   Medical sources: 3 references
+💾 Saved: nasal-septum_standard.png (665.0 KB)
+📚 Medical sources: 3 references
+
+============================================================
+GENERATING: nasal-turbinate
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+❌ Curation failed: GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent: [400 Bad Request] API key expired. Please renew the API key. [{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"API_KEY_INVALID","domain":"googleapis.com","metadata":{"service":"generativelanguage.googleapis.com"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"API key expired. Please renew the API key."}]
+    at handleResponseNotOk (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:432:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async makeRequest (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:401:9)
+    at async generateContent (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:865:22)
+    at async curatePromptWithGrounding (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:248:20)
+    at async generateAndValidate (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:419:20)
+    at async generateCompleteTextureSet (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:562:46) {
+  status: 400,
+  statusText: 'Bad Request',
+  errorDetails: [
+    {
+      '@type': 'type.googleapis.com/google.rpc.ErrorInfo',
+      reason: 'API_KEY_INVALID',
+      domain: 'googleapis.com',
+      metadata: [Object]
+    },
+    {
+      '@type': 'type.googleapis.com/google.rpc.LocalizedMessage',
+      locale: 'en-US',
+      message: 'API key expired. Please renew the API key.'
+    }
+  ]
+}
+
+🔄 Attempt 1/3 for nasal-turbinate
+
+🎨 Generating texture: nasal-turbinate (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 86/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 86/100)
+   Medical sources: 3 references
+💾 Saved: nasal-turbinate_standard.png (650.6 KB)
+📚 Medical sources: 3 references
+
+============================================================
+GENERATING: sphenoid-ostium
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...

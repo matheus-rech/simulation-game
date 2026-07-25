@@ -1,0 +1,428 @@
+[
+  {
+    "name": "nasal-septum_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As a neurosurgeon with extensive experience in this approach, my overall assessment is that this is a highly realistic AI generation, verging on clinical usefulness for educational purposes. \n\n**Strengths:**\n- **Color & Texture:** The color fidelity of the nasal mucosa is outstanding; the pink, vascular-rich appearance is precisely what we see in the operating room. The high-resolution texture, complete with a fine submucosal vascular network and glistening specular highlights from moisture, is exceptionally well-rendered.\n- **General Anatomy:** The image correctly portrays the view of the posterior nasal septum approaching the sphenoid rostrum. The relationship between the septum, the adjacent turbinate (left), and the choana/nasopharynx (inferior) is anatomically plausible for this surgical stage.\n\n**Areas for Improvement:**\n- **Lighting:** The central hotspot from the endoscope's light source is too intense, perfectly round, and 'bloomed out'. While hotspots are realistic, this one completely obliterates the underlying tissue texture, which is an artifact we try to minimize by adjusting the light source. Real endoscopic lighting has a slightly more diffuse falloff.\n- **Medical Realism:** The surgical field is too pristine. A real procedure, even at this early stage, would likely show more mucus, perhaps some blood staining from instrumentation, or subtle edema. The scattered whitish-yellow patches on the mucosa are ambiguous; they don't clearly represent mucus, cautery, or a specific pathology, and appear as a minor AI artifact.\n- **Tissue Form:** The mucosal surfaces are slightly too smooth and 'bulbous', lacking the subtle irregularities and tighter adherence to underlying cartilage and bone seen in vivo. It has a slightly 'inflated' appearance.",
+      "critical_errors": [
+        "The presence of scattered, opaque, whitish-yellow patches on the mucosa lacks a clear clinical correlate. They do not convincingly represent mucus, inflammation, or a typical surgical artifact and appear to be anatomically incorrect AI-generated features.",
+        "The contour of the septal mucosa is overly convex and smooth, giving it an unnaturally 'plumped' appearance that deviates from the typical taut appearance over the septal cartilage and vomer."
+      ],
+      "sources_consulted": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK563220/figure/article-31327.f2/",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-view-of-the-sphenoid-sinus-after-removal-of-the_fig2_320341775",
+        "https://www.aans.org/-/media/Images/AANS/Patient-Info/Conditions-and-Treatments/Transsphenoidal-Tumor-Resection-P2.ashx",
+        "https://entokey.com/wp-content/uploads/2016/09/B9781455727101000578_f057-003ab-9781455727101.jpg"
+      ]
+    },
+    "sources": [
+      "https://www.ncbi.nlm.nih.gov/books/NBK560713/",
+      "https://thejns.org/view/journals/neurosurg-focus/25/4/foc-08149.xml",
+      "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-transnasal-pituitary-surgery/approach-for-endoscopic-transnasal-pituitary-surgery",
+      "https://www.stryker.com/us/en/endoscopy/products/1688-aim-4k-platform.html",
+      "https://www.ncbi.nlm.nih.gov/books/NBK563220/figure/article-31327.f2/",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-view-of-the-sphenoid-sinus-after-removal-of-the_fig2_320341775",
+      "https://www.aans.org/-/media/Images/AANS/Patient-Info/Conditions-and-Treatments/Transsphenoidal-Tumor-Resection-P2.ashx",
+      "https://entokey.com/wp-content/uploads/2016/09/B9781455727101000578_f057-003ab-9781455727101.jpg"
+    ]
+  },
+  {
+    "name": "nasal-turbinate_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As a senior neurosurgeon, my assessment is that this is a high-fidelity rendering, suitable for educational purposes. The image accurately captures the endoscopic view of what appears to be the middle turbinate during the initial nasal phase of a transsphenoidal approach. The color fidelity of the mucosa and the fine vascular texture are exceptional and closely match real intraoperative footage. The presence of surgical instruments, a suction tip and a dissector, adds to the realism. However, the anatomy is slightly idealized; the turbinate is more bulbous and perfectly smooth than typically encountered in vivo, where surfaces can be more irregular or edematous. The lighting, while correctly showing a central hotspot and specular highlights, is somewhat harsh and overexposed in the center, a common but not always desirable artifact. The few spots of hemorrhage are well-placed but lack the smearing and subtle clotting seen with active bleeding. Overall, an excellent simulation that borders on clinical photography, but lacks the subtle 'messiness' of a real surgical field.",
+      "critical_errors": [
+        "The morphology of the turbinate is slightly idealized; it is overly smooth and bulbous, lacking the more complex, sometimes irregular convolutions seen in many patients.",
+        "The central light reflection (hotspot) is excessively bright, causing a loss of texture detail in the center of the image, which is a common but not universally representative lighting artifact."
+      ],
+      "sources_consulted": [
+        "https://www.researchgate.net/figure/ntraoperative-endoscopic-view-of-the-right-nasal-cavity-The-middle-turbinate-MT-is_fig2_322699313",
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-transsphenoidal-approach/nasal-stage-of-the-endoscopic-approach",
+        "https://www.cureus.com/articles/25016-endoscopic-endonasal-transsphenoidal-approach-for-pituitary-adenomas-a-single-institution-experience-from-a-developing-country#!/media/212040",
+        "https://online.boneandjoint.org.uk/doi/full/10.1302/2046-3758.95.BJR-2019-0263.R1",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4078810/figure/F1/"
+      ]
+    },
+    "sources": [
+      "https://www.youtube.com/watch?v=Fj7JOI0pIes",
+      "https://www.semanticscholar.org/paper/The-Endoscopic-Endonasal-Transsphenoidal-Approach%3A-A-Labbe-Froelich/288f1a140f0c0587293a652c7886a34eb651c6c5/figure/0",
+      "https://www.sciencedirect.com/topics/medicine-and-dentistry/nasal-turbinate",
+      "https://www.storzmedical.com/en/products/orl/light-sources-cameras-and-documentation",
+      "https://www.researchgate.net/figure/ntraoperative-endoscopic-view-of-the-right-nasal-cavity-The-middle-turbinate-MT-is_fig2_322699313",
+      "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-transsphenoidal-approach/nasal-stage-of-the-endoscopic-approach",
+      "https://www.cureus.com/articles/25016-endoscopic-endonasal-transsphenoidal-approach-for-pituitary-adenomas-a-single-institution-experience-from-a-developing-country#!/media/212040",
+      "https://online.boneandjoint.org.uk/doi/full/10.1302/2046-3758.95.BJR-2019-0263.R1",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4078810/figure/F1/"
+    ]
+  },
+  {
+    "name": "sphenoid-ostium_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As a neurosurgeon with extensive experience in this approach, I find this AI-generated image to be a remarkably strong representation, particularly suitable for educational purposes or surgical simulation. \n\nPOSITIVE FEEDBACK:\n- **Color & Texture:** The color fidelity of the mucosa is excellent—the healthy, vascular pink is spot-on. The texture quality is superb; the fine submucosal vascular network and the glistening, wet appearance from the specular highlights are highly realistic and hold up under magnification.\n- **Anatomy:** The general anatomical relationships are correct. This is a clear view of the sellar face bulging into the sphenoid sinus after a wide sphenoidotomy has been performed, a classic finding for a pituitary macroadenoma. The surrounding tissue is consistent with the posterior septum and turbinate mucosa.\n\nAREAS FOR IMPROVEMENT:\n- **Sphenoidotomy Shape:** The primary feature reducing the score is the sphenoidotomy itself. It is a perfect, machine-like circle. While our goal is a wide opening, a surgically created sphenoidotomy using drills and Kerrison rongeurs is almost never this geometrically perfect. It typically has a slightly more irregular or ovoid shape. This perfect circle detracts from the realism.\n- **Lighting:** The lighting is good but not entirely natural. The central hotspot is too intense and has a 'bloom' effect that feels more like a CGI rendering than the light from a clinical-grade xenon endoscope. Real endoscopic lighting has a slightly harsher falloff and more subtle lens flare.\n- **Instrument Appearance:** The tips of the surgical instruments visible at the periphery are somewhat generic and lack the sharp, metallic detail of real instruments. They appear slightly blurred and poorly defined compared to the crispness of the surrounding tissue.",
+      "critical_errors": [
+        "Perfectly circular, machine-cut appearance of the sphenoidotomy is surgically unrealistic.",
+        "Central light hotspot is exaggerated with an artificial 'bloom' effect not typical of a xenon endoscope."
+      ],
+      "sources_consulted": [
+        "https://thejns.org/view/journals/j-neurosurg/122/1/article-p6.xml",
+        "https://www.youtube.com/watch?v=R_5y29c4L5A",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-view-of-the-sphenoid-sinus-demonstrating-the-pertinent-bony_fig1_221921389",
+        "https://academic.oup.com/ons/article/15/6/E98/5048560"
+      ]
+    },
+    "sources": [
+      "https://www.thieme-connect.com/products/ejournals/html/10.1055/s-0033-1359312",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3096238/",
+      "https://www.researchgate.net/publication/329596324_Endoscopic_Transsphenoidal_Approach_Anatomical_Nuances_of_the_Sphenoid_Sinus_and_Its_Clinical_Implications",
+      "https://www.stryker.com/us/en/endoscopy/products/l10-led-light-source.html",
+      "https://thejns.org/view/journals/j-neurosurg/122/1/article-p6.xml",
+      "https://www.youtube.com/watch?v=R_5y29c4L5A",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-view-of-the-sphenoid-sinus-demonstrating-the-pertinent-bony_fig1_221921389",
+      "https://academic.oup.com/ons/article/15/6/E98/5048560"
+    ]
+  },
+  {
+    "name": "sphenoid-sinus_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As a neurosurgeon with extensive experience in this approach, I find this image to be a very strong AI generation, but with specific, identifiable flaws that prevent it from being perfect. \n\nStrengths:\n- The mucosal color, vascularity, and texture on the sellar prominence are outstanding and closely resemble what is seen intraoperatively. The fine, branching arterial network is particularly impressive.\n- Color fidelity is high. The pinkish mucosa, whitish bone of the septa, and the yellowish, viscous appearance of sinus secretions are all very accurate.\n- Specular highlights on wet surfaces are excellent and mimic the reflection from a xenon light source well.\n\nAreas for Improvement:\n1.  **Anatomy:** The primary issue is the perfectly circular, dark aperture superiorly. This is not anatomically correct. The optic canals or an Onodi cell, if present, would have a more irregular shape and would not typically appear as a dark, featureless void. Similarly, the lateral recesses are too cavernous and simplified. Key landmarks like the impressions of the Vidian (pterygoid) canal or foramen rotundum are absent. The anatomy is also too symmetrical; sphenoid septation is notoriously variable and rarely this balanced.\n2.  **Lighting:** The central hotspot is present, but the light falloff is too abrupt, creating deep, absolute black shadows in the recesses. A high-quality surgical endoscope provides better illumination, revealing more detail even in shadowed areas. The overall lighting feels slightly flat compared to the high-contrast, high-dynamic-range view from a modern 4K endoscope.\n3.  **Artifacts:** The dark, grayish patch on the right-sided septum does not correspond to a known anatomical structure or common pathology (like venous plexus or mucosal discoloration) and appears to be a rendering artifact. It detracts from the realism.",
+      "critical_errors": [
+        "The superior, perfectly circular, and featureless dark opening is anatomically incorrect. It does not represent a realistic sphenoid ostium, optic canal, or Onodi cell.",
+        "The dark, non-anatomical discoloration on the right-sided bony septum is an artifact and does not correspond to any real tissue."
+      ],
+      "sources_consulted": [
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-sphenoid-sinus-a-The-view_fig2_320395371",
+        "https://www.aans.org/en/Patients/Neurosurgical-Conditions-and-Treatments/Transsphenoidal-Tumor-Resection",
+        "https://thejns.org/view/journals/j-neurosurg/130/3/article-p721.xml",
+        "https://www.youtube.com/watch?v=S7bYhJd2aWw",
+        "https://ent.weill.cornell.edu/clinical-programs/skull-base-surgery-center/endoscopic-approach-pituitary-tumors"
+      ]
+    },
+    "sources": [
+      "https://www.researchgate.net/publication/326893322/figure/fig1/AS:656911634591744@1533632943261/Intraoperative-endoscopic-view-of-the-sphenoid-sinus-after-a-wide-sphenoidotomy-and.png",
+      "https://www.ajronline.org/doi/full/10.2214/AJR.18.21041",
+      "https://thejns.org/configurable/content/journals$002fj-neurosurg$002f123$002f1$002farticle-p13.xml?t:ac=j-neurosurg$002f123$002f1$002farticle-p13.xml",
+      "https://www.karlstorz.com/de/en/light-sources.htm",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-sphenoid-sinus-a-The-view_fig2_320395371",
+      "https://www.aans.org/en/Patients/Neurosurgical-Conditions-and-Treatments/Transsphenoidal-Tumor-Resection",
+      "https://thejns.org/view/journals/j-neurosurg/130/3/article-p721.xml",
+      "https://www.youtube.com/watch?v=S7bYhJd2aWw",
+      "https://ent.weill.cornell.edu/clinical-programs/skull-base-surgery-center/endoscopic-approach-pituitary-tumors"
+    ]
+  },
+  {
+    "name": "sella-floor_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As a senior surgeon, I find this image to be a remarkably strong and highly realistic depiction of a post-resection pituitary fossa. It is suitable for educational purposes. The rendering of the dural vascularity is exceptional and captures the delicate nature of these vessels accurately. The overall anatomy, presenting the view after a macroadenoma has been removed, is largely correct, showing the descended diaphragma sellae. However, there are several subtle points that detract from perfect realism. \n\nIMPROVEMENTS NEEDED:\n1.  **Tissue Ambiguity:** The primary issue is the whitish, thickened rim of the resection cavity, which has dark gray/black mottled patches. While a fibrotic pseudocapsule can appear whitish, the uniformity here is slightly unnatural. The dark patches are anatomically incorrect; they do not convincingly represent hemosiderin staining, exposed bone, or desiccated blood, and are the single most artificial-looking element.\n2.  **Lighting:** The endoscopic lighting lacks the characteristic high-intensity, slightly cool-toned central hotspot of a modern xenon or LED light source. The current lighting is too diffuse and yellowish, and the shadows within the central defect are not as crisp as they would be in reality.\n3.  **Instrument Realism:** The surgical instruments, particularly the suction tip on the left, are rendered with less detail and sharpness than the surrounding biological tissues. They appear somewhat soft and out of focus, detracting from the overall realism.",
+      "critical_errors": [
+        "The dark gray/black mottled areas on the whitish rim of the dural defect do not correspond to a known anatomical or pathological tissue type in this context. They are visually ambiguous and appear to be an AI artifact rather than a representation of bone, blood, or specific tissue pathology."
+      ],
+      "sources_consulted": [
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-views-of-the-sellar-floor-A-The-sellar_fig2_322695509",
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+        "https://www.youtube.com/watch?v=R-yI-ZOKMjc",
+        "https://www.cureus.com/articles/29279-endoscopic-endonasal-transsphenoidal-approach-for-excision-of-a-pituitary-macroadenoma-a-case-report",
+        "https://academic.oup.com/ons/article/15/2/207/5053787"
+      ]
+    },
+    "sources": [
+      "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-expanded-endonasal-approach/endoscopic-expanded-transsphenoidal-approach-to-suprasellar-and-third-ventricular-lesions",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4200921/figure/F3/",
+      "https://www.researchgate.net/figure/Endoscopic-endonasal-transsphenoidal-approach-to-the-sellar-region-A-The-bone-of-the_fig1_265345790",
+      "https://www.sciencedirect.com/topics/medicine-and-dentistry/xenon-light-source",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-views-of-the-sellar-floor-A-The-sellar_fig2_322695509",
+      "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+      "https://www.youtube.com/watch?v=R-yI-ZOKMjc",
+      "https://www.cureus.com/articles/29279-endoscopic-endonasal-transsphenoidal-approach-for-excision-of-a-pituitary-macroadenoma-a-case-report",
+      "https://academic.oup.com/ons/article/15/2/207/5053787"
+    ]
+  },
+  {
+    "name": "dura_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As an experienced endoscopic surgeon, my initial impression is very positive. The AI has done a remarkable job capturing the essence of the dural exposure after a sellotomy. \n\nStrengths:\n- The dura mater itself is rendered with excellent fidelity. Its whitish-gray, semi-translucent appearance, complete with a fine, branching vascular network, is highly realistic. The bluish hue peripherally is a superb detail, accurately suggesting the location of the underlying cavernous sinuses.\n- Color fidelity is a strong point. The dural vessels, the color of the dura itself, and the subtle pinkish tone of the surrounding exposed bone/mucosa are all within the expected clinical spectrum.\n- Texture quality is high. The glistening, wet surface with appropriate specular highlights and subtle surface irregularities is very convincing and holds up to scrutiny.\n\nAreas for Improvement:\n- The most significant issue is the presence of the four metallic clips at the periphery. These appear to be Raney-type clips, which are used for scalp hemostasis in open craniotomies. They have no place in this deep, transsphenoidal surgical field. This is a major anatomical and procedural error that immediately signals the image is not real to an expert.\n- The lighting, while good, is slightly too perfect and diffuse. A real endoscopic xenon light source creates a harsher central hotspot with more pronounced light falloff towards the edges of the view. The shadows here are a bit too soft.\n- The surgical field is overly clean and static. A real procedure would feature more dynamic elements like irrigation fluid, wisps of hemostatic material, or the tip of a suction or dissector, which would add to the realism.",
+      "critical_errors": [
+        "The presence of four metallic clips (resembling Raney scalp clips) at the edges of the bony opening is anatomically and procedurally incorrect for an endoscopic transsphenoidal approach. Such clips are not used in this location."
+      ],
+      "sources_consulted": [
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-images-of-Case-1-A-After-opening-the-sellar-floor-the_fig2_324482594",
+        "https://thejns.org/configurable/content/journals$002fneurosurg$002f119$002f2$002farticle-p399.xml?t:ac=journals$002fneurosurg$002f119$002f2$002farticle-p399.xml",
+        "https://www.youtube.com/watch?v=0hBF7h5qgVA",
+        "https://www.semanticscholar.org/paper/Endoscopic-transsphenoidal-surgery-for-pituitary-Schwartz-Anand/1614777dd089b09a7b97e59b2072120e5c94d0c9/figure/3"
+      ]
+    },
+    "sources": [
+      "https://www.aans.org/-/media/Images/AANS/Patient-Info/Conditions-and-Treatments/Transsphenoidal_Tumor_Surgery_Fig2.ashx",
+      "https://thejns.org/configurable/content/journals$002ffocus$002f23$002f5$002farticle-pE13.xml?t:ac=journals$002ffocus$002f23$002f5$002farticle-pE13.xml",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3501934/figure/F3/",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-views-of-the-sellar-floor-a-A-thin-sellar_fig4_318683569",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-images-of-Case-1-A-After-opening-the-sellar-floor-the_fig2_324482594",
+      "https://thejns.org/configurable/content/journals$002fneurosurg$002f119$002f2$002farticle-p399.xml?t:ac=journals$002fneurosurg$002f119$002f2$002farticle-p399.xml",
+      "https://www.youtube.com/watch?v=0hBF7h5qgVA",
+      "https://www.semanticscholar.org/paper/Endoscopic-transsphenoidal-surgery-for-pituitary-Schwartz-Anand/1614777dd089b09a7b97e59b2072120e5c94d0c9/figure/3"
+    ]
+  },
+  {
+    "name": "pituitary-adenoma_knosp-2.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As a senior neurosurgeon, my assessment of this image is that it represents a highly competent, near-photorealistic rendering of a pituitary macroadenoma. However, it is not without flaws that would be apparent to an experienced surgeon.\n\nSTRENGTHS:\n- **Tumor & Gland Appearance**: The primary subject, a pituitary macroadenoma, is depicted with excellent realism. Its grayish, encapsulated appearance with fine surface vascularity is very typical. The relationship with the compressed, more reddish-pink normal pituitary gland is also anatomically correct and well-executed.\n- **Color & Texture**: The color palette is superb. The grayish-violaceous tones of the tumor, the pink of the gland, and the deep blue of venous structures are all highly faithful to what we see in the operating room. Texture quality is high, showing subtle surface irregularities and vascular details without pixelation.\n\nWEAKNESSES & AREAS FOR IMPROVEMENT:\n- **Anatomical Ambiguity (Cavernous Sinus/ICA)**: The structures on the viewer's left are problematic. While intended to be the medial wall of the cavernous sinus, the large, regular, almost ladder-like fenestrations are anatomically incorrect. In reality, this wall is a solid, albeit sometimes thin, dural layer. Tumor invasion can create defects, but they are typically irregular, not this organized. Critically, there is no identifiable prominence of the cavernous or clinoidal internal carotid artery (ICA), which is the single most important landmark for surgical orientation and safety. Its absence is a significant omission.\n- **Lighting**: The lighting is the most significant giveaway that this is a generated image. While it features appropriate specular highlights on wet surfaces, it lacks the characteristic central hotspot of a xenon or LED endoscope. The illumination is too diffuse and evenly distributed, akin to studio lighting, rather than the focused, high-intensity beam with peripheral falloff that we see intraoperatively. Real surgical lighting is harsher and creates more defined shadows.\n- **Medical Context**: The image is too 'clean'. A real surgical field, especially during tumor removal, would have some degree of blood staining, irrigation fluid movement, or residue from hemostatic agents. This sterile perfection, while visually appealing, detracts slightly from its absolute realism.",
+      "critical_errors": [
+        "The depiction of the medial cavernous sinus wall with large, organized, ladder-like fenestrations is anatomically inaccurate and atypical for both normal anatomy and tumor invasion patterns.",
+        "The absence of a clear, identifiable carotid artery prominence (cavernous or clinoidal segment) is a critical anatomical omission. This is a crucial landmark for surgical safety and orientation."
+      ],
+      "sources_consulted": [
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-endonasal-transsphenoidal-surgery/endoscopic-transsphenoidal-resection-of-pituitary-adenomas",
+        "https://www.youtube.com/watch?v=0k9L32NWTjE",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6639735/figure/f5-2632-4537-29-2-99/",
+        "https://academic.oup.com/neurosurgery/article/87/4/805/5856417"
+      ]
+    },
+    "sources": [
+      "https://www.aans.org/en/Patients/Neurosurgical-Conditions-and-Treatments/Pituitary-Tumors",
+      "https://thejns.org/view/journals/j-neurosurg/111/4/article-p863.xml",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4056242/",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-views-of-the-transsphenoidal-approach-for-pituitary-adenomas_fig3_259461159",
+      "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+      "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-endonasal-transsphenoidal-surgery/endoscopic-transsphenoidal-resection-of-pituitary-adenomas",
+      "https://www.youtube.com/watch?v=0k9L32NWTjE",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6639735/figure/f5-2632-4537-29-2-99/",
+      "https://academic.oup.com/neurosurgery/article/87/4/805/5856417"
+    ]
+  },
+  {
+    "name": "pseudocapsule_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As a neurosurgeon with extensive experience in this specific approach, I find this AI-generated image to be a remarkably strong and clinically relevant depiction of a pituitary adenoma pseudocapsule. \n\nStrengths:\n- The core anatomical relationship between the whitish, fibrous pseudocapsule (compressed normal gland) and the underlying pinkish-purple, lobulated adenoma is correctly and clearly portrayed. This is the critical surgical plane we aim to develop.\n- The color palette is excellent and highly realistic for an endoscopic view. The pink of the surrounding dura/cavernous sinus wall, the whitish-gray of the pseudocapsule, and the purplish hue of the vascular tumor seen through the capsule are all accurate.\n- The texture of the pseudocapsule, with its fine fibrous striations, is very convincing. The subtle vascularity on the tumor surface and surrounding tissue adds to the realism.\n- The presence of specular highlights on the moist surfaces is a key feature of endoscopic imaging that has been captured well.\n\nAreas for Improvement:\n- The lighting, while directionally correct, is slightly too idealized. The central hotspot from the endoscope's xenon light source is too soft and diffuse. In reality, it's a harsher, more defined circle of light, often with some degree of overexposure in the very center.\n- The pseudocapsule itself, while texturally good, appears a bit too thick and uniformly opaque across the main band. Intraoperatively, it's often more attenuated and variably translucent, allowing more of the tumor's texture to show through.\n- The surgical field is exceptionally clean. A real intraoperative view would likely have some minor blood staining, irrigation fluid pooling, or char from cautery, which would enhance the realism.\n- There is a small, dark recess to the left of the main pseudocapsular band whose anatomical identity is unclear. It could be interpreted as a dissection plane, but it lacks the characteristic appearance and could be considered a minor artifact.",
+      "critical_errors": [
+        "Anatomically ambiguous dark hole/recess lateral to the main pseudocapsule band (left side of image). Its structure does not correspond to a typical anatomical feature or surgical artifact in this location."
+      ],
+      "sources_consulted": [
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p795/article-p795-f1.jpg",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8900010/figure/F2/",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-images-of-pseudocapsule-A-B-The-whitish-yellow-soft_fig2_343906294",
+        "https://www.cureus.com/articles/23304-endoscopic-transsphenoidal-resection-of-a-pituitary-macroadenoma-using-the-pseudocapsule-technique-a-case-report/figures"
+      ]
+    },
+    "sources": [
+      "https://thejns.org/view/journals/j-neurosurg/116/4/article-p853.xml",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3134909/",
+      "https://journals.lww.com/neurosurgery/fulltext/2017/02000/the_pituitary_pseudocapsule__a_histological_and.18.aspx",
+      "https://www.stryker.com/us/en/endoscopy/products/l10.html",
+      "https://thejns.org/view/journals/j-neurosurg/122/4/article-p795/article-p795-f1.jpg",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8900010/figure/F2/",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-images-of-pseudocapsule-A-B-The-whitish-yellow-soft_fig2_343906294",
+      "https://www.cureus.com/articles/23304-endoscopic-transsphenoidal-resection-of-a-pituitary-macroadenoma-using-the-pseudocapsule-technique-a-case-report/figures"
+    ]
+  },
+  {
+    "name": "ica_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As a veteran endoscopic surgeon, my initial impression is that this is a high-quality AI generation, particularly in rendering the surrounding dura and soft tissues. However, the central subject, the internal carotid artery (ICA), is where the realism falters significantly. The overall scene represents a plausible post-resection view in an extended transsphenoidal approach where the medial wall of the cavernous sinus is exposed.\n\nANATOMY: The general location of the ICA prominence is correct, lateral to the sella. The surrounding tissues, likely representing dura or residual tumor capsule, have excellent texture and vascularity. The structure in the superior-left corner could be the optic nerve or chiasm, but its dark, venous color is atypical.\n\nCOLOR: The color palette for the surrounding tissues is superb and highly realistic. The primary issue is the ICA itself. It is depicted as a vivid, uniform, bright red. In vivo, the ICA is almost never seen this way. It is covered by the dura of the medial cavernous wall and often a thin lamina of bone, giving it a whitish-pink or even bluish appearance. This red color would only be seen with an iatrogenic injury and active bleeding, or if the vessel were completely skeletonized of all surrounding layers, which is not the case here. This gives the vessel an artificial, 'plastic model' look.\n\nLIGHTING: The lighting captures the specular highlight on a wet surface well. However, it lacks the characteristic harshness of a surgical endoscope's xenon light source. The light is too diffuse, with a soft falloff. A real view would have a much brighter, slightly overexposed central hotspot and deeper, more defined shadows.\n\nREALISM & TEXTURE: The texture quality of the surrounding dura is exceptional and approaches photorealism. Conversely, the ICA is too smooth and lacks the subtle fibrous texture of the adventitia. This combination creates a significant 'uncanny valley' effect. A surgeon would immediately identify the ICA as being artificially rendered. For educational purposes, it effectively shows the *location* of the ICA, but it fails to represent its true intraoperative *appearance* and could be misleading to trainees. It would not pass peer review for a publication as a clinical image.",
+      "critical_errors": [
+        "The ICA's appearance is incorrect. It is shown as a bright, uniform red and perfectly smooth, resembling a plastic tube. In a real surgical field, it is covered by the medial cavernous sinus wall (dura) and appears whitish-pink.",
+        "The ICA is depicted as completely 'naked' or exposed. This is an extremely rare and dangerous intraoperative situation. Normally, a dural layer or thin bone covers it.",
+        "The dark, purplish structure in the superior-left corner is anatomically ambiguous. If it is meant to be the optic nerve, its color is wrong; it should be white."
+      ],
+      "sources_consulted": [
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-techniques-for-pituitary-adenomas/extended-endoscopic-endonasal-transsphenoidal-approach",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-view-after-tumor-resection-demonstrating-the-left-cavernous_fig2_324434947",
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p731.xml",
+        "https://www.youtube.com/watch?v=Fj2F2XmH5Lw",
+        "https://www.cureus.com/articles/25399-endoscopic-endonasal-transsphenoidal-approach-for-a-giant-pituitary-adenoma-with-suprasellar-and-cavernous-sinus-extension-a-case-report"
+      ]
+    },
+    "sources": [
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-left-ICA-A-The-medial-wall-of_fig2_292157014",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3100851/",
+      "https://neurosurgicalatlas.com/cases/transsphenoidal-resection-of-pituitary-adenoma",
+      "https://www.stryker.com/us/en/endoscopy/products/l11-led-light-source.html",
+      "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-techniques-for-pituitary-adenomas/extended-endoscopic-endonasal-transsphenoidal-approach",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-view-after-tumor-resection-demonstrating-the-left-cavernous_fig2_324434947",
+      "https://thejns.org/view/journals/j-neurosurg/122/4/article-p731.xml",
+      "https://www.youtube.com/watch?v=Fj2F2XmH5Lw",
+      "https://www.cureus.com/articles/25399-endoscopic-endonasal-transsphenoidal-approach-for-a-giant-pituitary-adenoma-with-suprasellar-and-cavernous-sinus-extension-a-case-report"
+    ]
+  },
+  {
+    "name": "mwcs_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As an experienced endoscopic surgeon, I find this image to be of remarkably high quality and realism, suitable for many training applications. The depiction of the medial wall of the cavernous sinus (MWCS) itself—its translucency, fine vasculature, and the underlying purplish hue of the venous sinus—is excellent. The surrounding surgically manipulated dura and mucosa are also highly believable. However, there are two key areas for improvement. First and most critically, the structure representing the internal carotid artery (ICA) prominence is anatomically atypical. It is depicted as intensely red and fleshy, resembling inflamed mucosa or a venous plexus, whereas the paraclinoidal ICA is typically covered by bone and dura, giving it a much paler, whitish, or light pink appearance. This is the single most significant deviation from surgical reality. Second, the lighting, while good, could be improved. The central xenon hotspot is slightly too large and diffuse, and the light falloff towards the periphery is too gentle. In a real surgical field, especially in a deep cavity like the sphenoid sinus, the shadows in the recesses would be deeper and the periphery darker.",
+      "critical_errors": [
+        "The appearance of the internal carotid artery (ICA) prominence is anatomically incorrect. It is depicted as hyperemic and mucosal, whereas it should appear as a pale, whitish, or bony prominence covered by dura."
+      ],
+      "sources_consulted": [
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-left-cavernous-sinus-CS_fig2_264428805",
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/transsphenoidal-approach-to-sellar-and-suprasellar-lesions/extended-transsphenoidal-exposure-of-the-cavernous-sinus",
+        "https://www.karger.com/Article/FullText/488426"
+      ]
+    },
+    "sources": [
+      "https://neurosurgicalatlas.com/volumes/pituitary-tumors/endoscopic-endonasal-transsphenoidal-surgery/endoscopic-anatomy-for-transsphenoidal-surgery",
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3633346/",
+      "https://thejns.org/view/journals/j-neurosurg/111/4/article-p875.xml",
+      "https://www.stryker.com/us/en/endoscopy/products/1688-aim-4k-platform/light-source.html",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-left-cavernous-sinus-CS_fig2_264428805",
+      "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+      "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/transsphenoidal-approach-to-sellar-and-suprasellar-lesions/extended-transsphenoidal-exposure-of-the-cavernous-sinus",
+      "https://www.karger.com/Article/FullText/488426"
+    ]
+  },
+  {
+    "name": "optic-nerve_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As an experienced endoscopic skull base surgeon, I find this image to be a high-fidelity representation of the suprasellar space after partial resection of a pituitary macroadenoma. The key structure is the optic chiasm, which has been successfully decompressed. \n\nStrengths:\n- The fibrous, striated, pearly-white appearance of the optic chiasm is exceptionally accurate. The image correctly depicts it as being thinned and stretched superiorly by the underlying tumor, a classic finding.\n- The tumor itself is rendered with a realistic soft, lobulated, grayish-pink appearance, consistent with a typical pituitary adenoma.\n- The fine vasculature on the surface of the tumor and the arachnoid adhesions are very convincing.\n- The specular highlights from the endoscope on the wet surfaces are superb and add a significant degree of realism.\n\nAreas for Improvement:\n- The lighting, while good, is slightly too perfect and uniform. A real xenon light source creates a more pronounced central hotspot with a harsher falloff at the periphery. The shadows could be more complex and less diffuse.\n- While the focused view is excellent, the complete absence of surrounding anatomical landmarks (e.g., a sliver of the medial cavernous sinus wall, the A1 segment of the anterior cerebral artery, or the pituitary stalk) slightly detracts from the overall anatomical context.\n- The scene is remarkably clean. In reality, there would likely be some minor blood staining on the tissues or turbidity in any remaining cerebrospinal fluid, which would add to the authenticity.",
+      "critical_errors": [
+        "The primary structure is the optic chiasm, not a single optic nerve. While the term 'optic-nerve' was used in the prompt, precision is key; this is the decussation point of both optic nerves.",
+        "There is a bluish structure visible deep and to the left of the chiasm. Its exact identity is anatomically ambiguous. It could represent a component of the cavernous sinus or a superior hypophyseal vessel, but its position and appearance are not definitive."
+      ],
+      "sources_consulted": [
+        "https://thejns.org/view/journals/neurosurg/122/4/article-p743.xml?tab_body=figure-1",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-endonasal-transsphenoidal-views-of-pituitary-adenoma-removal_fig3_336144884",
+        "https://www.upmc.com/-/media/upmc/services/neurosurgery/images/conditions-and-treatments/pituitary-tumor-endoscopic-surgery-1200x630.jpg",
+        "https://www.youtube.com/watch?v=R_I1uAkGjtc"
+      ]
+    },
+    "sources": [
+      "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-expanded-endonasal-approach/endoscopic-anatomy-for-transsphenoidal-surgery",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-views-of-the-transsphenoidal-approach-for-clival-chordoma_fig3_323204900",
+      "https://www.sciencedirect.com/science/article/pii/S187887501630713X",
+      "https://thejns.org/view/journals/neurosurg/122/4/article-p743.xml?tab_body=figure-1",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-endonasal-transsphenoidal-views-of-pituitary-adenoma-removal_fig3_336144884",
+      "https://www.upmc.com/-/media/upmc/services/neurosurgery/images/conditions-and-treatments/pituitary-tumor-endoscopic-surgery-1200x630.jpg",
+      "https://www.youtube.com/watch?v=R_I1uAkGjtc"
+    ]
+  },
+  {
+    "name": "cavernous-sinus_standard.png",
+    "assessment": {
+      "scores": {
+        "anatomical_accuracy": 85,
+        "color_fidelity": 90,
+        "lighting": 75,
+        "texture_quality": 88,
+        "medical_realism": 82
+      },
+      "overall_score": 84,
+      "pass": true,
+      "feedback": "As a senior neurosurgeon, my assessment is that this is a highly realistic AI generation that captures the general surgical field remarkably well, but with one critical anatomical flaw. The overall view represents the sella turcica after removal of the sellar floor, exposing a pituitary macroadenoma centrally, flanked by the prominences of the cavernous sinuses. \n\nStrengths:\n- The color palette is exceptional. The pinkish-tan hue of the tumor, the vascularity of the surrounding dura (medial wall of the cavernous sinus), and the moist, glistening appearance are all highly accurate.\n- Texture quality is superb. The fine, arborizing blood vessels on the surface of the tumor and dura are rendered with a level of detail that is convincing and suitable for high-resolution displays or VR training.\n- The general relationship between the pituitary gland (adenoma) and the lateral cavernous sinuses is correct.\n\nAreas for Improvement:\n- The most significant issue lies with the depiction of the internal carotid arteries (ICAs). They are rendered as two perfectly symmetrical, dark, circular orifices. In reality, the ICAs create a 'carotid prominence'—a smooth bulge under the medial wall of the cavernous sinus. Even with bony dehiscence, the artery is still covered by dura and periosteum and would not appear as an open hole. This is a critical anatomical error that would mislead a trainee.\n- The lighting is slightly too diffuse and uniform. A real xenon endoscope creates a more pronounced central hotspot with a quicker falloff in illumination at the periphery of the view. The shadows could be harsher to better define the 3D topography.\n- The symmetry is a bit too perfect, giving it a slightly artificial, 'pareidolia' (face-like) appearance, which is uncharacteristic of natural anatomy.",
+      "critical_errors": [
+        "The internal carotid arteries (ICAs) are incorrectly depicted as deep, circular orifices. They should be represented as smooth, dural-covered prominences or bulges on the superolateral aspect of the sella, even if the bone is dehiscent."
+      ],
+      "sources_consulted": [
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-view-of-the-left-cavernous-sinus-A-Tumor_fig2_320399066",
+        "https://thejns.org/configurable/content/journals$002fjns$002f122$002f6$002ffig$002fj-neurosurg-14-369-f02.xml?t:ac=jns$002f122$002f6$002fJ-NEUROSURG-14-369.xml",
+        "https://www.youtube.com/watch?v=J3cR1x_6oY4",
+        "https://www.cureus.com/articles/28846-endoscopic-endonasal-transsphenoidal-approach-for-excision-of-a-pituitary-macroadenoma-invading-the-cavernous-sinus-a-case-report#!/",
+        "https://www.semanticscholar.org/paper/Endoscopic-Endonasal-Transsphenoidal-Approach-for-A-Labib-Prevedello/221f1ecde7fc7c62b46c986eb7924467c6999a4e/figure/0"
+      ]
+    },
+    "sources": [
+      "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4215286/",
+      "https://thejns.org/view/journals/j-neurosurg/124/2/article-p388.xml",
+      "https://www.researchgate.net/figure/Endoscopic-endonasal-transsphenoidal-approach-to-the-left-cavernous-sinus-A-After_fig1_320399120",
+      "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-view-of-the-left-cavernous-sinus-A-Tumor_fig2_320399066",
+      "https://thejns.org/configurable/content/journals$002fjns$002f122$002f6$002ffig$002fj-neurosurg-14-369-f02.xml?t:ac=jns$002f122$002f6$002fJ-NEUROSURG-14-369.xml",
+      "https://www.youtube.com/watch?v=J3cR1x_6oY4",
+      "https://www.cureus.com/articles/28846-endoscopic-endonasal-transsphenoidal-approach-for-excision-of-a-pituitary-macroadenoma-invading-the-cavernous-sinus-a-case-report#!/",
+      "https://www.semanticscholar.org/paper/Endoscopic-Endonasal-Transsphenoidal-Approach-for-A-Labib-Prevedello/221f1ecde7fc7c62b46c986eb7924467c6999a4e/figure/0"
+    ]
+  }
+]
