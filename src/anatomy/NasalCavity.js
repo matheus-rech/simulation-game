@@ -24,7 +24,7 @@ const MESH_LOOKUP = Object.values(STRUCTURES).reduce((lookup, structure) => {
 }, {});
 
 function getStructureForMeshName(meshName) {
-  if (!meshName) {
+  if (typeof meshName !== "string" || meshName.length === 0) {
     return null;
   }
 
