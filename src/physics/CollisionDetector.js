@@ -20,7 +20,7 @@ class CollisionDetector {
       metadata: { source: "collision-detector" },
     });
 
-    if (this.onCollision) {
+    if (typeof this.onCollision === "function") {
       this.onCollision(outcome);
     }
 
