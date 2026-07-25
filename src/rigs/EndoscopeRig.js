@@ -3,7 +3,7 @@ const { handleCollision } = require("../physics/CollisionHandler");
 
 class EndoscopeRig {
   constructor({ onCollision } = {}) {
-    this.onCollision = onCollision;
+    this.onCollisionCallback = onCollision;
   }
 
   onCollision(hit) {
@@ -20,8 +20,8 @@ class EndoscopeRig {
       metadata: { source: "endoscope-rig" },
     });
 
-    if (this.onCollision) {
-      this.onCollision(outcome);
+    if (typeof this.onCollisionCallback === "function") {
+      this.onCollisionCallback(outcome);
     }
 
     return outcome;
