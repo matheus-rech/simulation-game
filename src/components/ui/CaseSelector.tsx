@@ -3,12 +3,12 @@
  * Using inline styles (no Tailwind dependency)
  */
 
-import { useState } from 'react';
-import { PatientCase, CaseDifficulty, KnospGrade, getAvailableCases, ALL_CASES } from '../../data/patientCases';
+import { useState } from 'react'
+import { PatientCase, CaseDifficulty, getAvailableCases, ALL_CASES } from '../../data/patientCases'
 
 interface CaseSelectorProps {
-  onCaseSelected: (patientCase: PatientCase) => void;
-  completedCaseIds: string[];
+  onCaseSelected: (patientCase: PatientCase) => void
+  completedCaseIds: string[]
 }
 
 const styles = {
@@ -55,6 +55,12 @@ const styles = {
     border: '2px solid rgba(255, 255, 255, 0.2)',
     cursor: 'pointer',
     transition: 'all 0.2s',
+    // Button resets
+    appearance: 'none' as const,
+    width: '100%',
+    textAlign: 'left' as const,
+    fontFamily: 'inherit',
+    color: 'inherit',
   },
   caseCardSelected: {
     border: '2px solid #60a5fa',
@@ -118,7 +124,7 @@ const styles = {
   },
   list: {
     listStyle: 'disc',
-    listStylePosition: 'inside',
+    listStylePosition: 'inside' as const,
     color: '#d1d5db',
   },
   startButton: {
@@ -134,55 +140,76 @@ const styles = {
     cursor: 'pointer',
     transition: 'background 0.2s',
   },
-};
+}
 
 export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorProps) {
-  const [selectedCase, setSelectedCase] = useState<PatientCase | null>(null);
-  const availableCases = getAvailableCases(completedCaseIds);
+  const [selectedCase, setSelectedCase] = useState<PatientCase | null>(null)
+  const availableCases = getAvailableCases(completedCaseIds)
 
   const getDifficultyColor = (difficulty: CaseDifficulty): string => {
     switch (difficulty) {
-      case CaseDifficulty.BEGINNER: return '#16a34a';
-      case CaseDifficulty.INTERMEDIATE: return '#ca8a04';
-      case CaseDifficulty.ADVANCED: return '#dc2626';
-      case CaseDifficulty.EXPERT: return '#9333ea';
+      case CaseDifficulty.BEGINNER:
+        return '#16a34a'
+      case CaseDifficulty.INTERMEDIATE:
+        return '#ca8a04'
+      case CaseDifficulty.ADVANCED:
+        return '#dc2626'
+      case CaseDifficulty.EXPERT:
+        return '#9333ea'
     }
-  };
+  }
 
   return (
     <div style={styles.container}>
       <div style={styles.wrapper}>
         <div style={styles.header}>
           <h1 style={styles.title}>NeuroSim Surgical Training</h1>
-          <p style={styles.subtitle}>Select a patient case to begin endoscopic endonasal surgery simulation</p>
+          <p style={styles.subtitle}>
+            Select a patient case to begin endoscopic endonasal surgery simulation
+          </p>
         </div>
 
         <div style={styles.caseGrid}>
-          {ALL_CASES.map((patientCase) => {
-            const isAvailable = availableCases.some(c => c.id === patientCase.id);
-            const isCompleted = completedCaseIds.includes(patientCase.id);
-            const isLocked = !isAvailable;
-            const isSelected = selectedCase?.id === patientCase.id;
+          {ALL_CASES.map(patientCase => {
+            const isAvailable = availableCases.some(c => c.id === patientCase.id)
+            const isCompleted = completedCaseIds.includes(patientCase.id)
+            const isLocked = !isAvailable
+            const isSelected = selectedCase?.id === patientCase.id
 
             return (
-              <div
+              <button
                 key={patientCase.id}
+                type="button"
                 onClick={() => isAvailable && setSelectedCase(patientCase)}
+                disabled={isLocked}
+                aria-pressed={isSelected}
                 style={{
                   ...styles.caseCard,
                   ...(isSelected ? styles.caseCardSelected : {}),
                   ...(isLocked ? styles.caseCardLocked : {}),
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={e => {
                   if (isAvailable && !isSelected) {
-                    e.currentTarget.style.transform = 'scale(1.05)';
-                    e.currentTarget.style.borderColor = '#93c5fd';
+                    e.currentTarget.style.transform = 'scale(1.05)'
+                    e.currentTarget.style.borderColor = '#93c5fd'
                   }
                 }}
-                onMouseLeave={(e) => {
+                onMouseLeave={e => {
                   if (isAvailable && !isSelected) {
-                    e.currentTarget.style.transform = 'scale(1)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    e.currentTarget.style.transform = 'scale(1)'
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'
+                  }
+                }}
+                onFocus={e => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1.05)'
+                    e.currentTarget.style.borderColor = '#93c5fd'
+                  }
+                }}
+                onBlur={e => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1)'
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'
                   }
                 }}
               >
@@ -197,22 +224,29 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                 )}
 
                 {isCompleted && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '16px',
-                    right: '16px',
-                    background: '#16a34a',
-                    color: 'white',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                  }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '16px',
+                      right: '16px',
+                      background: '#16a34a',
+                      color: 'white',
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                    }}
+                  >
                     ✓ COMPLETED
                   </div>
                 )}
 
-                <div style={{ ...styles.difficultyBadge, background: getDifficultyColor(patientCase.difficulty) }}>
+                <div
+                  style={{
+                    ...styles.difficultyBadge,
+                    background: getDifficultyColor(patientCase.difficulty),
+                  }}
+                >
                   {patientCase.difficulty.toUpperCase()}
                 </div>
 
@@ -224,10 +258,21 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                 <div style={{ fontSize: '0.875rem', color: '#d1d5db' }}>
                   <div style={{ marginBottom: '8px' }}>
                     <strong>Chief Complaint:</strong>
-                    <p style={{ marginTop: '4px', color: '#9ca3af' }}>{patientCase.chiefComplaint}</p>
+                    <p style={{ marginTop: '4px', color: '#9ca3af' }}>
+                      {patientCase.chiefComplaint}
+                    </p>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '16px', fontSize: '0.75rem', marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '16px',
+                      fontSize: '0.75rem',
+                      marginTop: '16px',
+                      paddingTop: '16px',
+                      borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+                    }}
+                  >
                     <div>
                       <div style={{ fontWeight: 600, color: '#d1d5db' }}>Tumor Size</div>
                       <div>{patientCase.tumorSize} cm</div>
@@ -242,8 +287,8 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                     </div>
                   </div>
                 </div>
-              </div>
-            );
+              </button>
+            )
           })}
         </div>
 
@@ -279,8 +324,15 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                 <div style={styles.section}>
                   <h3 style={styles.sectionTitle}>Surgical Objectives</h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    {selectedCase.objectives.map((objective) => (
-                      <div key={objective.id} style={{ background: 'rgba(255, 255, 255, 0.05)', borderRadius: '8px', padding: '12px' }}>
+                    {selectedCase.objectives.map(objective => (
+                      <div
+                        key={objective.id}
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          borderRadius: '8px',
+                          padding: '12px',
+                        }}
+                      >
                         <div style={{ fontWeight: 600, color: 'white' }}>
                           Phase {objective.phase}: {objective.title}
                         </div>
@@ -297,8 +349,8 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
             <button
               style={styles.startButton}
               onClick={() => onCaseSelected(selectedCase)}
-              onMouseEnter={(e) => e.currentTarget.style.background = '#1d4ed8'}
-              onMouseLeave={(e) => e.currentTarget.style.background = '#2563eb'}
+              onMouseEnter={e => (e.currentTarget.style.background = '#1d4ed8')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#2563eb')}
             >
               Begin Surgery →
             </button>
@@ -312,5 +364,5 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
         )}
       </div>
     </div>
-  );
+  )
 }
