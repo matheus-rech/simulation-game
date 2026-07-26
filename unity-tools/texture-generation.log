@@ -1,0 +1,229 @@
+
+🚀 Starting AI-Powered Anatomy Texture Generation Pipeline
+   Model: Gemini 3 Pro Image (Nano Banana Pro)
+   Validation: Gemini 3 Pro + Google Search Grounding
+   Target: Unity VR + Three.js Web Platform
+
+
+============================================================
+GENERATING: nasal-septum
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ❌ REJECTED
+   Issues found: Hyphenation error: 'nasal-septum' should be 'nasal septum'., Lack of specific mucosal descriptors: The prompt requests 'realistic tissue' but fails to describe the specific wet, glistening, salmon-pink characteristic of the respiratory mucosa found in the endonasal corridor., Context specificity: In transsphenoidal surgery, the relevant view is the 'posterior' nasal septum leading to the sphenoid rostrum, not the anterior septum. A generic prompt may yield the wrong anatomical section., Lighting nuances: While 5500K is mentioned, the prompt misses 'specular highlights' which are critical for rendering wet mucous membranes under point-source lighting.
+   Sources consulted: 3 medical references
+⚠️ Initial prompt rejected, using refined version...
+
+🔄 Attempt 1/3 for nasal-septum
+
+🎨 Generating texture: nasal-septum (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 78/100
+   Status: ❌ FAIL
+
+   Feedback: Visually, the rendering is high-quality regarding lighting and texture, but anatomically, it fails to represent the transsphenoidal corridor accurately. The central structure is depicted as a bulbous, polypoid mass rather than a vertical septal wall (vomer/perpendicular plate). In a real endoscopic view, the posterior nasal septum should appear as a vertical partition widening posteriorly into the sphenoid rostrum (keel). The lateral structures lack the distinct 'scroll-like' morphology of the middle or superior turbinates. Crucially, the sphenoid ostia (the natural openings to the sinus)—the primary landmark for this stage of surgery—are absent. The image resembles generic mucosal tunneling rather than specific nasal anatomy.
+   Critical Errors:
+     - Septum morphology is incorrect; appears bulbous/cylindrical rather than a vertical partition.
+     - Absence of sphenoid ostia (key surgical landmarks).
+     - Lateral wall anatomy is undefined; lacks distinct Middle/Superior Turbinate structure.
+     - No visualization of the choana or nasopharyngeal floor relationships.
+
+⚠️ Validation failed (Score: 78/100)
+   Refining prompt based on feedback...
+
+🔄 Attempt 2/3 for nasal-septum
+
+🎨 Generating texture: nasal-septum (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 69/100
+   Status: ❌ FAIL
+
+   Feedback: As a neurosurgeon, I must reject this image for surgical planning or education despite its high graphical fidelity. While the texture, color, and lighting are exceptionally realistic—perfectly capturing the glistening, vascularized nature of nasal mucosa—the structural anatomy is a complete hallucination. The view appears to look posteriorly toward the sphenoid face, but instead of showing the sphenoid ostium, superior turbinate, and choana in proper relation, the AI has generated a pareidolic 'face' structure (two symmetrical circular holes resembling eyes and a larger hole below resembling a mouth). In reality, the sphenoid ostium is usually a single slit or oval opening located medial to the superior turbinate; bilateral ostia do not appear as perfect, symmetrical circles in the center of a bulbous mass. The lateral wall anatomy (turbinates) is also amorphous and lacks the distinct 'scroll' definition of the middle or superior turbinates.
+   Critical Errors:
+     - Severe anatomical hallucination: Central structure resembles a face/mask rather than the sphenoid face.
+     - Incorrect ostium morphology: Sphenoid ostia are rarely perfect circles and never positioned symmetrically like eyes in the midline.
+     - Undefined lateral wall: Turbinates (Middle/Superior) are indistinguishable and lack defined edges.
+     - Missing Choana: The lower aspect does not correctly depict the posterior choana leading to the nasopharynx.
+
+⚠️ Validation failed (Score: 69/100)
+   Refining prompt based on feedback...
+
+🔄 Attempt 3/3 for nasal-septum
+
+🎨 Generating texture: nasal-septum (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 65/100
+   Status: ❌ FAIL
+
+   Feedback: While the texture generation, lighting, and color grading are photorealistic and mimic high-definition endoscopic video perfectly, the anatomy is completely hallucinated. The image depicts a symmetrical 'mask-like' structure with two distinct 'eye' openings and a large lower opening. This bears no resemblance to the nasal septum. The nasal septum is a vertical midline partition (a wall) dividing the left and right nasal airways. In an endoscopic view, the septum appears as a flat, vertical surface on the medial side, typically flanked by the middle turbinate on the lateral side. Even if interpreted as the 'face of the sphenoid' (the target behind the septum), the anatomy is incorrect; the sphenoid face has a bony keel (rostrum) and two ostia, but never in this biologically implausible, cartoonishly symmetrical configuration. The image exhibits classic AI pareidolia (creating a face where none exists).
+   Critical Errors:
+     - Major Topological Error: The nasal septum is a vertical wall, not a coronal plane with holes.
+     - Pareidolia Artifact: The structure mimics a human face or skull with 'eye' sockets and a 'mouth', which does not exist in nasal anatomy.
+     - Missing Landmarks: Absence of middle turbinates, superior turbinates, or the sphenoid rostrum.
+     - Incorrect Spatial Relations: The view implies a cavernous space that does not correspond to the narrow corridors of the nasal cavity.
+
+⚠️ Validation failed (Score: 65/100)
+
+❌ Failed to generate nasal-septum: Error: Failed to generate acceptable texture for nasal-septum after 3 attempts
+    at generateAndValidate (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:460:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async generateCompleteTextureSet (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:562:46)
+
+============================================================
+GENERATING: nasal-turbinate
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ❌ REJECTED
+   Issues found: Specificity: The term 'nasal-turbinate' is generic. In the transsphenoidal approach, the Middle Turbinate is the critical lateral landmark. Specifying 'Middle Turbinate' ensures the correct size and anatomical context relative to the septum., Grammar/Terminology: 'Nasal-turbinate' (hyphenated) is not standard medical terminology. It should be 'nasal turbinate' or specifically 'middle nasal turbinate'., Texture Definition: To prevent the AI from generating a polyp-like structure, the prompt should explicitly describe the 'respiratory mucosa' (pink, vascularized, wet) to differentiate it from pale, edematous polyp tissue., Visual Context: A turbinate implies a 3D structure. If this is for a texture map, the prompt needs to emphasize the surface characteristics (mucosal sheen, micro-vasculature) over the 3D geometry, or clarify the camera angle (e.g., lateral wall view).
+   Sources consulted: 4 medical references
+⚠️ Initial prompt rejected, using refined version...
+
+🔄 Attempt 1/3 for nasal-turbinate
+
+🎨 Generating texture: nasal-turbinate (endoscope view, standard)
+❌ Generation failed: GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent: [400 Bad Request] API key expired. Please renew the API key. [{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"API_KEY_INVALID","domain":"googleapis.com","metadata":{"service":"generativelanguage.googleapis.com"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"API key expired. Please renew the API key."}]
+    at handleResponseNotOk (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:432:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async makeRequest (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:401:9)
+    at async generateContent (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:865:22)
+    at async generateAnatomyTexture (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:167:20)
+    at async generateAndValidate (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:432:25)
+    at async generateCompleteTextureSet (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:562:46) {
+  status: 400,
+  statusText: 'Bad Request',
+  errorDetails: [
+    {
+      '@type': 'type.googleapis.com/google.rpc.ErrorInfo',
+      reason: 'API_KEY_INVALID',
+      domain: 'googleapis.com',
+      metadata: [Object]
+    },
+    {
+      '@type': 'type.googleapis.com/google.rpc.LocalizedMessage',
+      locale: 'en-US',
+      message: 'API key expired. Please renew the API key.'
+    }
+  ]
+}
+
+❌ Failed to generate nasal-turbinate: GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent: [400 Bad Request] API key expired. Please renew the API key. [{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"API_KEY_INVALID","domain":"googleapis.com","metadata":{"service":"generativelanguage.googleapis.com"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"API key expired. Please renew the API key."}]
+    at handleResponseNotOk (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:432:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async makeRequest (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:401:9)
+    at async generateContent (file:///Users/matheusrech/simulation-game/node_modules/@google/generative-ai/dist/index.mjs:865:22)
+    at async generateAnatomyTexture (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:167:20)
+    at async generateAndValidate (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:432:25)
+    at async generateCompleteTextureSet (/Users/matheusrech/simulation-game/unity-tools/generate-anatomy-textures.ts:562:46) {
+  status: 400,
+  statusText: 'Bad Request',
+  errorDetails: [
+    {
+      '@type': 'type.googleapis.com/google.rpc.ErrorInfo',
+      reason: 'API_KEY_INVALID',
+      domain: 'googleapis.com',
+      metadata: [Object]
+    },
+    {
+      '@type': 'type.googleapis.com/google.rpc.LocalizedMessage',
+      locale: 'en-US',
+      message: 'API key expired. Please renew the API key.'
+    }
+  ]
+}
+
+============================================================
+GENERATING: sphenoid-ostium
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ❌ REJECTED
+   Issues found: Terminology: 'sphenoid-ostium' should not be hyphenated; standard medical terminology is 'sphenoid ostium'., Anatomical Context: The prompt lacks descriptive landmarks surrounding the ostium. To generate a realistic texture, the AI needs to know the ostium is located in the 'sphenoethmoidal recess', lateral to the nasal septum and medial to the superior turbinate., Texture Specifics: While 'tissue heterogeneity' is mentioned, specific mucosal characteristics (glistening sheen, submucosal vasculature vs. bone) should be explicitly requested to avoid dry or cadaveric appearances., Lighting Physics: While 5500K is correct, specifying 'peripheral vignetting' enhances the endoscopic realism along with the central hotspot.
+   Sources consulted: 3 medical references
+⚠️ Initial prompt rejected, using refined version...
+
+🔄 Attempt 1/3 for sphenoid-ostium
+
+🎨 Generating texture: sphenoid-ostium (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 69/100
+   Status: ❌ FAIL
+
+   Feedback: While the texture and color rendering of the mucosa are photorealistic, the anatomy is fundamentally incorrect for a sphenoid ostium view. A real sphenoid ostium is not an isolated circular hole on a flat mucosal wall. It is located in the sphenoethmoidal recess, bounded medially by the nasal septum and laterally by the superior turbinate. The image lacks these critical anatomical landmarks. The opening shown appears more like a pathological perforation or a hole in a phantom simulator than a natural bony ostium. The shape is too perfectly circular; natural ostia are often slit-like, oval, or kidney-shaped, or irregular if surgically widened.
+   Critical Errors:
+     - Complete absence of surrounding landmarks: Superior Turbinate and Nasal Septum
+     - Ostium shape is artificially circular; lacks natural irregularity or evidence of bony edges
+     - No depth perception into the sphenoid sinus (clival recess, sella floor not visible)
+     - Anatomy resembles a gastric ulcer or simple mucosal perforation rather than a sinus opening
+
+⚠️ Validation failed (Score: 69/100)
+   Refining prompt based on feedback...
+
+🔄 Attempt 2/3 for sphenoid-ostium
+
+🎨 Generating texture: sphenoid-ostium (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 65/100
+   Status: ❌ FAIL
+
+   Feedback: While the texture and color fidelity are high, this image fails anatomically. It suffers from 'tunnel vision' and lacks the essential landmarks required for surgical orientation in the spheno-ethmoidal recess. The image more closely resembles a cervix uteri or a pyloric sphincter than a sphenoid ostium. In a real endoscopic view, the sphenoid ostium is rarely a perfect, isolated circle; it is usually a slit-like or oval opening bounded medially by the nasal septum and laterally by the superior turbinate, neither of which are visible here. The internal view of the sinus lacks depth and definition of the sellar floor or carotid prominences.
+   Critical Errors:
+     - Complete absence of orienting landmarks: Nasal Septum (medial), Superior Turbinate (lateral), and Choana (inferior).
+     - Incorrect Ostium Shape: The natural ostium is typically a vertical slit or oval, not a perfect, symmetrical circle with rolled edges.
+     - Lighting Artifacts: The reflection shows two distinct, large circular light sources (studio lighting setup), whereas an endoscope produces a single point source or ring light reflection.
+     - Morphological Ambiguity: The structure resembles a cervix or GI tract sphincter rather than the anterior wall of the sphenoid sinus.
+     - Internal Anatomy: The view inside the 'sinus' is amorphous and fails to show the characteristic bony prominences (sella, carotid, optic) expected at this depth.
+
+⚠️ Validation failed (Score: 65/100)
+   Refining prompt based on feedback...
+
+🔄 Attempt 3/3 for sphenoid-ostium
+
+🎨 Generating texture: sphenoid-ostium (endoscope view, standard)
+✅ Texture generated successfully
+
+🔬 Validating anatomical accuracy with Gemini 3 Pro + Google Search...
+
+📊 Validation Results:
+   Overall Score: 87/100
+   Status: ✅ PASS
+
+✅ Texture validated and approved! (Score: 87/100)
+   Medical sources: 3 references
+💾 Saved: sphenoid-ostium_standard.png (831.0 KB)
+📚 Medical sources: 6 references
+
+============================================================
+GENERATING: sphenoid-sinus
+============================================================
+
+🔍 Curating prompt with Gemini 3 Pro + Google Search grounding...
+   Approval: ❌ REJECTED
+   Issues found: Missing Critical Landmarks: While the description of the mucosa and septations is accurate for a general sinus view, a specific 'transsphenoidal pituitary surgery' texture requires the visualization of the posterior wall landmarks: the sella turcica bulge, carotid prominences, and optic-carotid recesses (OCR)., Septation Specificity: Bony septations in this context are not just 'irregular'; they are critical landmarks that often attach asymmetrically to the carotid canal, which is a vital safety detail for simulation., Lighting Nuance: While 5500K is accurate for Xenon, the prompt should explicitly request 'specular highlights' or 'glare' on the wet mucosa, as this is the primary visual cue for depth and surface orientation in endoscopy., Vascularity: The mucosal description should specify 'submucosal capillary networks' rather than generic blood vessels to ensure the scale looks correct for a macro endoscopic view.
+   Sources consulted: 3 medical references
+⚠️ Initial prompt rejected, using refined version...
+
+🔄 Attempt 1/3 for sphenoid-sinus
+
+🎨 Generating texture: sphenoid-sinus (endoscope view, standard)

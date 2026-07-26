@@ -1,0 +1,265 @@
+{
+  "total_sources": 98,
+  "sources": [
+    "https://www.ncbi.nlm.nih.gov/books/NBK560713/",
+    "https://thejns.org/view/journals/neurosurg-focus/25/4/foc-08149.xml",
+    "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-transnasal-pituitary-surgery/approach-for-endoscopic-transnasal-pituitary-surgery",
+    "https://www.stryker.com/us/en/endoscopy/products/1688-aim-4k-platform.html",
+    "https://www.ncbi.nlm.nih.gov/books/NBK563220/figure/article-31327.f2/",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-view-of-the-sphenoid-sinus-after-removal-of-the_fig2_320341775",
+    "https://www.aans.org/-/media/Images/AANS/Patient-Info/Conditions-and-Treatments/Transsphenoidal-Tumor-Resection-P2.ashx",
+    "https://entokey.com/wp-content/uploads/2016/09/B9781455727101000578_f057-003ab-9781455727101.jpg",
+    "https://www.youtube.com/watch?v=Fj7JOI0pIes",
+    "https://www.semanticscholar.org/paper/The-Endoscopic-Endonasal-Transsphenoidal-Approach%3A-A-Labbe-Froelich/288f1a140f0c0587293a652c7886a34eb651c6c5/figure/0",
+    "https://www.sciencedirect.com/topics/medicine-and-dentistry/nasal-turbinate",
+    "https://www.storzmedical.com/en/products/orl/light-sources-cameras-and-documentation",
+    "https://www.researchgate.net/figure/ntraoperative-endoscopic-view-of-the-right-nasal-cavity-The-middle-turbinate-MT-is_fig2_322699313",
+    "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-transsphenoidal-approach/nasal-stage-of-the-endoscopic-approach",
+    "https://www.cureus.com/articles/25016-endoscopic-endonasal-transsphenoidal-approach-for-pituitary-adenomas-a-single-institution-experience-from-a-developing-country#!/media/212040",
+    "https://online.boneandjoint.org.uk/doi/full/10.1302/2046-3758.95.BJR-2019-0263.R1",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4078810/figure/F1/",
+    "https://www.thieme-connect.com/products/ejournals/html/10.1055/s-0033-1359312",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3096238/",
+    "https://www.researchgate.net/publication/329596324_Endoscopic_Transsphenoidal_Approach_Anatomical_Nuances_of_the_Sphenoid_Sinus_and_Its_Clinical_Implications",
+    "https://www.stryker.com/us/en/endoscopy/products/l10-led-light-source.html",
+    "https://thejns.org/view/journals/j-neurosurg/122/1/article-p6.xml",
+    "https://www.youtube.com/watch?v=R_5y29c4L5A",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-view-of-the-sphenoid-sinus-demonstrating-the-pertinent-bony_fig1_221921389",
+    "https://academic.oup.com/ons/article/15/6/E98/5048560",
+    "https://www.researchgate.net/publication/326893322/figure/fig1/AS:656911634591744@1533632943261/Intraoperative-endoscopic-view-of-the-sphenoid-sinus-after-a-wide-sphenoidotomy-and.png",
+    "https://www.ajronline.org/doi/full/10.2214/AJR.18.21041",
+    "https://thejns.org/configurable/content/journals$002fj-neurosurg$002f123$002f1$002farticle-p13.xml?t:ac=j-neurosurg$002f123$002f1$002farticle-p13.xml",
+    "https://www.karlstorz.com/de/en/light-sources.htm",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-sphenoid-sinus-a-The-view_fig2_320395371",
+    "https://www.aans.org/en/Patients/Neurosurgical-Conditions-and-Treatments/Transsphenoidal-Tumor-Resection",
+    "https://thejns.org/view/journals/j-neurosurg/130/3/article-p721.xml",
+    "https://www.youtube.com/watch?v=S7bYhJd2aWw",
+    "https://ent.weill.cornell.edu/clinical-programs/skull-base-surgery-center/endoscopic-approach-pituitary-tumors",
+    "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-expanded-endonasal-approach/endoscopic-expanded-transsphenoidal-approach-to-suprasellar-and-third-ventricular-lesions",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4200921/figure/F3/",
+    "https://www.researchgate.net/figure/Endoscopic-endonasal-transsphenoidal-approach-to-the-sellar-region-A-The-bone-of-the_fig1_265345790",
+    "https://www.sciencedirect.com/topics/medicine-and-dentistry/xenon-light-source",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-views-of-the-sellar-floor-A-The-sellar_fig2_322695509",
+    "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+    "https://www.youtube.com/watch?v=R-yI-ZOKMjc",
+    "https://www.cureus.com/articles/29279-endoscopic-endonasal-transsphenoidal-approach-for-excision-of-a-pituitary-macroadenoma-a-case-report",
+    "https://academic.oup.com/ons/article/15/2/207/5053787",
+    "https://www.aans.org/-/media/Images/AANS/Patient-Info/Conditions-and-Treatments/Transsphenoidal_Tumor_Surgery_Fig2.ashx",
+    "https://thejns.org/configurable/content/journals$002ffocus$002f23$002f5$002farticle-pE13.xml?t:ac=journals$002ffocus$002f23$002f5$002farticle-pE13.xml",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3501934/figure/F3/",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-views-of-the-sellar-floor-a-A-thin-sellar_fig4_318683569",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-images-of-Case-1-A-After-opening-the-sellar-floor-the_fig2_324482594",
+    "https://thejns.org/configurable/content/journals$002fneurosurg$002f119$002f2$002farticle-p399.xml?t:ac=journals$002fneurosurg$002f119$002f2$002farticle-p399.xml",
+    "https://www.youtube.com/watch?v=0hBF7h5qgVA",
+    "https://www.semanticscholar.org/paper/Endoscopic-transsphenoidal-surgery-for-pituitary-Schwartz-Anand/1614777dd089b09a7b97e59b2072120e5c94d0c9/figure/3",
+    "https://www.aans.org/en/Patients/Neurosurgical-Conditions-and-Treatments/Pituitary-Tumors",
+    "https://thejns.org/view/journals/j-neurosurg/111/4/article-p863.xml",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4056242/",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-views-of-the-transsphenoidal-approach-for-pituitary-adenomas_fig3_259461159",
+    "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-endonasal-transsphenoidal-surgery/endoscopic-transsphenoidal-resection-of-pituitary-adenomas",
+    "https://www.youtube.com/watch?v=0k9L32NWTjE",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6639735/figure/f5-2632-4537-29-2-99/",
+    "https://academic.oup.com/neurosurgery/article/87/4/805/5856417",
+    "https://thejns.org/view/journals/j-neurosurg/116/4/article-p853.xml",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3134909/",
+    "https://journals.lww.com/neurosurgery/fulltext/2017/02000/the_pituitary_pseudocapsule__a_histological_and.18.aspx",
+    "https://www.stryker.com/us/en/endoscopy/products/l10.html",
+    "https://thejns.org/view/journals/j-neurosurg/122/4/article-p795/article-p795-f1.jpg",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8900010/figure/F2/",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-images-of-pseudocapsule-A-B-The-whitish-yellow-soft_fig2_343906294",
+    "https://www.cureus.com/articles/23304-endoscopic-transsphenoidal-resection-of-a-pituitary-macroadenoma-using-the-pseudocapsule-technique-a-case-report/figures",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-left-ICA-A-The-medial-wall-of_fig2_292157014",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3100851/",
+    "https://neurosurgicalatlas.com/cases/transsphenoidal-resection-of-pituitary-adenoma",
+    "https://www.stryker.com/us/en/endoscopy/products/l11-led-light-source.html",
+    "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-techniques-for-pituitary-adenomas/extended-endoscopic-endonasal-transsphenoidal-approach",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-view-after-tumor-resection-demonstrating-the-left-cavernous_fig2_324434947",
+    "https://thejns.org/view/journals/j-neurosurg/122/4/article-p731.xml",
+    "https://www.youtube.com/watch?v=Fj2F2XmH5Lw",
+    "https://www.cureus.com/articles/25399-endoscopic-endonasal-transsphenoidal-approach-for-a-giant-pituitary-adenoma-with-suprasellar-and-cavernous-sinus-extension-a-case-report",
+    "https://neurosurgicalatlas.com/volumes/pituitary-tumors/endoscopic-endonasal-transsphenoidal-surgery/endoscopic-anatomy-for-transsphenoidal-surgery",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3633346/",
+    "https://thejns.org/view/journals/j-neurosurg/111/4/article-p875.xml",
+    "https://www.stryker.com/us/en/endoscopy/products/1688-aim-4k-platform/light-source.html",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-left-cavernous-sinus-CS_fig2_264428805",
+    "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/transsphenoidal-approach-to-sellar-and-suprasellar-lesions/extended-transsphenoidal-exposure-of-the-cavernous-sinus",
+    "https://www.karger.com/Article/FullText/488426",
+    "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-expanded-endonasal-approach/endoscopic-anatomy-for-transsphenoidal-surgery",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-views-of-the-transsphenoidal-approach-for-clival-chordoma_fig3_323204900",
+    "https://www.sciencedirect.com/science/article/pii/S187887501630713X",
+    "https://thejns.org/view/journals/neurosurg/122/4/article-p743.xml?tab_body=figure-1",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-endonasal-transsphenoidal-views-of-pituitary-adenoma-removal_fig3_336144884",
+    "https://www.upmc.com/-/media/upmc/services/neurosurgery/images/conditions-and-treatments/pituitary-tumor-endoscopic-surgery-1200x630.jpg",
+    "https://www.youtube.com/watch?v=R_I1uAkGjtc",
+    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4215286/",
+    "https://thejns.org/view/journals/j-neurosurg/124/2/article-p388.xml",
+    "https://www.researchgate.net/figure/Endoscopic-endonasal-transsphenoidal-approach-to-the-left-cavernous-sinus-A-After_fig1_320399120",
+    "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-view-of-the-left-cavernous-sinus-A-Tumor_fig2_320399066",
+    "https://thejns.org/configurable/content/journals$002fjns$002f122$002f6$002ffig$002fj-neurosurg-14-369-f02.xml?t:ac=jns$002f122$002f6$002fJ-NEUROSURG-14-369.xml",
+    "https://www.youtube.com/watch?v=J3cR1x_6oY4",
+    "https://www.cureus.com/articles/28846-endoscopic-endonasal-transsphenoidal-approach-for-excision-of-a-pituitary-macroadenoma-invading-the-cavernous-sinus-a-case-report#!/",
+    "https://www.semanticscholar.org/paper/Endoscopic-Endonasal-Transsphenoidal-Approach-for-A-Labib-Prevedello/221f1ecde7fc7c62b46c986eb7924467c6999a4e/figure/0"
+  ],
+  "per_texture": [
+    {
+      "texture": "nasal-septum_standard.png",
+      "sources": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK560713/",
+        "https://thejns.org/view/journals/neurosurg-focus/25/4/foc-08149.xml",
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-transnasal-pituitary-surgery/approach-for-endoscopic-transnasal-pituitary-surgery",
+        "https://www.stryker.com/us/en/endoscopy/products/1688-aim-4k-platform.html",
+        "https://www.ncbi.nlm.nih.gov/books/NBK563220/figure/article-31327.f2/",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-view-of-the-sphenoid-sinus-after-removal-of-the_fig2_320341775",
+        "https://www.aans.org/-/media/Images/AANS/Patient-Info/Conditions-and-Treatments/Transsphenoidal-Tumor-Resection-P2.ashx",
+        "https://entokey.com/wp-content/uploads/2016/09/B9781455727101000578_f057-003ab-9781455727101.jpg"
+      ]
+    },
+    {
+      "texture": "nasal-turbinate_standard.png",
+      "sources": [
+        "https://www.youtube.com/watch?v=Fj7JOI0pIes",
+        "https://www.semanticscholar.org/paper/The-Endoscopic-Endonasal-Transsphenoidal-Approach%3A-A-Labbe-Froelich/288f1a140f0c0587293a652c7886a34eb651c6c5/figure/0",
+        "https://www.sciencedirect.com/topics/medicine-and-dentistry/nasal-turbinate",
+        "https://www.storzmedical.com/en/products/orl/light-sources-cameras-and-documentation",
+        "https://www.researchgate.net/figure/ntraoperative-endoscopic-view-of-the-right-nasal-cavity-The-middle-turbinate-MT-is_fig2_322699313",
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-transsphenoidal-approach/nasal-stage-of-the-endoscopic-approach",
+        "https://www.cureus.com/articles/25016-endoscopic-endonasal-transsphenoidal-approach-for-pituitary-adenomas-a-single-institution-experience-from-a-developing-country#!/media/212040",
+        "https://online.boneandjoint.org.uk/doi/full/10.1302/2046-3758.95.BJR-2019-0263.R1",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4078810/figure/F1/"
+      ]
+    },
+    {
+      "texture": "sphenoid-ostium_standard.png",
+      "sources": [
+        "https://www.thieme-connect.com/products/ejournals/html/10.1055/s-0033-1359312",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3096238/",
+        "https://www.researchgate.net/publication/329596324_Endoscopic_Transsphenoidal_Approach_Anatomical_Nuances_of_the_Sphenoid_Sinus_and_Its_Clinical_Implications",
+        "https://www.stryker.com/us/en/endoscopy/products/l10-led-light-source.html",
+        "https://thejns.org/view/journals/j-neurosurg/122/1/article-p6.xml",
+        "https://www.youtube.com/watch?v=R_5y29c4L5A",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-view-of-the-sphenoid-sinus-demonstrating-the-pertinent-bony_fig1_221921389",
+        "https://academic.oup.com/ons/article/15/6/E98/5048560"
+      ]
+    },
+    {
+      "texture": "sphenoid-sinus_standard.png",
+      "sources": [
+        "https://www.researchgate.net/publication/326893322/figure/fig1/AS:656911634591744@1533632943261/Intraoperative-endoscopic-view-of-the-sphenoid-sinus-after-a-wide-sphenoidotomy-and.png",
+        "https://www.ajronline.org/doi/full/10.2214/AJR.18.21041",
+        "https://thejns.org/configurable/content/journals$002fj-neurosurg$002f123$002f1$002farticle-p13.xml?t:ac=j-neurosurg$002f123$002f1$002farticle-p13.xml",
+        "https://www.karlstorz.com/de/en/light-sources.htm",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-sphenoid-sinus-a-The-view_fig2_320395371",
+        "https://www.aans.org/en/Patients/Neurosurgical-Conditions-and-Treatments/Transsphenoidal-Tumor-Resection",
+        "https://thejns.org/view/journals/j-neurosurg/130/3/article-p721.xml",
+        "https://www.youtube.com/watch?v=S7bYhJd2aWw",
+        "https://ent.weill.cornell.edu/clinical-programs/skull-base-surgery-center/endoscopic-approach-pituitary-tumors"
+      ]
+    },
+    {
+      "texture": "sella-floor_standard.png",
+      "sources": [
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-expanded-endonasal-approach/endoscopic-expanded-transsphenoidal-approach-to-suprasellar-and-third-ventricular-lesions",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4200921/figure/F3/",
+        "https://www.researchgate.net/figure/Endoscopic-endonasal-transsphenoidal-approach-to-the-sellar-region-A-The-bone-of-the_fig1_265345790",
+        "https://www.sciencedirect.com/topics/medicine-and-dentistry/xenon-light-source",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-views-of-the-sellar-floor-A-The-sellar_fig2_322695509",
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+        "https://www.youtube.com/watch?v=R-yI-ZOKMjc",
+        "https://www.cureus.com/articles/29279-endoscopic-endonasal-transsphenoidal-approach-for-excision-of-a-pituitary-macroadenoma-a-case-report",
+        "https://academic.oup.com/ons/article/15/2/207/5053787"
+      ]
+    },
+    {
+      "texture": "dura_standard.png",
+      "sources": [
+        "https://www.aans.org/-/media/Images/AANS/Patient-Info/Conditions-and-Treatments/Transsphenoidal_Tumor_Surgery_Fig2.ashx",
+        "https://thejns.org/configurable/content/journals$002ffocus$002f23$002f5$002farticle-pE13.xml?t:ac=journals$002ffocus$002f23$002f5$002farticle-pE13.xml",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3501934/figure/F3/",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-views-of-the-sellar-floor-a-A-thin-sellar_fig4_318683569",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-images-of-Case-1-A-After-opening-the-sellar-floor-the_fig2_324482594",
+        "https://thejns.org/configurable/content/journals$002fneurosurg$002f119$002f2$002farticle-p399.xml?t:ac=journals$002fneurosurg$002f119$002f2$002farticle-p399.xml",
+        "https://www.youtube.com/watch?v=0hBF7h5qgVA",
+        "https://www.semanticscholar.org/paper/Endoscopic-transsphenoidal-surgery-for-pituitary-Schwartz-Anand/1614777dd089b09a7b97e59b2072120e5c94d0c9/figure/3"
+      ]
+    },
+    {
+      "texture": "pituitary-adenoma_knosp-2.png",
+      "sources": [
+        "https://www.aans.org/en/Patients/Neurosurgical-Conditions-and-Treatments/Pituitary-Tumors",
+        "https://thejns.org/view/journals/j-neurosurg/111/4/article-p863.xml",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4056242/",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-views-of-the-transsphenoidal-approach-for-pituitary-adenomas_fig3_259461159",
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-endonasal-transsphenoidal-surgery/endoscopic-transsphenoidal-resection-of-pituitary-adenomas",
+        "https://www.youtube.com/watch?v=0k9L32NWTjE",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6639735/figure/f5-2632-4537-29-2-99/",
+        "https://academic.oup.com/neurosurgery/article/87/4/805/5856417"
+      ]
+    },
+    {
+      "texture": "pseudocapsule_standard.png",
+      "sources": [
+        "https://thejns.org/view/journals/j-neurosurg/116/4/article-p853.xml",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3134909/",
+        "https://journals.lww.com/neurosurgery/fulltext/2017/02000/the_pituitary_pseudocapsule__a_histological_and.18.aspx",
+        "https://www.stryker.com/us/en/endoscopy/products/l10.html",
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p795/article-p795-f1.jpg",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8900010/figure/F2/",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-images-of-pseudocapsule-A-B-The-whitish-yellow-soft_fig2_343906294",
+        "https://www.cureus.com/articles/23304-endoscopic-transsphenoidal-resection-of-a-pituitary-macroadenoma-using-the-pseudocapsule-technique-a-case-report/figures"
+      ]
+    },
+    {
+      "texture": "ica_standard.png",
+      "sources": [
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-left-ICA-A-The-medial-wall-of_fig2_292157014",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3100851/",
+        "https://neurosurgicalatlas.com/cases/transsphenoidal-resection-of-pituitary-adenoma",
+        "https://www.stryker.com/us/en/endoscopy/products/l11-led-light-source.html",
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-techniques-for-pituitary-adenomas/extended-endoscopic-endonasal-transsphenoidal-approach",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-view-after-tumor-resection-demonstrating-the-left-cavernous_fig2_324434947",
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p731.xml",
+        "https://www.youtube.com/watch?v=Fj2F2XmH5Lw",
+        "https://www.cureus.com/articles/25399-endoscopic-endonasal-transsphenoidal-approach-for-a-giant-pituitary-adenoma-with-suprasellar-and-cavernous-sinus-extension-a-case-report"
+      ]
+    },
+    {
+      "texture": "mwcs_standard.png",
+      "sources": [
+        "https://neurosurgicalatlas.com/volumes/pituitary-tumors/endoscopic-endonasal-transsphenoidal-surgery/endoscopic-anatomy-for-transsphenoidal-surgery",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3633346/",
+        "https://thejns.org/view/journals/j-neurosurg/111/4/article-p875.xml",
+        "https://www.stryker.com/us/en/endoscopy/products/1688-aim-4k-platform/light-source.html",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-images-of-the-left-cavernous-sinus-CS_fig2_264428805",
+        "https://thejns.org/view/journals/j-neurosurg/122/4/article-p798.xml",
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/transsphenoidal-approach-to-sellar-and-suprasellar-lesions/extended-transsphenoidal-exposure-of-the-cavernous-sinus",
+        "https://www.karger.com/Article/FullText/488426"
+      ]
+    },
+    {
+      "texture": "optic-nerve_standard.png",
+      "sources": [
+        "https://www.neurosurgicalatlas.com/volumes/pituitary-surgery/endoscopic-expanded-endonasal-approach/endoscopic-anatomy-for-transsphenoidal-surgery",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-views-of-the-transsphenoidal-approach-for-clival-chordoma_fig3_323204900",
+        "https://www.sciencedirect.com/science/article/pii/S187887501630713X",
+        "https://thejns.org/view/journals/neurosurg/122/4/article-p743.xml?tab_body=figure-1",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-endonasal-transsphenoidal-views-of-pituitary-adenoma-removal_fig3_336144884",
+        "https://www.upmc.com/-/media/upmc/services/neurosurgery/images/conditions-and-treatments/pituitary-tumor-endoscopic-surgery-1200x630.jpg",
+        "https://www.youtube.com/watch?v=R_I1uAkGjtc"
+      ]
+    },
+    {
+      "texture": "cavernous-sinus_standard.png",
+      "sources": [
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4215286/",
+        "https://thejns.org/view/journals/j-neurosurg/124/2/article-p388.xml",
+        "https://www.researchgate.net/figure/Endoscopic-endonasal-transsphenoidal-approach-to-the-left-cavernous-sinus-A-After_fig1_320399120",
+        "https://www.researchgate.net/figure/Intraoperative-endoscopic-transsphenoidal-view-of-the-left-cavernous-sinus-A-Tumor_fig2_320399066",
+        "https://thejns.org/configurable/content/journals$002fjns$002f122$002f6$002ffig$002fj-neurosurg-14-369-f02.xml?t:ac=jns$002f122$002f6$002fJ-NEUROSURG-14-369.xml",
+        "https://www.youtube.com/watch?v=J3cR1x_6oY4",
+        "https://www.cureus.com/articles/28846-endoscopic-endonasal-transsphenoidal-approach-for-excision-of-a-pituitary-macroadenoma-invading-the-cavernous-sinus-a-case-report#!/",
+        "https://www.semanticscholar.org/paper/Endoscopic-Endonasal-Transsphenoidal-Approach-for-A-Labib-Prevedello/221f1ecde7fc7c62b46c986eb7924467c6999a4e/figure/0"
+      ]
+    }
+  ]
+}

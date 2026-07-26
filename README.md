@@ -30,12 +30,65 @@ This project is **educational only** and is **not intended for clinical decision
 
 ---
 
-## ⚙️ Fidelity Toggle Behavior
+## 🚀 Development
 
-The in-app **High Fidelity** toggle controls rendering quality. By default, the
-experience starts in **balanced** mode for unknown devices. Devices that
-advertise higher hardware capabilities may start in high fidelity, but the
-simulation will always respect the operating system’s **prefers-reduced-motion**
-setting and fall back to balanced mode for reduced motion users. The endoscope
-view uses this toggle to enable post-processing (Bloom/DOF/Noise) and scale
-particle counts accordingly.
+### Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+
+# Run tests with UI
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### Testing
+
+NeuroSim has a comprehensive test suite with **93 tests** covering:
+
+- **ProceduralGeometry** (29 tests) - Perlin noise, geometry manipulation, vertex operations
+- **CSGOperations** (38 tests) - Boolean operations, hollow geometry, caching
+- **CollisionManager** (26 tests) - Collision handling, crisis detection, statistics
+
+For detailed testing documentation, see [TESTING.md](./TESTING.md).
+
+**Test Coverage**: 100% passing ✅
+
+---
+
+## 📚 Documentation
+
+- **[TESTING.md](./TESTING.md)** - Comprehensive testing guide
+- **[CLAUDE.md](./CLAUDE.md)** - AI assistant development guide
+- **[SETUP_COMPLETE.md](./SETUP_COMPLETE.md)** - Phase completion summary
+
+---
+
+## 🛠️ Technology Stack
+
+- **React** 19.2.3 - UI framework
+- **TypeScript** - Type-safe development
+- **Three.js** 0.182.0 - 3D graphics
+- **@react-three/fiber** - React renderer for Three.js
+- **@react-three/rapier** - Physics engine
+- **three-bvh-csg** - CSG boolean operations
+- **Vite** - Build tool and dev server
+- **Vitest** - Testing framework
+
+---
+
+## 📄 License
+
+ISC
