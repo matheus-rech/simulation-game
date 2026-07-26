@@ -41,7 +41,7 @@ export const ANATOMY_TEXTURES = {
   ica: '/textures/anatomy/ica_standard.png', // Internal Carotid Artery
   mwcs: '/textures/anatomy/mwcs_standard.png', // Medial Wall Cavernous Sinus
   opticNerve: '/textures/anatomy/optic-nerve_standard.png',
-  cavernousSinus: '/textures/anatomy/cavernous-sinus_standard.png'
+  cavernousSinus: '/textures/anatomy/cavernous-sinus_standard.png',
 } as const
 
 export type AnatomyTextureName = keyof typeof ANATOMY_TEXTURES
@@ -85,7 +85,7 @@ export async function loadAnatomyTexture(textureName: AnatomyTextureName): Promi
   return new Promise((resolve, reject) => {
     loader.load(
       path,
-      (texture) => {
+      texture => {
         // Configure texture for VR rendering
         texture.colorSpace = SRGBColorSpace // Accurate color representation (Three.js r152+)
         texture.anisotropy = 16 // Maximum quality at oblique viewing angles
@@ -98,7 +98,7 @@ export async function loadAnatomyTexture(textureName: AnatomyTextureName): Promi
         resolve(texture)
       },
       undefined, // onProgress callback (not needed)
-      (error) => {
+      error => {
         console.error(`❌ Failed to load texture: ${textureName} (${path})`, error)
         reject(error)
       }
@@ -126,7 +126,7 @@ export async function preloadAllTextures(): Promise<Map<AnatomyTextureName, Text
 
   console.log(`⏳ Preloading ${textureNames.length} AI-generated anatomical textures...`)
 
-  const loadPromises = textureNames.map(async (name) => {
+  const loadPromises = textureNames.map(async name => {
     try {
       const texture = await loadAnatomyTexture(name)
       textures.set(name, texture)
@@ -149,7 +149,7 @@ export async function preloadAllTextures(): Promise<Map<AnatomyTextureName, Text
  * Prevents memory leaks by properly disposing of WebGL resources.
  */
 export function clearTextureCache(): void {
-  textureCache.forEach((texture) => {
+  textureCache.forEach(texture => {
     texture.dispose()
   })
   textureCache.clear()
@@ -186,5 +186,5 @@ export const TEXTURE_VALIDATION_METADATA = {
   averageScore: 84,
   medicalSources: 98,
   resolution: '2048x2048',
-  totalSizeMB: 7.6
+  totalSizeMB: 7.6,
 } as const

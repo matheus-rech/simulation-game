@@ -1,6 +1,10 @@
 import { useMemo, useEffect, useState } from 'react'
 import { BufferGeometry, Vector3, BufferAttribute, Texture } from 'three'
-import { createLeftMWCScurve, createRightMWCScurve, sampleCurvePoints } from './geometry/AnatomicalCurves'
+import {
+  createLeftMWCScurve,
+  createRightMWCScurve,
+  sampleCurvePoints,
+} from './geometry/AnatomicalCurves'
 import { TissueType } from '../materials/TissueMaterials'
 import { loadAnatomyTexture } from '../materials/TextureLoader'
 
@@ -44,7 +48,7 @@ export function CavernousSinus({ side, width = 0.3 }: CavernousSinusProps) {
   useEffect(() => {
     let mounted = true
 
-    loadAnatomyTexture('mwcs').then((texture) => {
+    loadAnatomyTexture('mwcs').then(texture => {
       if (mounted) {
         setMwcsTexture(texture)
         console.log(`✅ Loaded MWCS texture for ${side} cavernous sinus`)
@@ -130,7 +134,7 @@ export function CavernousSinus({ side, width = 0.3 }: CavernousSinusProps) {
       >
         <meshStandardMaterial
           map={mwcsTexture} // AI-generated MWCS texture (84/100 quality, 662KB)
-          color={mwcsTexture ? "#ffffff" : "#d4c8d8"} // White when textured, fallback purple-gray
+          color={mwcsTexture ? '#ffffff' : '#d4c8d8'} // White when textured, fallback purple-gray
           roughness={0.4}
           metalness={0.0}
           opacity={0.7}

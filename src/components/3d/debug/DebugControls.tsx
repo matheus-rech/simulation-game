@@ -53,16 +53,13 @@ export function DebugControls({ initialState, onStateChange }: DebugControlsProp
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
       // Ignore if typing in input field
-      if (
-        event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLTextAreaElement
-      ) {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
         return
       }
 
       const key = event.key.toLowerCase()
 
-      setDebugState((prev) => {
+      setDebugState(prev => {
         let newState = { ...prev }
 
         switch (key) {

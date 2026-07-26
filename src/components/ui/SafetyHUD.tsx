@@ -1,15 +1,15 @@
-import { useMemo } from 'react';
-import { SafetyZone, RiskLevel } from '../3d/safety/SafetyCorridorManager';
+import { useMemo } from 'react'
+import { SafetyZone, RiskLevel } from '../3d/safety/SafetyCorridorManager'
 
 export interface SafetyHUDProps {
   /** Current safety zones from SafetyCorridorManager */
-  safetyZones: SafetyZone[];
+  safetyZones: SafetyZone[]
 
   /** Show/hide the HUD */
-  visible?: boolean;
+  visible?: boolean
 
   /** Compact mode (minimal info) */
-  compact?: boolean;
+  compact?: boolean
 }
 
 /**
@@ -22,71 +22,83 @@ export interface SafetyHUDProps {
  * <SafetyHUD safetyZones={currentZones} visible={showSafety} />
  */
 export function SafetyHUD({ safetyZones, visible = true, compact = false }: SafetyHUDProps) {
-  if (!visible) return null;
+  if (!visible) return null
 
   /**
    * Get emoji indicator for risk level
    */
   const getRiskEmoji = (level: RiskLevel): string => {
     switch (level) {
-      case RiskLevel.SAFE: return '🟢';
-      case RiskLevel.WARNING: return '🟡';
-      case RiskLevel.DANGER: return '🟠';
-      case RiskLevel.CRITICAL: return '🔴';
+      case RiskLevel.SAFE:
+        return '🟢'
+      case RiskLevel.WARNING:
+        return '🟡'
+      case RiskLevel.DANGER:
+        return '🟠'
+      case RiskLevel.CRITICAL:
+        return '🔴'
     }
-  };
+  }
 
   /**
    * Get text label for risk level
    */
   const getRiskLabel = (level: RiskLevel): string => {
     switch (level) {
-      case RiskLevel.SAFE: return 'SAFE';
-      case RiskLevel.WARNING: return 'CAUTION';
-      case RiskLevel.DANGER: return 'DANGER';
-      case RiskLevel.CRITICAL: return 'STOP!';
+      case RiskLevel.SAFE:
+        return 'SAFE'
+      case RiskLevel.WARNING:
+        return 'CAUTION'
+      case RiskLevel.DANGER:
+        return 'DANGER'
+      case RiskLevel.CRITICAL:
+        return 'STOP!'
     }
-  };
+  }
 
   /**
    * Get color for risk level
    */
   const getRiskColor = (level: RiskLevel): string => {
     switch (level) {
-      case RiskLevel.SAFE: return '#00ff00';
-      case RiskLevel.WARNING: return '#ffff00';
-      case RiskLevel.DANGER: return '#ff8800';
-      case RiskLevel.CRITICAL: return '#ff0000';
+      case RiskLevel.SAFE:
+        return '#00ff00'
+      case RiskLevel.WARNING:
+        return '#ffff00'
+      case RiskLevel.DANGER:
+        return '#ff8800'
+      case RiskLevel.CRITICAL:
+        return '#ff0000'
     }
-  };
+  }
 
   /**
    * Calculate overall safety status
    */
   const overallRisk = useMemo(() => {
-    if (safetyZones.length === 0) return RiskLevel.SAFE;
+    if (safetyZones.length === 0) return RiskLevel.SAFE
 
-    const risks = safetyZones.map(z => z.riskLevel);
+    const risks = safetyZones.map(z => z.riskLevel)
 
-    if (risks.includes(RiskLevel.CRITICAL)) return RiskLevel.CRITICAL;
-    if (risks.includes(RiskLevel.DANGER)) return RiskLevel.DANGER;
-    if (risks.includes(RiskLevel.WARNING)) return RiskLevel.WARNING;
-    return RiskLevel.SAFE;
-  }, [safetyZones]);
+    if (risks.includes(RiskLevel.CRITICAL)) return RiskLevel.CRITICAL
+    if (risks.includes(RiskLevel.DANGER)) return RiskLevel.DANGER
+    if (risks.includes(RiskLevel.WARNING)) return RiskLevel.WARNING
+    return RiskLevel.SAFE
+  }, [safetyZones])
 
   /**
    * Find closest critical structure
    */
   const closestStructure = useMemo(() => {
-    if (safetyZones.length === 0) return null;
+    if (safetyZones.length === 0) return null
     return safetyZones.reduce((closest, zone) =>
       zone.distance < closest.distance ? zone : closest
-    );
-  }, [safetyZones]);
+    )
+  }, [safetyZones])
 
   // Compact mode: just show closest structure
   if (compact) {
-    if (!closestStructure) return null;
+    if (!closestStructure) return null
 
     return (
       <div
@@ -102,7 +114,8 @@ export function SafetyHUD({ safetyZones, visible = true, compact = false }: Safe
           fontFamily: 'monospace',
           fontSize: '14px',
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
-          animation: closestStructure.riskLevel === RiskLevel.CRITICAL ? 'pulse 0.5s infinite' : 'none',
+          animation:
+            closestStructure.riskLevel === RiskLevel.CRITICAL ? 'pulse 0.5s infinite' : 'none',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -116,7 +129,7 @@ export function SafetyHUD({ safetyZones, visible = true, compact = false }: Safe
           </span>
         </div>
       </div>
-    );
+    )
   }
 
   // Full mode: show all structures
@@ -206,10 +219,14 @@ export function SafetyHUD({ safetyZones, visible = true, compact = false }: Safe
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          <div>🟢 Safe: {'>'}3mm ICA, {'>'}2mm MWCS</div>
+          <div>
+            🟢 Safe: {'>'}3mm ICA, {'>'}2mm MWCS
+          </div>
           <div>🟡 Caution: 2-3mm ICA, 1-2mm MWCS</div>
           <div>🟠 Danger: 1-2mm ICA, 0.5-1mm MWCS</div>
-          <div>🔴 Critical: {'<'}1mm ICA, {'<'}0.5mm MWCS</div>
+          <div>
+            🔴 Critical: {'<'}1mm ICA, {'<'}0.5mm MWCS
+          </div>
         </div>
       </div>
 
@@ -239,5 +256,5 @@ export function SafetyHUD({ safetyZones, visible = true, compact = false }: Safe
         }
       `}</style>
     </div>
-  );
+  )
 }

@@ -20,19 +20,19 @@ export function WireframeController({ enabled }: WireframeControllerProps) {
   // Apply wireframe mode to all materials in scene
   const applyWireframe = useCallback(
     (enableWireframe: boolean) => {
-      scene.traverse((object) => {
+      scene.traverse(object => {
         if (object instanceof Mesh) {
           const material = object.material
           if (material) {
             if (Array.isArray(material)) {
-              material.forEach((mat) => {
+              material.forEach(mat => {
                 if ('wireframe' in mat) {
-                  (mat as any).wireframe = enableWireframe
+                  ;(mat as any).wireframe = enableWireframe
                 }
               })
             } else {
               if ('wireframe' in material) {
-                (material as any).wireframe = enableWireframe
+                ;(material as any).wireframe = enableWireframe
               }
             }
           }

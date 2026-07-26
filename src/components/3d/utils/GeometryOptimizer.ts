@@ -71,9 +71,7 @@ class GeometryOptimizerClass {
 
     // Evict by size (LRU)
     if (entries.length > this.maxCacheSize) {
-      const sorted = entries.sort(
-        (a, b) => a[1].lastAccessed - b[1].lastAccessed
-      )
+      const sorted = entries.sort((a, b) => a[1].lastAccessed - b[1].lastAccessed)
       const toRemove = sorted.slice(0, entries.length - this.maxCacheSize)
       toRemove.forEach(([key]) => this.remove(key))
     }
@@ -93,7 +91,7 @@ class GeometryOptimizerClass {
    * Clear all cached geometries
    */
   clear() {
-    Object.keys(this.cache).forEach((key) => this.remove(key))
+    Object.keys(this.cache).forEach(key => this.remove(key))
   }
 
   /**
@@ -104,9 +102,8 @@ class GeometryOptimizerClass {
     return {
       size: entries.length,
       totalAccessCount: entries.reduce((sum, e) => sum + e.accessCount, 0),
-      avgAccessCount:
-        entries.reduce((sum, e) => sum + e.accessCount, 0) / entries.length || 0,
-      oldestEntry: Math.min(...entries.map((e) => e.createdAt)),
+      avgAccessCount: entries.reduce((sum, e) => sum + e.accessCount, 0) / entries.length || 0,
+      oldestEntry: Math.min(...entries.map(e => e.createdAt)),
     }
   }
 
@@ -142,10 +139,7 @@ class GeometryOptimizerClass {
         newIndex++
       }
 
-      simplified.setAttribute(
-        'position',
-        new THREE.Float32BufferAttribute(newPositions, 3)
-      )
+      simplified.setAttribute('position', new THREE.Float32BufferAttribute(newPositions, 3))
       simplified.computeVertexNormals()
     }
 
@@ -167,7 +161,7 @@ class GeometryOptimizerClass {
    * Batch dispose multiple geometries
    */
   disposeAll(geometries: BufferGeometry[]) {
-    geometries.forEach((g) => g.dispose())
+    geometries.forEach(g => g.dispose())
   }
 
   /**
@@ -178,9 +172,7 @@ class GeometryOptimizerClass {
     const indexAttribute = geometry.index
 
     const vertexCount = positionAttribute ? positionAttribute.count : 0
-    const triangleCount = indexAttribute
-      ? indexAttribute.count / 3
-      : vertexCount / 3
+    const triangleCount = indexAttribute ? indexAttribute.count / 3 : vertexCount / 3
 
     const memoryEstimate =
       vertexCount * 3 * 4 + // positions (3 floats per vertex)

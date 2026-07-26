@@ -5,7 +5,7 @@
  * Handles periodic scene analysis, streaming responses, and state management.
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react'
 import {
   ClaudeVisionService,
   SimulationState,
@@ -13,7 +13,7 @@ import {
   TechniqueMetrics,
   createClaudeVisionService,
   captureSceneSnapshot,
-} from '../services/ai/ClaudeVisionService';
+} from '../services/ai/ClaudeVisionService'
 
 // ============================================================================
 // Types
@@ -21,28 +21,28 @@ import {
 
 export interface AIMentorConfig {
   /** Enable AI mentor */
-  enabled: boolean;
+  enabled: boolean
   /** Analysis interval (ms) */
-  analysisInterval: number;
+  analysisInterval: number
   /** Use streaming responses */
-  useStreaming: boolean;
+  useStreaming: boolean
   /** Include conversation history */
-  includeHistory: boolean;
+  includeHistory: boolean
   /** Show confidence scores */
-  showConfidence: boolean;
+  showConfidence: boolean
 }
 
 export interface AIMentorState {
   /** Current mentor response */
-  response: MentorResponse | null;
+  response: MentorResponse | null
   /** Is analyzing? */
-  isAnalyzing: boolean;
+  isAnalyzing: boolean
   /** Error message */
-  error: string | null;
+  error: string | null
   /** Service ready? */
-  isReady: boolean;
+  isReady: boolean
   /** Streaming text (partial response) */
-  streamingText: string;
+  streamingText: string
 }
 
 const DEFAULT_CONFIG: AIMentorConfig = {
@@ -51,7 +51,7 @@ const DEFAULT_CONFIG: AIMentorConfig = {
   useStreaming: true,
   includeHistory: true,
   showConfidence: true,
-};
+}
 
 const DEFAULT_STATE: AIMentorState = {
   response: null,
@@ -59,7 +59,7 @@ const DEFAULT_STATE: AIMentorState = {
   error: null,
   isReady: false,
   streamingText: '',
-};
+}
 
 // ============================================================================
 // Hook
@@ -69,44 +69,44 @@ export function useAIMentor(
   simulationState: SimulationState,
   config: Partial<AIMentorConfig> = {}
 ) {
-  const mergedConfig = { ...DEFAULT_CONFIG, ...config };
-  const [state, setState] = useState<AIMentorState>(DEFAULT_STATE);
-  const serviceRef = useRef<ClaudeVisionService | null>(null);
-  const intervalRef = useRef<number | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const mergedConfig = { ...DEFAULT_CONFIG, ...config }
+  const [state, setState] = useState<AIMentorState>(DEFAULT_STATE)
+  const serviceRef = useRef<ClaudeVisionService | null>(null)
+  const intervalRef = useRef<number | null>(null)
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
   // ==========================================================================
   // Initialization
   // ==========================================================================
 
   useEffect(() => {
-    if (!mergedConfig.enabled) return;
+    if (!mergedConfig.enabled) return
 
     try {
-      serviceRef.current = createClaudeVisionService();
+      serviceRef.current = createClaudeVisionService()
       if (serviceRef.current) {
-        setState(prev => ({ ...prev, isReady: true, error: null }));
+        setState(prev => ({ ...prev, isReady: true, error: null }))
       } else {
         setState(prev => ({
           ...prev,
           isReady: false,
           error: 'No API key. Set VITE_ANTHROPIC_API_KEY in .env',
-        }));
+        }))
       }
     } catch (error) {
       setState(prev => ({
         ...prev,
         isReady: false,
         error: `Failed to initialize: ${error}`,
-      }));
+      }))
     }
 
     return () => {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        clearInterval(intervalRef.current)
       }
-    };
-  }, [mergedConfig.enabled]);
+    }
+  }, [mergedConfig.enabled])
 
   // ==========================================================================
   // Periodic Analysis
@@ -114,20 +114,20 @@ export function useAIMentor(
 
   useEffect(() => {
     if (!mergedConfig.enabled || !state.isReady || !serviceRef.current) {
-      return;
+      return
     }
 
     // Start periodic analysis
     intervalRef.current = setInterval(() => {
-      analyzeScene();
-    }, mergedConfig.analysisInterval) as unknown as number;
+      analyzeScene()
+    }, mergedConfig.analysisInterval) as unknown as number
 
     return () => {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        clearInterval(intervalRef.current)
       }
-    };
-  }, [mergedConfig.enabled, state.isReady, mergedConfig.analysisInterval, simulationState]);
+    }
+  }, [mergedConfig.enabled, state.isReady, mergedConfig.analysisInterval, simulationState])
 
   // ==========================================================================
   // Analysis Function
@@ -135,14 +135,14 @@ export function useAIMentor(
 
   const analyzeScene = useCallback(async () => {
     if (!serviceRef.current || state.isAnalyzing || !canvasRef.current) {
-      return;
+      return
     }
 
-    setState(prev => ({ ...prev, isAnalyzing: true, error: null, streamingText: '' }));
+    setState(prev => ({ ...prev, isAnalyzing: true, error: null, streamingText: '' }))
 
     try {
       // Capture scene
-      const sceneSnapshot = captureSceneSnapshot(canvasRef.current);
+      const sceneSnapshot = captureSceneSnapshot(canvasRef.current)
 
       // Perform analysis
       if (mergedConfig.useStreaming) {
@@ -157,49 +157,49 @@ export function useAIMentor(
             setState(prev => ({
               ...prev,
               streamingText: prev.streamingText + chunk,
-            }));
+            }))
           }
-        );
+        )
       } else {
         const response = await serviceRef.current.analyze({
           sceneSnapshot,
           state: simulationState,
           includeHistory: mergedConfig.includeHistory,
-        });
+        })
 
         setState(prev => ({
           ...prev,
           response,
           isAnalyzing: false,
           streamingText: '',
-        }));
+        }))
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       setState(prev => ({
         ...prev,
         isAnalyzing: false,
         error: errorMessage,
         streamingText: '',
-      }));
+      }))
     }
-  }, [state.isAnalyzing, simulationState, mergedConfig]);
+  }, [state.isAnalyzing, simulationState, mergedConfig])
 
   // ==========================================================================
   // Manual Trigger
   // ==========================================================================
 
   const triggerAnalysis = useCallback(() => {
-    analyzeScene();
-  }, [analyzeScene]);
+    analyzeScene()
+  }, [analyzeScene])
 
   // ==========================================================================
   // Canvas Registration
   // ==========================================================================
 
   const registerCanvas = useCallback((canvas: HTMLCanvasElement | null) => {
-    canvasRef.current = canvas;
-  }, []);
+    canvasRef.current = canvas
+  }, [])
 
   // ==========================================================================
   // Clear History
@@ -207,9 +207,9 @@ export function useAIMentor(
 
   const clearHistory = useCallback(() => {
     if (serviceRef.current) {
-      serviceRef.current.clearHistory();
+      serviceRef.current.clearHistory()
     }
-  }, []);
+  }, [])
 
   // ==========================================================================
   // Clear Cache
@@ -217,9 +217,9 @@ export function useAIMentor(
 
   const clearCache = useCallback(() => {
     if (serviceRef.current) {
-      serviceRef.current.clearCache();
+      serviceRef.current.clearCache()
     }
-  }, []);
+  }, [])
 
   // ==========================================================================
   // Return
@@ -237,7 +237,7 @@ export function useAIMentor(
     registerCanvas,
     clearHistory,
     clearCache,
-  };
+  }
 }
 
 // ============================================================================
@@ -254,14 +254,14 @@ export function createDefaultSimulationState(
     'Navigate through nasal cavity to sphenoid ostium',
     'Open sella turcica floor and expose dura',
     'Resect pituitary adenoma while avoiding ICA',
-  ];
+  ]
 
   const defaultMetrics: TechniqueMetrics = {
     economyOfMotion: 85,
     tissueRespect: 90,
     timeEfficiency: 75,
     safetyAwareness: 95,
-  };
+  }
 
   return {
     level,
@@ -273,5 +273,5 @@ export function createDefaultSimulationState(
     techniqueMetrics: defaultMetrics,
     score,
     activeCrisis: null,
-  };
+  }
 }

@@ -10,8 +10,8 @@
  * - Streaming text animation
  */
 
-import { useEffect, useState } from 'react';
-import { MentorResponse } from '../../services/ai/ClaudeVisionService';
+import { useEffect, useState } from 'react'
+import { MentorResponse } from '../../services/ai/ClaudeVisionService'
 
 // ============================================================================
 // Types
@@ -19,21 +19,21 @@ import { MentorResponse } from '../../services/ai/ClaudeVisionService';
 
 export interface MentorOverlayProps {
   /** Current mentor response */
-  response: MentorResponse | null;
+  response: MentorResponse | null
   /** Is mentor analyzing? */
-  isAnalyzing: boolean;
+  isAnalyzing: boolean
   /** Error message */
-  error: string | null;
+  error: string | null
   /** Show confidence scores */
-  showConfidence?: boolean;
+  showConfidence?: boolean
   /** Callback when structure is clicked for highlighting */
-  onHighlightStructure?: (structure: string) => void;
+  onHighlightStructure?: (structure: string) => void
   /** Is streaming? */
-  isStreaming?: boolean;
+  isStreaming?: boolean
   /** Streaming text */
-  streamingText?: string;
+  streamingText?: string
   /** Position (top-right, bottom-right, etc.) */
-  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
 }
 
 // ============================================================================
@@ -45,21 +45,21 @@ const getPositionStyle = (position: string) => {
     position: 'absolute' as const,
     zIndex: 50,
     maxWidth: 400,
-  };
+  }
 
   switch (position) {
     case 'top-left':
-      return { ...baseStyle, top: 80, left: 16 };
+      return { ...baseStyle, top: 80, left: 16 }
     case 'top-right':
-      return { ...baseStyle, top: 80, right: 16 };
+      return { ...baseStyle, top: 80, right: 16 }
     case 'bottom-left':
-      return { ...baseStyle, bottom: 16, left: 16 };
+      return { ...baseStyle, bottom: 16, left: 16 }
     case 'bottom-right':
-      return { ...baseStyle, bottom: 16, right: 16 };
+      return { ...baseStyle, bottom: 16, right: 16 }
     default:
-      return { ...baseStyle, top: 80, right: 16 };
+      return { ...baseStyle, top: 80, right: 16 }
   }
-};
+}
 
 const styles = {
   container: (position: string) => ({
@@ -188,7 +188,7 @@ const styles = {
     borderRadius: '50%',
     animation: 'spin 0.8s linear infinite',
   },
-};
+}
 
 // ============================================================================
 // Helper Functions
@@ -197,41 +197,41 @@ const styles = {
 function getAvatarColor(tone: string): string {
   switch (tone) {
     case 'encouraging':
-      return 'linear-gradient(135deg, #4CAF50, #66BB6A)';
+      return 'linear-gradient(135deg, #4CAF50, #66BB6A)'
     case 'cautionary':
-      return 'linear-gradient(135deg, #FF9800, #FFB74D)';
+      return 'linear-gradient(135deg, #FF9800, #FFB74D)'
     case 'urgent':
-      return 'linear-gradient(135deg, #F44336, #E57373)';
+      return 'linear-gradient(135deg, #F44336, #E57373)'
     default:
-      return 'linear-gradient(135deg, #2196F3, #64B5F6)';
+      return 'linear-gradient(135deg, #2196F3, #64B5F6)'
   }
 }
 
 function getSafetyColor(level: string): string {
   switch (level) {
     case 'safe':
-      return '#4CAF50';
+      return '#4CAF50'
     case 'caution':
-      return '#FF9800';
+      return '#FF9800'
     case 'danger':
-      return '#FF5722';
+      return '#FF5722'
     case 'critical':
-      return '#F44336';
+      return '#F44336'
     default:
-      return '#2196F3';
+      return '#2196F3'
   }
 }
 
 function getAvatarEmoji(tone: string): string {
   switch (tone) {
     case 'encouraging':
-      return '😊';
+      return '😊'
     case 'cautionary':
-      return '🤔';
+      return '🤔'
     case 'urgent':
-      return '⚠️';
+      return '⚠️'
     default:
-      return '👨‍⚕️';
+      return '👨‍⚕️'
   }
 }
 
@@ -249,26 +249,26 @@ export function MentorOverlay({
   streamingText = '',
   position = 'top-right',
 }: MentorOverlayProps) {
-  const [highlightedStructures, setHighlightedStructures] = useState<Set<string>>(new Set());
+  const [highlightedStructures, setHighlightedStructures] = useState<Set<string>>(new Set())
 
   // Clear highlights when response changes
   useEffect(() => {
-    setHighlightedStructures(new Set());
-  }, [response]);
+    setHighlightedStructures(new Set())
+  }, [response])
 
   const handleStructureClick = (structure: string) => {
-    const newHighlighted = new Set(highlightedStructures);
+    const newHighlighted = new Set(highlightedStructures)
     if (newHighlighted.has(structure)) {
-      newHighlighted.delete(structure);
+      newHighlighted.delete(structure)
     } else {
-      newHighlighted.add(structure);
+      newHighlighted.add(structure)
     }
-    setHighlightedStructures(newHighlighted);
+    setHighlightedStructures(newHighlighted)
 
     if (onHighlightStructure) {
-      onHighlightStructure(structure);
+      onHighlightStructure(structure)
     }
-  };
+  }
 
   // ==========================================================================
   // Render: Error State
@@ -282,7 +282,7 @@ export function MentorOverlay({
           <div style={{ marginTop: 4 }}>{error}</div>
         </div>
       </div>
-    );
+    )
   }
 
   // ==========================================================================
@@ -294,12 +294,10 @@ export function MentorOverlay({
       <div style={styles.container(position)}>
         <div style={styles.loadingCard}>
           <div style={styles.spinner} />
-          <span style={{ color: '#f7e5da', fontSize: '0.9rem' }}>
-            Analyzing surgical field...
-          </span>
+          <span style={{ color: '#f7e5da', fontSize: '0.9rem' }}>Analyzing surgical field...</span>
         </div>
       </div>
-    );
+    )
   }
 
   // ==========================================================================
@@ -307,18 +305,18 @@ export function MentorOverlay({
   // ==========================================================================
 
   if (!response && !isStreaming) {
-    return null;
+    return null
   }
 
   // ==========================================================================
   // Render: Mentor Response
   // ==========================================================================
 
-  const displayText = isStreaming ? streamingText : response?.recommendation || '';
-  const tone = response?.tone || 'encouraging';
-  const safetyLevel = response?.safetyAssessment || 'safe';
-  const structures = response?.structuresVisible || [];
-  const confidence = response?.confidence || 0;
+  const displayText = isStreaming ? streamingText : response?.recommendation || ''
+  const tone = response?.tone || 'encouraging'
+  const safetyLevel = response?.safetyAssessment || 'safe'
+  const structures = response?.structuresVisible || []
+  const confidence = response?.confidence || 0
 
   return (
     <div style={styles.container(position)}>
@@ -365,9 +363,7 @@ export function MentorOverlay({
 
         {/* Confidence Score */}
         {showConfidence && confidence > 0 && (
-          <div style={styles.confidence}>
-            Confidence: {(confidence * 100).toFixed(0)}%
-          </div>
+          <div style={styles.confidence}>Confidence: {(confidence * 100).toFixed(0)}%</div>
         )}
       </div>
 
@@ -385,5 +381,5 @@ export function MentorOverlay({
         `}
       </style>
     </div>
-  );
+  )
 }

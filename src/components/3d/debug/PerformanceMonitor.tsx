@@ -131,9 +131,7 @@ export function PerformanceMonitor({
         backdropFilter: 'blur(4px)',
       }}
     >
-      <div style={{ marginBottom: 8, fontWeight: 600, fontSize: '0.85rem' }}>
-        ⚡ Performance
-      </div>
+      <div style={{ marginBottom: 8, fontWeight: 600, fontSize: '0.85rem' }}>⚡ Performance</div>
 
       <StatLine
         label="FPS"

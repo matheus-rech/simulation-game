@@ -45,7 +45,7 @@ export function SphenoidOstium({ visible = true, diameter = 0.3 }: SphenoidOstiu
   useEffect(() => {
     let mounted = true
 
-    loadAnatomyTexture('sphenoidOstium').then((texture) => {
+    loadAnatomyTexture('sphenoidOstium').then(texture => {
       if (mounted) {
         setOstiumTexture(texture)
         console.log('✅ Loaded sphenoid ostium texture (680KB, 84/100 quality)')
@@ -111,9 +111,7 @@ export function SphenoidOstium({ visible = true, diameter = 0.3 }: SphenoidOstiu
       />
 
       {/* Label for educational context (visible in close-up) */}
-      <group visible={false}>
-        {/* TODO: Add text label for educational mode */}
-      </group>
+      <group visible={false}>{/* TODO: Add text label for educational mode */}</group>
     </group>
   )
 }

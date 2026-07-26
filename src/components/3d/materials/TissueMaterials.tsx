@@ -148,7 +148,7 @@ export function createTissueMaterial(tissueType: TissueType): MeshStandardMateri
  * Call this when cleaning up the scene or resetting the application
  */
 export function clearMaterialCache(): void {
-  materialCache.forEach((material) => {
+  materialCache.forEach(material => {
     material.dispose()
   })
   materialCache.clear()

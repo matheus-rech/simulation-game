@@ -5,13 +5,13 @@
  * Copy relevant sections into App.tsx to enable AI mentorship.
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { EndoscopeView, ScopeAngle } from '../components/EndoscopeView';
-import { Vector3D } from '../components/3d/VFX';
-import { CrisisEvent } from '../components/3d/collision/types';
-import { SafetyZone } from '../components/3d/safety/SafetyCorridorManager';
-import { useAIMentor, createDefaultSimulationState } from '../hooks/useAIMentor';
-import { MentorOverlay } from '../components/ui/MentorOverlay';
+import React, { useState, useEffect, useCallback } from 'react'
+import { EndoscopeView, ScopeAngle } from '../components/EndoscopeView'
+import { Vector3D } from '../components/3d/VFX'
+import { CrisisEvent } from '../components/3d/collision/types'
+import { SafetyZone } from '../components/3d/safety/SafetyCorridorManager'
+import { useAIMentor, createDefaultSimulationState } from '../hooks/useAIMentor'
+import { MentorOverlay } from '../components/ui/MentorOverlay'
 
 // ============================================================================
 // Example 1: Basic Integration
@@ -19,16 +19,16 @@ import { MentorOverlay } from '../components/ui/MentorOverlay';
 
 export function AppWithBasicMentor() {
   // Existing state
-  const [level, setLevel] = useState(1);
-  const [score, setScore] = useState(100);
-  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 });
-  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 });
-  const [collisionCount, setCollisionCount] = useState(0);
-  const [activeCrisis, setActiveCrisis] = useState<CrisisEvent | null>(null);
-  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([]);
+  const [level, setLevel] = useState(1)
+  const [score, setScore] = useState(100)
+  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 })
+  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 })
+  const [collisionCount, setCollisionCount] = useState(0)
+  const [activeCrisis, setActiveCrisis] = useState<CrisisEvent | null>(null)
+  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([])
 
   // Create simulation state for AI mentor
-  const simulationState = createDefaultSimulationState(level, score, tipPosition, scopeAngle);
+  const simulationState = createDefaultSimulationState(level, score, tipPosition, scopeAngle)
 
   // Initialize AI mentor with basic config
   const mentor = useAIMentor(simulationState, {
@@ -36,25 +36,25 @@ export function AppWithBasicMentor() {
     analysisInterval: 3000, // Analyze every 3 seconds
     useStreaming: true,
     includeHistory: true,
-  });
+  })
 
   // Register canvas for scene capture
   useEffect(() => {
-    const canvas = document.querySelector('canvas');
+    const canvas = document.querySelector('canvas')
     if (canvas) {
-      mentor.registerCanvas(canvas);
+      mentor.registerCanvas(canvas)
     }
-  }, [mentor]);
+  }, [mentor])
 
   const handleRaycastCollision = useCallback((point: Vector3D) => {
-    setCollisionCount(count => count + 1);
-    setScore(prev => Math.max(prev - 2, 0));
-  }, []);
+    setCollisionCount(count => count + 1)
+    setScore(prev => Math.max(prev - 2, 0))
+  }, [])
 
   const handleCrisis = useCallback((crisis: CrisisEvent) => {
-    setActiveCrisis(crisis);
-    setScore(prev => Math.max(prev - 50, 0));
-  }, []);
+    setActiveCrisis(crisis)
+    setScore(prev => Math.max(prev - 50, 0))
+  }, [])
 
   return (
     <div style={{ height: '100vh', width: '100vw', background: '#0f0a0a' }}>
@@ -97,7 +97,7 @@ export function AppWithBasicMentor() {
         </div>
       )}
     </div>
-  );
+  )
 }
 
 // ============================================================================
@@ -106,32 +106,32 @@ export function AppWithBasicMentor() {
 
 export function AppWithAdvancedMentor() {
   // State
-  const [level, setLevel] = useState(1);
-  const [score, setScore] = useState(100);
-  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 });
-  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 });
-  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([]);
+  const [level, setLevel] = useState(1)
+  const [score, setScore] = useState(100)
+  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 })
+  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 })
+  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([])
 
   // AI Mentor config (user-controllable)
-  const [mentorEnabled, setMentorEnabled] = useState(true);
-  const [mentorInterval, setMentorInterval] = useState(3000);
-  const [useStreaming, setUseStreaming] = useState(true);
+  const [mentorEnabled, setMentorEnabled] = useState(true)
+  const [mentorInterval, setMentorInterval] = useState(3000)
+  const [useStreaming, setUseStreaming] = useState(true)
 
-  const simulationState = createDefaultSimulationState(level, score, tipPosition, scopeAngle);
+  const simulationState = createDefaultSimulationState(level, score, tipPosition, scopeAngle)
 
   const mentor = useAIMentor(simulationState, {
     enabled: mentorEnabled,
     analysisInterval: mentorInterval,
     useStreaming,
     includeHistory: true,
-  });
+  })
 
   useEffect(() => {
-    const canvas = document.querySelector('canvas');
+    const canvas = document.querySelector('canvas')
     if (canvas) {
-      mentor.registerCanvas(canvas);
+      mentor.registerCanvas(canvas)
     }
-  }, [mentor]);
+  }, [mentor])
 
   return (
     <div style={{ height: '100vh', width: '100vw', background: '#0f0a0a' }}>
@@ -179,8 +179,8 @@ export function AppWithAdvancedMentor() {
             type="checkbox"
             checked={mentorEnabled}
             onChange={e => setMentorEnabled(e.target.checked)}
-          />
-          {' '}Enable Mentor
+          />{' '}
+          Enable Mentor
         </label>
 
         <label style={{ display: 'block', marginBottom: 8, fontSize: '0.85rem' }}>
@@ -188,8 +188,8 @@ export function AppWithAdvancedMentor() {
             type="checkbox"
             checked={useStreaming}
             onChange={e => setUseStreaming(e.target.checked)}
-          />
-          {' '}Streaming Mode
+          />{' '}
+          Streaming Mode
         </label>
 
         <label style={{ display: 'block', marginBottom: 8, fontSize: '0.85rem' }}>
@@ -205,7 +205,9 @@ export function AppWithAdvancedMentor() {
           />
         </label>
 
-        <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid rgba(247, 229, 218, 0.1)' }}>
+        <div
+          style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid rgba(247, 229, 218, 0.1)' }}
+        >
           <button
             onClick={mentor.triggerAnalysis}
             style={{
@@ -243,7 +245,7 @@ export function AppWithAdvancedMentor() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // ============================================================================
@@ -251,37 +253,37 @@ export function AppWithAdvancedMentor() {
 // ============================================================================
 
 export function AppWithStructureHighlighting() {
-  const [level, setLevel] = useState(1);
-  const [score, setScore] = useState(100);
-  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 });
-  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 });
-  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([]);
+  const [level, setLevel] = useState(1)
+  const [score, setScore] = useState(100)
+  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 })
+  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 })
+  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([])
 
   // Track highlighted structures
-  const [highlightedStructures, setHighlightedStructures] = useState<Set<string>>(new Set());
+  const [highlightedStructures, setHighlightedStructures] = useState<Set<string>>(new Set())
 
-  const simulationState = createDefaultSimulationState(level, score, tipPosition, scopeAngle);
-  const mentor = useAIMentor(simulationState, { enabled: true });
+  const simulationState = createDefaultSimulationState(level, score, tipPosition, scopeAngle)
+  const mentor = useAIMentor(simulationState, { enabled: true })
 
   useEffect(() => {
-    const canvas = document.querySelector('canvas');
+    const canvas = document.querySelector('canvas')
     if (canvas) {
-      mentor.registerCanvas(canvas);
+      mentor.registerCanvas(canvas)
     }
-  }, [mentor]);
+  }, [mentor])
 
   const handleHighlightStructure = (structure: string) => {
-    const newHighlighted = new Set(highlightedStructures);
+    const newHighlighted = new Set(highlightedStructures)
     if (newHighlighted.has(structure)) {
-      newHighlighted.delete(structure);
+      newHighlighted.delete(structure)
     } else {
-      newHighlighted.add(structure);
+      newHighlighted.add(structure)
     }
-    setHighlightedStructures(newHighlighted);
+    setHighlightedStructures(newHighlighted)
 
     // TODO: Pass highlightedStructures to EndoscopeView to enable visual highlighting
-    console.log('Highlight structure:', structure, 'Active:', newHighlighted.has(structure));
-  };
+    console.log('Highlight structure:', structure, 'Active:', newHighlighted.has(structure))
+  }
 
   return (
     <div style={{ height: '100vh', width: '100vw', background: '#0f0a0a' }}>
@@ -308,7 +310,7 @@ export function AppWithStructureHighlighting() {
         onHighlightStructure={handleHighlightStructure}
       />
     </div>
-  );
+  )
 }
 
 // ============================================================================
@@ -316,37 +318,40 @@ export function AppWithStructureHighlighting() {
 // ============================================================================
 
 export function AppWithCrisisResponse() {
-  const [level, setLevel] = useState(1);
-  const [score, setScore] = useState(100);
-  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 });
-  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 });
-  const [activeCrisis, setActiveCrisis] = useState<CrisisEvent | null>(null);
-  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([]);
+  const [level, setLevel] = useState(1)
+  const [score, setScore] = useState(100)
+  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 })
+  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 })
+  const [activeCrisis, setActiveCrisis] = useState<CrisisEvent | null>(null)
+  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([])
 
   const simulationState = {
     ...createDefaultSimulationState(level, score, tipPosition, scopeAngle),
     activeCrisis,
     safetyZones,
-  };
+  }
 
-  const mentor = useAIMentor(simulationState, { enabled: true });
+  const mentor = useAIMentor(simulationState, { enabled: true })
 
   useEffect(() => {
-    const canvas = document.querySelector('canvas');
+    const canvas = document.querySelector('canvas')
     if (canvas) {
-      mentor.registerCanvas(canvas);
+      mentor.registerCanvas(canvas)
     }
-  }, [mentor]);
+  }, [mentor])
 
-  const handleCrisis = useCallback((crisis: CrisisEvent) => {
-    setActiveCrisis(crisis);
-    setScore(prev => Math.max(prev - 50, 0));
+  const handleCrisis = useCallback(
+    (crisis: CrisisEvent) => {
+      setActiveCrisis(crisis)
+      setScore(prev => Math.max(prev - 50, 0))
 
-    // Trigger immediate analysis on crisis
-    setTimeout(() => {
-      mentor.triggerAnalysis();
-    }, 100);
-  }, [mentor]);
+      // Trigger immediate analysis on crisis
+      setTimeout(() => {
+        mentor.triggerAnalysis()
+      }, 100)
+    },
+    [mentor]
+  )
 
   return (
     <div style={{ height: '100vh', width: '100vw', background: '#0f0a0a' }}>
@@ -409,7 +414,7 @@ export function AppWithCrisisResponse() {
         position="top-right"
       />
     </div>
-  );
+  )
 }
 
 // ============================================================================
@@ -417,34 +422,34 @@ export function AppWithCrisisResponse() {
 // ============================================================================
 
 export function AppWithPerformanceMonitoring() {
-  const [level, setLevel] = useState(1);
-  const [score, setScore] = useState(100);
-  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 });
-  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 });
-  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([]);
+  const [level, setLevel] = useState(1)
+  const [score, setScore] = useState(100)
+  const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 })
+  const [tipPosition, setTipPosition] = useState<Vector3D>({ x: 0, y: 0, z: 1.2 })
+  const [safetyZones, setSafetyZones] = useState<SafetyZone[]>([])
 
   // Performance tracking
-  const [analysisCount, setAnalysisCount] = useState(0);
-  const [avgLatency, setAvgLatency] = useState(0);
-  const [cacheHitRate, setCacheHitRate] = useState(0);
+  const [analysisCount, setAnalysisCount] = useState(0)
+  const [avgLatency, setAvgLatency] = useState(0)
+  const [cacheHitRate, setCacheHitRate] = useState(0)
 
-  const simulationState = createDefaultSimulationState(level, score, tipPosition, scopeAngle);
-  const mentor = useAIMentor(simulationState, { enabled: true });
+  const simulationState = createDefaultSimulationState(level, score, tipPosition, scopeAngle)
+  const mentor = useAIMentor(simulationState, { enabled: true })
 
   useEffect(() => {
-    const canvas = document.querySelector('canvas');
+    const canvas = document.querySelector('canvas')
     if (canvas) {
-      mentor.registerCanvas(canvas);
+      mentor.registerCanvas(canvas)
     }
-  }, [mentor]);
+  }, [mentor])
 
   // Track analysis performance
   useEffect(() => {
     if (!mentor.isAnalyzing) {
-      setAnalysisCount(prev => prev + 1);
+      setAnalysisCount(prev => prev + 1)
       // TODO: Track actual latency from service
     }
-  }, [mentor.isAnalyzing]);
+  }, [mentor.isAnalyzing])
 
   return (
     <div style={{ height: '100vh', width: '100vw', background: '#0f0a0a' }}>
@@ -489,5 +494,5 @@ export function AppWithPerformanceMonitoring() {
         <div>Status: {mentor.isReady ? '✓ Ready' : '⚠ Not Ready'}</div>
       </div>
     </div>
-  );
+  )
 }

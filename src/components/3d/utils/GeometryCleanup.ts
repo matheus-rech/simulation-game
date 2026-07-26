@@ -20,7 +20,7 @@ export function disposeGeometry(geometry: BufferGeometry): void {
   if (!geometry) return
 
   // Dispose of all attributes
-  Object.keys(geometry.attributes).forEach((key) => {
+  Object.keys(geometry.attributes).forEach(key => {
     const attribute = geometry.attributes[key]
     if (attribute && attribute.array) {
       // Array is freed by JS garbage collector
@@ -45,9 +45,9 @@ export function disposeMaterial(material: Material | Material[]): void {
 
   const materials = Array.isArray(material) ? material : [material]
 
-  materials.forEach((mat) => {
+  materials.forEach(mat => {
     // Dispose of textures
-    Object.keys(mat).forEach((key) => {
+    Object.keys(mat).forEach(key => {
       const value = (mat as any)[key]
       if (value && value instanceof Texture) {
         value.dispose()
@@ -82,14 +82,14 @@ export function disposeObject(object: Mesh): void {
 export function disposeScene(scene: Scene | Object3D): void {
   if (!scene) return
 
-  scene.traverse((object) => {
+  scene.traverse(object => {
     if (object instanceof Mesh) {
       disposeObject(object)
     }
   })
 
   // Clear children
-  scene.children.forEach((child) => {
+  scene.children.forEach(child => {
     scene.remove(child)
   })
 }
@@ -120,7 +120,7 @@ export function getSceneMemoryStats(scene: Scene | Object3D): MemoryStats {
   const materialSet = new Set<Material>()
   const textureSet = new Set<Texture>()
 
-  scene.traverse((object) => {
+  scene.traverse(object => {
     if (object instanceof Mesh) {
       stats.meshes++
 
@@ -143,13 +143,13 @@ export function getSceneMemoryStats(scene: Scene | Object3D): MemoryStats {
       // Count unique materials
       if (object.material) {
         const materials = Array.isArray(object.material) ? object.material : [object.material]
-        materials.forEach((mat) => {
+        materials.forEach(mat => {
           if (!materialSet.has(mat)) {
             materialSet.add(mat)
             stats.materials++
 
             // Count textures in material
-            Object.keys(mat).forEach((key) => {
+            Object.keys(mat).forEach(key => {
               const value = (mat as any)[key]
               if (value && value instanceof Texture && !textureSet.has(value)) {
                 textureSet.add(value)

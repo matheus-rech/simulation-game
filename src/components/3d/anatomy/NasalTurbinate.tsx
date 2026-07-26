@@ -49,7 +49,7 @@ export function NasalTurbinate({ side, visible = true, seed = 67890 }: NasalTurb
   useEffect(() => {
     let mounted = true
 
-    loadAnatomyTexture('nasalTurbinate').then((texture) => {
+    loadAnatomyTexture('nasalTurbinate').then(texture => {
       if (mounted) {
         setTurbinateTexture(texture)
         console.log(`✅ Loaded nasal turbinate texture for ${side} side (653KB, 84/100)`)

@@ -1,12 +1,6 @@
 import { useRef, useCallback } from 'react'
 import { TissueType, TISSUE_PROPERTIES, isCriticalTissue } from '../materials/TissueMaterials'
-import {
-  CollisionEvent,
-  CollisionResponse,
-  CrisisEvent,
-  CrisisType,
-  Vector3D,
-} from './types'
+import { CollisionEvent, CollisionResponse, CrisisEvent, CrisisType, Vector3D } from './types'
 
 /**
  * CollisionManager - Handles collision detection and response
@@ -79,9 +73,7 @@ export function useCollisionManager({
       scorePenalty: props.scorePenalty,
       visualEffect: props.visualEffect,
       triggerCrisis: false,
-      message: isCritical
-        ? `Critical Contact: ${props.name}`
-        : `Contact: ${props.name}`,
+      message: isCritical ? `Critical Contact: ${props.name}` : `Contact: ${props.name}`,
     }
   }, [])
 
@@ -160,18 +152,16 @@ export function useCollisionManager({
     const byTissue: Record<TissueType, number> = {} as Record<TissueType, number>
 
     // Initialize counts
-    Object.values(TissueType).forEach((type) => {
+    Object.values(TissueType).forEach(type => {
       byTissue[type] = 0
     })
 
     // Count collisions by tissue type
-    collisionHistory.current.forEach((collision) => {
+    collisionHistory.current.forEach(collision => {
       byTissue[collision.tissueType]++
     })
 
-    const critical = collisionHistory.current.filter((c) =>
-      isCriticalTissue(c.tissueType)
-    ).length
+    const critical = collisionHistory.current.filter(c => isCriticalTissue(c.tissueType)).length
 
     return {
       total: collisionHistory.current.length,

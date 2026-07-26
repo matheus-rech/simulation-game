@@ -48,12 +48,12 @@ export function SphenoidSinus({
     let mounted = true
 
     // Load sphenoid sinus texture (air-filled cavity)
-    loadAnatomyTexture('sphenoidSinus').then((texture) => {
+    loadAnatomyTexture('sphenoidSinus').then(texture => {
       if (mounted) setSinusTexture(texture)
     })
 
     // Load sella floor texture (bone over pituitary fossa)
-    loadAnatomyTexture('sellaFloor').then((texture) => {
+    loadAnatomyTexture('sellaFloor').then(texture => {
       if (mounted) setSellarFloorTexture(texture)
     })
 
@@ -105,11 +105,7 @@ export function SphenoidSinus({
 
     for (let i = 0; i < numSeptations; i++) {
       // Position septations at regular intervals across width
-      const septationGeom = new BoxGeometry(
-        septationThickness,
-        septationHeight,
-        septationDepth
-      )
+      const septationGeom = new BoxGeometry(septationThickness, septationHeight, septationDepth)
 
       // Calculate x position for this septation
       // Distribute evenly across the cavity width
@@ -157,7 +153,7 @@ export function SphenoidSinus({
       >
         <meshStandardMaterial
           map={sinusTexture} // AI-generated sphenoid sinus texture (84/100 quality, 630KB)
-          color={sinusTexture ? "#ffffff" : "#f3eee4"} // White when textured, fallback bone color
+          color={sinusTexture ? '#ffffff' : '#f3eee4'} // White when textured, fallback bone color
           roughness={0.75}
           metalness={0.0}
         />
@@ -173,7 +169,7 @@ export function SphenoidSinus({
         >
           <meshStandardMaterial
             map={sellarFloorTexture} // AI-generated sella floor texture (84/100 quality, 648KB)
-            color={sellarFloorTexture ? "#ffffff" : "#f3eee4"} // White when textured, fallback bone color
+            color={sellarFloorTexture ? '#ffffff' : '#f3eee4'} // White when textured, fallback bone color
             roughness={0.75}
             metalness={0.0}
             opacity={0.9}

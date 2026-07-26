@@ -35,7 +35,11 @@ export interface SellaTurcicaProps {
   lodLevel?: number
 }
 
-export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }: SellaTurcicaProps) {
+export function SellaTurcica({
+  showBone = true,
+  showDura = true,
+  lodLevel = 0,
+}: SellaTurcicaProps) {
   // AI-generated textures from Nano Banana Pro
   const [sellaFloorTexture, setSellaFloorTexture] = useState<Texture | null>(null)
   const [duraTexture, setDuraTexture] = useState<Texture | null>(null)
@@ -45,12 +49,12 @@ export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }:
     let mounted = true
 
     // Load sella floor bone texture
-    loadAnatomyTexture('sellaFloor').then((texture) => {
+    loadAnatomyTexture('sellaFloor').then(texture => {
       if (mounted) setSellaFloorTexture(texture)
     })
 
     // Load dura mater texture
-    loadAnatomyTexture('dura').then((texture) => {
+    loadAnatomyTexture('dura').then(texture => {
       if (mounted) setDuraTexture(texture)
     })
 
@@ -62,19 +66,27 @@ export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }:
   // Calculate sphere segments based on LOD level
   const widthSegments = useMemo(() => {
     switch (lodLevel) {
-      case 0: return 32 // Full detail
-      case 1: return 24 // Medium detail (70% vertices)
-      case 2: return 16 // Low detail (40% vertices)
-      default: return 32
+      case 0:
+        return 32 // Full detail
+      case 1:
+        return 24 // Medium detail (70% vertices)
+      case 2:
+        return 16 // Low detail (40% vertices)
+      default:
+        return 32
     }
   }, [lodLevel])
 
   const heightSegments = useMemo(() => {
     switch (lodLevel) {
-      case 0: return 16 // Full detail
-      case 1: return 12 // Medium detail
-      case 2: return 8  // Low detail
-      default: return 16
+      case 0:
+        return 16 // Full detail
+      case 1:
+        return 12 // Medium detail
+      case 2:
+        return 8 // Low detail
+      default:
+        return 16
     }
   }, [lodLevel])
 
@@ -134,7 +146,7 @@ export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }:
         >
           <meshStandardMaterial
             map={sellaFloorTexture} // AI-generated sella floor bone texture (84/100 quality)
-            color={sellaFloorTexture ? "#ffffff" : "#f3eee4"} // White when textured, fallback cream
+            color={sellaFloorTexture ? '#ffffff' : '#f3eee4'} // White when textured, fallback cream
             roughness={0.75}
             metalness={0.0}
           />
@@ -151,7 +163,7 @@ export function SellaTurcica({ showBone = true, showDura = true, lodLevel = 0 }:
         >
           <meshStandardMaterial
             map={duraTexture} // AI-generated dura mater texture (84/100 quality, 635KB)
-            color={duraTexture ? "#ffffff" : "#e8dcc8"} // White when textured, fallback pearl-gray
+            color={duraTexture ? '#ffffff' : '#e8dcc8'} // White when textured, fallback pearl-gray
             roughness={0.4}
             metalness={0.0}
             opacity={0.85}

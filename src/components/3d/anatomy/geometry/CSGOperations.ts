@@ -166,7 +166,10 @@ export function createHollowGeometry(
  * @param targetReduction Target reduction ratio (0-1)
  * @returns Simplified geometry
  */
-export function simplifyGeometry(geometry: BufferGeometry, _targetReduction: number = 0.5): BufferGeometry {
+export function simplifyGeometry(
+  geometry: BufferGeometry,
+  _targetReduction: number = 0.5
+): BufferGeometry {
   // For now, just return the geometry
   // In the future, we could integrate a simplification library
   // like three-simplify-modifier or implement decimation
@@ -217,7 +220,7 @@ let cacheMisses = 0
  */
 function generateCacheKey(operation: string, ...params: unknown[]): string {
   // Extract UUIDs from BufferGeometry instances
-  const uuids = params.map((param) => {
+  const uuids = params.map(param => {
     if (param && typeof param === 'object' && 'uuid' in param) {
       return (param as BufferGeometry).uuid
     }
