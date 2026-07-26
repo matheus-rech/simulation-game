@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { PatientCase, CaseDifficulty, KnospGrade, getAvailableCases, ALL_CASES } from '../../data/patientCases';
+import { PatientCase, CaseDifficulty, getAvailableCases, ALL_CASES } from '../../data/patientCases';
 
 interface CaseSelectorProps {
   onCaseSelected: (patientCase: PatientCase) => void;
@@ -17,9 +17,10 @@ const styles = {
     inset: 0,
     background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%)',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     padding: '32px',
+    overflowY: 'auto' as const,
     fontFamily: "'Segoe UI', sans-serif",
   },
   wrapper: {
@@ -118,7 +119,7 @@ const styles = {
   },
   list: {
     listStyle: 'disc',
-    listStylePosition: 'inside',
+    listStylePosition: 'inside' as const,
     color: '#d1d5db',
   },
   startButton: {

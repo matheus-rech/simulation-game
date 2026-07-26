@@ -29,7 +29,7 @@
     "@anthropic-ai/sdk": "^0.71.2",
     "@google/generative-ai": "^0.24.1",
     "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.5.0",
+    "@react-three/fiber": "^9.6.1",
     "@react-three/postprocessing": "^3.0.4",
     "@react-three/rapier": "^2.2.0",
     "@types/three": "^0.182.0",
@@ -37,7 +37,7 @@
     "react-dom": "^19.2.3",
     "three": "^0.182.0",
     "three-bvh-csg": "^0.0.17",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.2"
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.2",
