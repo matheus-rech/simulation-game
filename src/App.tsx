@@ -1,7 +1,9 @@
-import React, { useCallback, useMemo, useState, useEffect, useRef } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import { EndoscopeView, ScopeAngle } from "./components/EndoscopeView";
 import { Vector3D } from "./components/3d/VFX";
-import { CrisisEvent } from "./components/3d/collision/types";
+import { RaycastCollision } from "./components/3d/EndoscopeRig";
+import { useCollisionManager } from "./components/3d/collision/CollisionManager";
+import { CollisionEvent, CrisisEvent } from "./components/3d/collision/types";
 import { SafetyHUD } from "./components/ui/SafetyHUD";
 import { SafetyZone } from "./components/3d/safety/SafetyCorridorManager";
 import { TechniqueScoring } from "./components/ui/TechniqueScoring";
@@ -11,6 +13,10 @@ import { CaseSelector } from "./components/ui/CaseSelector";
 import { SurgicalInterface } from "./components/ui/SurgicalInterface";
 import { TaskManager, TaskProgress } from "./services/TaskManager";
 import { PatientCase } from "./data/patientCases";
+import {
+  anatomyLevelForPhase,
+  applyEndoscopeKey,
+} from "./input/endoscopeControls";
 
 const initialTipPosition: Vector3D = { x: 0, y: 0, z: 1.2 };
 
@@ -136,6 +142,7 @@ export default function App() {
   const [level, setLevel] = useState(1);
   const [scopeAngle, setScopeAngle] = useState<ScopeAngle>({ pitch: 0.05, yaw: 0 });
   const [tipPosition, setTipPosition] = useState<Vector3D>(initialTipPosition);
+  const [rotationZ, setRotationZ] = useState(0);
   const [lastCollision, setLastCollision] = useState<Vector3D | null>(null);
   const [collisionCount, setCollisionCount] = useState(0);
   const [score, setScore] = useState(100);
@@ -164,20 +171,72 @@ export default function App() {
   const [taskProgress, setTaskProgress] = useState<TaskProgress | null>(null);
   const taskManagerRef = useRef<TaskManager | null>(null);
 
-  const rotationZ = useMemo(() => scopeAngle.yaw * 0.2, [scopeAngle.yaw]);
-
-  const handleRaycastCollision = useCallback((point: Vector3D) => {
-    setLastCollision(point);
-    setCollisionCount((count) => count + 1);
-    setScore((prev) => Math.max(prev - 2, 0));
+  const handleCollisionScoreChange = useCallback((delta: number) => {
+    if (taskManagerRef.current) {
+      taskManagerRef.current.applyPenalty(delta, 'Tissue contact detected');
+      return;
+    }
+    setScore((previousScore) => Math.max(previousScore + delta, 0));
   }, []);
 
-  const handleCrisis = useCallback((crisis: CrisisEvent) => {
+  const handleCollisionEvent = useCallback((collision: CollisionEvent) => {
+    setLastCollision(collision.position);
+    setCollisionCount((count) => count + 1);
+  }, []);
+
+  const handleCollisionCrisis = useCallback((crisis: CrisisEvent) => {
     setActiveCrisis(crisis);
     setCrisisCount((prev) => prev + 1);
-    // Massive score penalty for crisis
-    setScore((prev) => Math.max(prev - 50, 0));
   }, []);
+
+  const { handleCollision: routeCollision } = useCollisionManager({
+    onScoreChange: handleCollisionScoreChange,
+    onCollision: handleCollisionEvent,
+    onCrisis: handleCollisionCrisis,
+  });
+
+  const handleRaycastCollision = useCallback(
+    (collision: RaycastCollision) => {
+      routeCollision(
+        collision.position,
+        collision.tissueType,
+        collision.intensity
+      );
+    },
+    [routeCollision]
+  );
+
+  useEffect(() => {
+    if (!selectedCase) return;
+
+    const handleEndoscopeKeyDown = (event: KeyboardEvent) => {
+      const target = event.target;
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        (target instanceof HTMLElement && target.isContentEditable)
+      ) {
+        return;
+      }
+
+      const nextState = applyEndoscopeKey(
+        { tipPosition, scopeAngle, rotationZ, level },
+        event.key
+      );
+
+      if (!nextState) return;
+
+      event.preventDefault();
+      setTipPosition(nextState.tipPosition);
+      setScopeAngle(nextState.scopeAngle);
+      setRotationZ(nextState.rotationZ);
+      setLevel(nextState.level);
+    };
+
+    window.addEventListener("keydown", handleEndoscopeKeyDown);
+    return () => window.removeEventListener("keydown", handleEndoscopeKeyDown);
+  }, [level, rotationZ, scopeAngle, selectedCase, tipPosition]);
 
   // Update elapsed time every second
   useEffect(() => {
@@ -253,6 +312,7 @@ export default function App() {
       (progress) => {
         setTaskProgress(progress);
         setScore(progress.score);
+        setLevel(anatomyLevelForPhase(progress.currentPhase));
       },
       (feedback) => {
         console.log(`📋 ${feedback.type.toUpperCase()}: ${feedback.message}`);
@@ -273,6 +333,7 @@ export default function App() {
     setLastCollision(null);
     setScopeAngle({ pitch: 0.05, yaw: 0 });
     setTipPosition(initialTipPosition);
+    setRotationZ(0);
 
     console.log(`🏥 Starting case: ${patientCase.name} (${patientCase.diagnosis})`);
   }, []);
@@ -292,33 +353,6 @@ export default function App() {
     setLevel(1);
     setScore(100);
   }, [selectedCase]);
-
-  // Wire collision system to TaskManager
-  const handleRaycastCollisionWithTask = useCallback((point: Vector3D) => {
-    setLastCollision(point);
-    setCollisionCount((count) => count + 1);
-
-    if (taskManagerRef.current) {
-      // Apply penalty through TaskManager
-      taskManagerRef.current.applyPenalty(-2, 'Tissue contact detected');
-    } else {
-      // Fallback to old system
-      setScore((prev) => Math.max(prev - 2, 0));
-    }
-  }, []);
-
-  const handleCrisisWithTask = useCallback((crisis: CrisisEvent) => {
-    setActiveCrisis(crisis);
-    setCrisisCount((prev) => prev + 1);
-
-    if (taskManagerRef.current) {
-      // Apply crisis penalty through TaskManager
-      taskManagerRef.current.applyPenalty(-50, `CRISIS: ${crisis.description}`);
-    } else {
-      // Fallback to old system
-      setScore((prev) => Math.max(prev - 50, 0));
-    }
-  }, []);
 
   // Show case selector if no case is selected and not in curriculum mode
   if (!selectedCase && !curriculumMode) {
@@ -385,6 +419,7 @@ export default function App() {
                 onClick={() => {
                   setScopeAngle({ pitch: 0.05, yaw: 0 });
                   setTipPosition(initialTipPosition);
+                  setRotationZ(0);
                   setLastCollision(null);
                 }}
               >
@@ -438,8 +473,7 @@ export default function App() {
         tipPosition={tipPosition}
         rotationZ={rotationZ}
         collision={lastCollision}
-        onRaycastCollision={selectedCase ? handleRaycastCollisionWithTask : handleRaycastCollision}
-        onCrisis={selectedCase ? handleCrisisWithTask : handleCrisis}
+        onRaycastCollision={handleRaycastCollision}
         onSafetyChange={setSafetyZones}
         showSafetySpheres={false}
       />

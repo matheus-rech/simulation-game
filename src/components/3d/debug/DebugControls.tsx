@@ -5,7 +5,6 @@ import { useEffect, useState, useCallback } from 'react'
  *
  * Keyboard shortcuts:
  * - W: Toggle wireframe mode
- * - P: Toggle physics debug visualization
  * - S: Toggle stats overlay (FPS, memory)
  * - C: Toggle collision sphere visualization
  * - H: Show/hide help overlay
@@ -22,7 +21,6 @@ import { useEffect, useState, useCallback } from 'react'
 
 export interface DebugState {
   wireframe: boolean
-  physicsDebug: boolean
   stats: boolean
   collisionSpheres: boolean
   showHelp: boolean
@@ -37,7 +35,6 @@ export interface DebugControlsProps {
 
 const DEFAULT_STATE: DebugState = {
   wireframe: false,
-  physicsDebug: false,
   stats: false,
   collisionSpheres: false,
   showHelp: false,
@@ -63,16 +60,12 @@ export function DebugControls({ initialState, onStateChange }: DebugControlsProp
       const key = event.key.toLowerCase()
 
       setDebugState((prev) => {
-        let newState = { ...prev }
+        const newState = { ...prev }
 
         switch (key) {
           case 'w':
             newState.wireframe = !prev.wireframe
             console.log(`🔧 Wireframe: ${newState.wireframe ? 'ON' : 'OFF'}`)
-            break
-          case 'p':
-            newState.physicsDebug = !prev.physicsDebug
-            console.log(`🔧 Physics Debug: ${newState.physicsDebug ? 'ON' : 'OFF'}`)
             break
           case 's':
             newState.stats = !prev.stats
@@ -127,7 +120,6 @@ export function DebugControls({ initialState, onStateChange }: DebugControlsProp
         </h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <DebugHelpItem shortcut="W" description="Toggle Wireframe" />
-          <DebugHelpItem shortcut="P" description="Toggle Physics Debug" />
           <DebugHelpItem shortcut="S" description="Toggle Stats Overlay" />
           <DebugHelpItem shortcut="C" description="Toggle Collision Spheres" />
           <DebugHelpItem shortcut="H" description="Hide This Help" />
@@ -209,7 +201,6 @@ export function useDebugState() {
     debugState,
     setDebugState,
     isWireframe: debugState.wireframe,
-    isPhysicsDebug: debugState.physicsDebug,
     isStatsVisible: debugState.stats,
     isCollisionVisible: debugState.collisionSpheres,
   }

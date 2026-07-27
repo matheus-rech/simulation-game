@@ -14,34 +14,45 @@
 
 import { TextureLoader as ThreeTextureLoader, Texture, SRGBColorSpace } from 'three'
 
+export function resolveAnatomyTexturePath(
+  path: string,
+  baseUrl: string = import.meta.env.BASE_URL
+): string {
+  const normalizedBaseUrl = (baseUrl || '/').endsWith('/')
+    ? (baseUrl || '/')
+    : `${baseUrl}/`
+
+  return `${normalizedBaseUrl}${path.replace(/^\/+/, '')}`
+}
+
 /**
  * Anatomical texture paths mapped to medical structures.
  * File naming follows surgical level organization (Level 0-5).
  */
 export const ANATOMY_TEXTURES = {
   // Level 0: Nasal Approach
-  nasalSeptum: '/textures/anatomy/nasal-septum_standard.png',
-  nasalTurbinate: '/textures/anatomy/nasal-turbinate_standard.png',
+  nasalSeptum: resolveAnatomyTexturePath('textures/anatomy/nasal-septum_standard.png'),
+  nasalTurbinate: resolveAnatomyTexturePath('textures/anatomy/nasal-turbinate_standard.png'),
 
   // Level 1: Sphenoid Ostium
-  sphenoidOstium: '/textures/anatomy/sphenoid-ostium_standard.png',
+  sphenoidOstium: resolveAnatomyTexturePath('textures/anatomy/sphenoid-ostium_standard.png'),
 
   // Level 2: Sphenoid Sinus
-  sphenoidSinus: '/textures/anatomy/sphenoid-sinus_standard.png',
+  sphenoidSinus: resolveAnatomyTexturePath('textures/anatomy/sphenoid-sinus_standard.png'),
 
   // Level 3: Sella Floor
-  sellaFloor: '/textures/anatomy/sella-floor_standard.png',
+  sellaFloor: resolveAnatomyTexturePath('textures/anatomy/sella-floor_standard.png'),
 
   // Level 4: Sella Contents (Main surgical target)
-  dura: '/textures/anatomy/dura_standard.png',
-  pituitaryAdenoma: '/textures/anatomy/pituitary-adenoma_knosp-2.png',
-  pseudocapsule: '/textures/anatomy/pseudocapsule_standard.png',
+  dura: resolveAnatomyTexturePath('textures/anatomy/dura_standard.png'),
+  pituitaryAdenoma: resolveAnatomyTexturePath('textures/anatomy/pituitary-adenoma_knosp-2.png'),
+  pseudocapsule: resolveAnatomyTexturePath('textures/anatomy/pseudocapsule_standard.png'),
 
   // Level 5: Critical Structures (⚠️ High injury risk)
-  ica: '/textures/anatomy/ica_standard.png', // Internal Carotid Artery
-  mwcs: '/textures/anatomy/mwcs_standard.png', // Medial Wall Cavernous Sinus
-  opticNerve: '/textures/anatomy/optic-nerve_standard.png',
-  cavernousSinus: '/textures/anatomy/cavernous-sinus_standard.png'
+  ica: resolveAnatomyTexturePath('textures/anatomy/ica_standard.png'), // Internal Carotid Artery
+  mwcs: resolveAnatomyTexturePath('textures/anatomy/mwcs_standard.png'), // Medial Wall Cavernous Sinus
+  opticNerve: resolveAnatomyTexturePath('textures/anatomy/optic-nerve_standard.png'),
+  cavernousSinus: resolveAnatomyTexturePath('textures/anatomy/cavernous-sinus_standard.png')
 } as const
 
 export type AnatomyTextureName = keyof typeof ANATOMY_TEXTURES

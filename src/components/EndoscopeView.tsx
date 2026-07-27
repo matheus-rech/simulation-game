@@ -2,11 +2,10 @@ import { useMemo, Suspense, useState, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Vector3, Object3D } from "three";
 import { EffectComposer, Bloom, Vignette, Noise, ChromaticAberration, DepthOfField } from "@react-three/postprocessing";
-import { Physics } from "@react-three/rapier";
 import { AnatomyManager } from "./3d/anatomy/AnatomyManager";
-import { EndoscopeRig } from "./3d/EndoscopeRig";
+import { EndoscopeRig, RaycastCollision } from "./3d/EndoscopeRig";
+import { NasalCavity } from "./3d/NasalCavity";
 import { BleedingVFX, DustParticles, Vector3D } from "./3d/VFX";
-import { CrisisEvent } from "./3d/collision/types";
 import { DebugControls, DebugState } from "./3d/debug/DebugControls";
 import { WireframeController } from "./3d/debug/WireframeController";
 import { PerformanceMonitor } from "./3d/debug/PerformanceMonitor";
@@ -80,8 +79,7 @@ export interface EndoscopeViewProps {
   rotationZ?: number;
   collision?: Vector3D | null;
   level: number;
-  onRaycastCollision?: (point: Vector3D) => void;
-  onCrisis?: (crisis: CrisisEvent) => void;
+  onRaycastCollision?: (collision: RaycastCollision) => void;
   onSafetyChange?: (zones: SafetyZone[]) => void;
   showSafetySpheres?: boolean;
 }
@@ -95,20 +93,19 @@ export function EndoscopeView({
   collision,
   level,
   onRaycastCollision,
-  onCrisis,
   onSafetyChange,
   showSafetySpheres = false,
 }: EndoscopeViewProps) {
   const [debugState, setDebugState] = useState<DebugState>({
     wireframe: false,
-    physicsDebug: false,
     stats: false,
     collisionSpheres: false,
     showHelp: false,
   });
 
   // State to hold collidable meshes for optimized raycasting
-  const [collidableMeshes, setCollidableMeshes] = useState<Object3D[]>([]);
+  const [anatomyMeshes, setAnatomyMeshes] = useState<Object3D[]>([]);
+  const [cavityMeshes, setCavityMeshes] = useState<Object3D[]>([]);
 
   // Anatomical positions for safety corridor monitoring
   const safetyStructures = useMemo(() => ({
@@ -121,17 +118,18 @@ export function EndoscopeView({
 
   // Callback to receive collidable meshes from AnatomyManager
   const handleCollidableMeshesReady = useCallback((meshes: Object3D[]) => {
-    setCollidableMeshes(meshes);
+    setAnatomyMeshes(meshes);
   }, []);
+
+  const collidableMeshes = useMemo(
+    () => [...cavityMeshes, ...anatomyMeshes],
+    [anatomyMeshes, cavityMeshes]
+  );
 
   const tipVector = useMemo(
     () => new Vector3(tipPosition.x, tipPosition.y, tipPosition.z),
     [tipPosition.x, tipPosition.y, tipPosition.z]
   );
-
-  // TODO: Integrate onCrisis with EndoscopeRig tissue-type collision detection
-  // For now, onCrisis is available for future implementation
-  void onCrisis;
 
   return (
     <>
@@ -149,9 +147,11 @@ export function EndoscopeView({
         <WireframeController enabled={debugState.wireframe} />
 
         <Suspense fallback={null}>
-          <Physics gravity={[0, 0, 0]} timeStep={1 / 60} interpolate debug={debugState.physicsDebug}>
-            {/* Physics debug visualization enabled via debug prop */}
-
+          <>
+            <NasalCavity
+              level={level}
+              onCollidableMeshesReady={setCavityMeshes}
+            />
             {/* OPTIMIZATION: Pass callback to collect collidable meshes */}
             <AnatomyManager level={level} onCollidableMeshesReady={handleCollidableMeshesReady} />
             <DustParticles />
@@ -161,9 +161,7 @@ export function EndoscopeView({
               tipPosition={tipVector}
               scopeAngle={scopeAngle}
               rotationZ={rotationZ}
-              onRaycastCollision={(point) =>
-                onRaycastCollision?.({ x: point.x, y: point.y, z: point.z })
-              }
+              onRaycastCollision={onRaycastCollision}
               collidableMeshes={collidableMeshes}
             />
             {/* Safety Corridor System - Real-time distance monitoring */}
@@ -176,7 +174,7 @@ export function EndoscopeView({
                 enableAudio={true}
               />
             )}
-          </Physics>
+          </>
         </Suspense>
         {/* OPTIMIZATION: Adaptive post-processing based on FPS */}
         <AdaptivePostProcessing />

@@ -450,19 +450,20 @@ describe('CollisionManager - Hook Integration Tests', () => {
         vi.advanceTimersByTime(300)
       })
 
-      // Try to trigger CSF leak (probabilistic)
+      // Trigger one deterministic CSF leak without overflowing the bounded
+      // crisis history and evicting the ICA event this test asserts below.
+      const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0)
       act(() => {
-        for (let i = 0; i < 50; i++) {
-          vi.advanceTimersByTime(300)
-          result.current.handleCollision(position, TissueType.DURA)
-        }
+        vi.advanceTimersByTime(300)
+        result.current.handleCollision(position, TissueType.DURA)
       })
+      randomSpy.mockRestore()
 
       const crises = result.current.getActiveCrises()
 
-      // Should have at least the ICA crisis
-      expect(crises.length).toBeGreaterThanOrEqual(1)
+      expect(crises).toHaveLength(2)
       expect(crises.some((c) => c.type === CrisisType.ICA_INJURY)).toBe(true)
+      expect(crises.some((c) => c.type === CrisisType.CSF_LEAK)).toBe(true)
     })
   })
 

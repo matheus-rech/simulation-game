@@ -40,7 +40,7 @@ export function SurgicalInterface({
   const timeColor = getTimeColor();
 
   return (
-    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', fontFamily: "'Segoe UI', sans-serif" }}>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 20, pointerEvents: 'none', fontFamily: "'Segoe UI', sans-serif" }}>
       {/* Top Bar */}
       <div style={{
         position: 'absolute',
@@ -359,6 +359,26 @@ export function SurgicalInterface({
             </div>
           </div>
         </div>
+      </div>
+
+      <div
+        aria-label="Endoscope controls"
+        style={{
+          position: 'absolute',
+          left: '50%',
+          bottom: '88px',
+          transform: 'translateX(-50%)',
+          background: 'rgba(15, 23, 42, 0.82)',
+          border: '1px solid #475569',
+          borderRadius: '999px',
+          padding: '6px 12px',
+          color: '#cbd5e1',
+          fontSize: '0.72rem',
+          whiteSpace: 'nowrap',
+          userSelect: 'none',
+        }}
+      >
+        I/K move · J/L strafe · Arrow keys aim · Q/E roll · 1–5 anatomy stage
       </div>
     </div>
   );
