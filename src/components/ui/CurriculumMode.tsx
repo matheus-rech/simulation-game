@@ -213,15 +213,16 @@ function updateObjectives(
 
   // Module-specific objective checking
   switch (config.type) {
-    case ModuleType.ANATOMICAL_RECOGNITION:
+    case ModuleType.ANATOMICAL_RECOGNITION: {
       // Check collision count objective
       const minimalTrauma = objectives.find(o => o.id === 'minimal-trauma');
       if (minimalTrauma) {
         minimalTrauma.achieved = collisionCount < 5;
       }
       break;
+    }
 
-    case ModuleType.TUMOR_DEBULKING:
+    case ModuleType.TUMOR_DEBULKING: {
       // Check safety awareness
       const safetyAwareness = objectives.find(o => o.id === 'safety-awareness');
       if (safetyAwareness) {
@@ -236,8 +237,9 @@ function updateObjectives(
         noCsfLeak.achieved = crisisCount === 0;
       }
       break;
+    }
 
-    case ModuleType.MWCS_DECISION:
+    case ModuleType.MWCS_DECISION: {
       // Check no ICA injury
       const noIcaInjury = objectives.find(o => o.id === 'no-ica-injury');
       if (noIcaInjury) {
@@ -250,6 +252,7 @@ function updateObjectives(
         expertTechnique.achieved = techniqueScore >= 85;
       }
       break;
+    }
   }
 
   return objectives;

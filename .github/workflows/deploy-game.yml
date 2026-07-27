@@ -37,6 +37,9 @@ jobs:
       - name: Type-check
         run: npm run type-check
 
+      - name: Lint
+        run: npm run lint
+
       - name: Run tests
         run: npm test -- --run
 
@@ -45,6 +48,9 @@ jobs:
         env:
           GENERATE_SOURCEMAP: "false"
           VITE_BASE_PATH: /simulation-game/
+
+      - name: Verify deployment artifact
+        run: npm run verify:deployment
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4

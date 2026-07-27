@@ -2,7 +2,6 @@ import { useMemo, Suspense, useState, useCallback } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Vector3, Object3D } from "three";
 import { EffectComposer, Bloom, Vignette, Noise, ChromaticAberration, DepthOfField } from "@react-three/postprocessing";
-import { Physics } from "@react-three/rapier";
 import { AnatomyManager } from "./3d/anatomy/AnatomyManager";
 import { EndoscopeRig, RaycastCollision } from "./3d/EndoscopeRig";
 import { NasalCavity } from "./3d/NasalCavity";
@@ -99,7 +98,6 @@ export function EndoscopeView({
 }: EndoscopeViewProps) {
   const [debugState, setDebugState] = useState<DebugState>({
     wireframe: false,
-    physicsDebug: false,
     stats: false,
     collisionSpheres: false,
     showHelp: false,
@@ -149,9 +147,7 @@ export function EndoscopeView({
         <WireframeController enabled={debugState.wireframe} />
 
         <Suspense fallback={null}>
-          <Physics gravity={[0, 0, 0]} timeStep={1 / 60} interpolate debug={debugState.physicsDebug}>
-            {/* Physics debug visualization enabled via debug prop */}
-
+          <>
             <NasalCavity
               level={level}
               onCollidableMeshesReady={setCavityMeshes}
@@ -178,7 +174,7 @@ export function EndoscopeView({
                 enableAudio={true}
               />
             )}
-          </Physics>
+          </>
         </Suspense>
         {/* OPTIMIZATION: Adaptive post-processing based on FPS */}
         <AdaptivePostProcessing />

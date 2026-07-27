@@ -32,6 +32,18 @@ describe('SafetyHUD - Display Accuracy', () => {
     expect(container.firstChild).toBeNull();
   });
 
+  it('should preserve hook order when visibility changes', () => {
+    const { container, rerender } = render(
+      <SafetyHUD safetyZones={mockSafetyZones} visible={false} />
+    );
+
+    expect(container.firstChild).toBeNull();
+    expect(() =>
+      rerender(<SafetyHUD safetyZones={mockSafetyZones} visible={true} />)
+    ).not.toThrow();
+    expect(container.firstChild).not.toBeNull();
+  });
+
   it('should display all safety zones in full mode', () => {
     render(<SafetyHUD safetyZones={mockSafetyZones} visible={true} compact={false} />);
 

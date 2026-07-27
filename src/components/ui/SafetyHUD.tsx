@@ -22,8 +22,6 @@ export interface SafetyHUDProps {
  * <SafetyHUD safetyZones={currentZones} visible={showSafety} />
  */
 export function SafetyHUD({ safetyZones, visible = true, compact = false }: SafetyHUDProps) {
-  if (!visible) return null;
-
   /**
    * Get emoji indicator for risk level
    */
@@ -83,6 +81,8 @@ export function SafetyHUD({ safetyZones, visible = true, compact = false }: Safe
       zone.distance < closest.distance ? zone : closest
     );
   }, [safetyZones]);
+
+  if (!visible) return null;
 
   // Compact mode: just show closest structure
   if (compact) {
