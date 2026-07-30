@@ -166,13 +166,33 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
             const isSelected = selectedCase?.id === patientCase.id;
 
             return (
-              <div
+              <button
                 key={patientCase.id}
-                onClick={() => isAvailable && setSelectedCase(patientCase)}
+                type="button"
+                aria-pressed={isSelected}
+                disabled={isLocked}
+                onClick={() => setSelectedCase(patientCase)}
                 style={{
                   ...styles.caseCard,
+                  appearance: 'none',
+                  textAlign: 'left',
+                  width: '100%',
+                  fontFamily: 'inherit',
+                  color: 'inherit',
                   ...(isSelected ? styles.caseCardSelected : {}),
                   ...(isLocked ? styles.caseCardLocked : {}),
+                }}
+                onFocus={(e) => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.borderColor = '#93c5fd';
+                  }
+                }}
+                onBlur={(e) => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  }
                 }}
                 onMouseEnter={(e) => {
                   if (isAvailable && !isSelected) {
@@ -243,7 +263,7 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                     </div>
                   </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
