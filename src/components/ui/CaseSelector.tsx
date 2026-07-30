@@ -166,24 +166,52 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
             const isSelected = selectedCase?.id === patientCase.id;
 
             return (
-              <div
+              <button
                 key={patientCase.id}
-                onClick={() => isAvailable && setSelectedCase(patientCase)}
+                onClick={() => setSelectedCase(patientCase)}
+                disabled={isLocked}
+                aria-pressed={isSelected}
                 style={{
+                  // Explicit resets to override default button styles
+                  appearance: 'none',
+                  background: 'none',
+                  border: 'none',
+                  margin: 0,
+                  padding: 0,
                   ...styles.caseCard,
+                  width: '100%',
+                  textAlign: 'left',
+                  fontFamily: 'inherit',
+                  color: 'inherit',
                   ...(isSelected ? styles.caseCardSelected : {}),
                   ...(isLocked ? styles.caseCardLocked : {}),
                 }}
                 onMouseEnter={(e) => {
-                  if (isAvailable && !isSelected) {
+                  if (!isLocked && !isSelected) {
                     e.currentTarget.style.transform = 'scale(1.05)';
                     e.currentTarget.style.borderColor = '#93c5fd';
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (isAvailable && !isSelected) {
+                  if (!isLocked && !isSelected) {
                     e.currentTarget.style.transform = 'scale(1)';
                     e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  }
+                }}
+                onFocus={(e) => {
+                  if (!isLocked && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.borderColor = '#93c5fd';
+                    e.currentTarget.style.outline = 'none';
+                    e.currentTarget.style.boxShadow = '0 0 0 2px #60a5fa';
+                  }
+                }}
+                onBlur={(e) => {
+                  if (!isLocked && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.outline = '';
                   }
                 }}
               >
@@ -243,7 +271,7 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                     </div>
                   </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
