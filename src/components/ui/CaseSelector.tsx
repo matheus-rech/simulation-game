@@ -166,13 +166,21 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
             const isSelected = selectedCase?.id === patientCase.id;
 
             return (
-              <div
+              <button
                 key={patientCase.id}
+                type="button"
+                disabled={isLocked}
+                aria-pressed={isSelected}
                 onClick={() => isAvailable && setSelectedCase(patientCase)}
                 style={{
                   ...styles.caseCard,
                   ...(isSelected ? styles.caseCardSelected : {}),
                   ...(isLocked ? styles.caseCardLocked : {}),
+                  width: '100%',
+                  textAlign: 'left' as const,
+                  fontFamily: 'inherit',
+                  color: 'inherit',
+                  appearance: 'none',
                 }}
                 onMouseEnter={(e) => {
                   if (isAvailable && !isSelected) {
@@ -181,6 +189,18 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                   }
                 }}
                 onMouseLeave={(e) => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  }
+                }}
+                onFocus={(e) => {
+                  if (isAvailable && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.borderColor = '#93c5fd';
+                  }
+                }}
+                onBlur={(e) => {
                   if (isAvailable && !isSelected) {
                     e.currentTarget.style.transform = 'scale(1)';
                     e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
@@ -243,7 +263,7 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                     </div>
                   </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
