@@ -47,6 +47,18 @@ const styles = {
     gap: '24px',
     marginBottom: '32px',
   },
+  resetButton: {
+    background: 'none',
+    border: 'none',
+    padding: 0,
+    margin: 0,
+    width: '100%',
+    textAlign: 'left' as const,
+    fontFamily: 'inherit',
+    color: 'inherit',
+    appearance: 'none' as const,
+    // cursor handled by caseCard
+  },
   caseCard: {
     position: 'relative' as const,
     background: 'rgba(255, 255, 255, 0.1)',
@@ -166,22 +178,41 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
             const isSelected = selectedCase?.id === patientCase.id;
 
             return (
-              <div
+              <button
                 key={patientCase.id}
-                onClick={() => isAvailable && setSelectedCase(patientCase)}
+                type="button"
+                onClick={() => setSelectedCase(patientCase)}
+                disabled={isLocked}
+                aria-pressed={isSelected}
                 style={{
+                  ...styles.resetButton,
                   ...styles.caseCard,
                   ...(isSelected ? styles.caseCardSelected : {}),
                   ...(isLocked ? styles.caseCardLocked : {}),
                 }}
                 onMouseEnter={(e) => {
-                  if (isAvailable && !isSelected) {
+                  if (!isLocked && !isSelected) {
                     e.currentTarget.style.transform = 'scale(1.05)';
                     e.currentTarget.style.borderColor = '#93c5fd';
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (isAvailable && !isSelected) {
+                  if (!isLocked && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                  }
+                }}
+                onFocus={(e) => {
+                  if (!isLocked && !isSelected) {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.borderColor = '#93c5fd';
+                    // Ensure focus outline is visible or handled
+                    // We are mimicking hover styles, but browser focus ring is also good to keep unless we provide a custom one.
+                    // The style above sets border color, which is good.
+                  }
+                }}
+                onBlur={(e) => {
+                  if (!isLocked && !isSelected) {
                     e.currentTarget.style.transform = 'scale(1)';
                     e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
                   }
@@ -243,7 +274,7 @@ export function CaseSelector({ onCaseSelected, completedCaseIds }: CaseSelectorP
                     </div>
                   </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
